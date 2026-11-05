@@ -2455,10 +2455,72 @@ window.LV11_DEFAULTS = (function () {
     h += '<section class="lv11card"><h3>' + icon('network', 18) + T('Fuentes que alimentan esta línea', 'Sources feeding this line') + '</h3>' + (srcIt.length ? barsH(srcIt) : '<p class="lv11note">' + T('Aún no hay fuentes asignadas en el catálogo.', 'No sources assigned yet.') + '</p>') + '</section></div>';
     return h;
   }
+  /* v31: gráficas dinámicas para las tarjetas de análisis: el visitante cambia el tipo de gráfica */
+  var DYN = {}, DCOL = ['#D33B78', '#1A82B9', '#8E36CF', '#17A58C', '#E0A800', '#EF6B4A', '#5B5BD6', '#9E2C5A', '#22A37A', '#c9bcd6'];
+  function hnum(v) { if (typeof v === 'number') return v; var m = /^(\d+):(\d+)$/.exec(String(v)); if (m) return +m[1] + m[2] / 60; var n = parseFloat(String(v).replace(/\./g, '').replace(',', '.')); return isNaN(n) ? null : n; }
+  function dshape(r) {
+    if (!r || !r.rows || r.rows.length < 3) return null;
+    var head = r.rows[0], body = r.rows.slice(1), num = [];
+    head.forEach(function (h, i) { if (i && body.every(function (x) { return hnum(x[i]) != null; })) num.push(i); });
+    if (!num.length) return null;
+    var lab = head.length > 2 && !num.length ? 0 : 0, ser = /^\d{4}/.test(String(body[0][0])) && /^\d{4}/.test(String(body[body.length - 1][0]));
+    if (head[1] === 'Periodo') return null;
+    return { head: head, body: body, num: num.slice(0, 2), series: ser, isTime: num.some(function (i) { return /:/.test(String(body[0][i])); }) };
+  }
+  function dfmt(v, sh) { if (sh && sh.isTime) { var h = Math.floor(v), m = Math.round((v - h) * 60); return h + ' h ' + m + ' min'; } return Math.abs(v) < 100 && v % 1 ? N(v, 1) : N(v); }
+  function dtypes(sh) { return sh.series ? [['line', T('Línea', 'Line')], ['col', T('Columnas', 'Columns')], ['area', T('Área', 'Area')]] : sh.num.length > 1 ? [['range', T('Brecha', 'Gap')], ['bars', T('Barras', 'Bars')], ['donut', T('Dona', 'Donut')]] : [['bars', T('Barras', 'Bars')], ['donut', T('Dona', 'Donut')], ['dots', T('Puntos', 'Dots')]]; }
+  function dynSVG(id, c) {
+    var r = AN[id] && AN[id](), sh = dshape(r); if (!sh) return null;
+    var ty = DYN[id] || dtypes(sh)[0][0], b = sh.body, n0 = sh.num[0], n1 = sh.num[1], cols = [c, n1 ? '#1A82B9' : c], H = '';
+    var lg = sh.num.map(function (i, k) { return '<span><i style="background:' + (k ? '#1A82B9' : c) + '"></i>' + E(sh.head[i]) + '</span>'; }).join('');
+    if (sh.series) {
+      var W0 = 560, H0 = 250, L = 46, R = 14, Tp = 16, B = 30, mx = Math.max.apply(null, b.map(function (x) { return Math.max(hnum(x[n0]), n1 ? hnum(x[n1]) : 0); })) * 1.12 || 1, nb = b.length;
+      var X = function (i) { return L + (nb > 1 ? i / (nb - 1) : .5) * (W0 - L - R); }, Y = function (v) { return Tp + (1 - v / mx) * (H0 - Tp - B); };
+      H += [0, .5, 1].map(function (f) { return '<line x1="' + L + '" x2="' + (W0 - R) + '" y1="' + Y(mx * f) + '" y2="' + Y(mx * f) + '" class="g"/><text class="ax" x="' + (L - 6) + '" y="' + (Y(mx * f) + 4) + '">' + dfmt(mx * f, sh) + '</text>'; }).join('');
+      H += b.map(function (x, i) { return (i % Math.ceil(nb / 6) === 0 || i === nb - 1) ? '<text class="ax mid" x="' + X(i) + '" y="' + (H0 - 8) + '">' + E(String(x[0]).slice(0, 9)) + '</text>' : ''; }).join('');
+      sh.num.forEach(function (ci, k) {
+        var col = cols[k];
+        if (ty === 'col') { var bw = (W0 - L - R) / nb / (sh.num.length + .6); H += b.map(function (x, i) { var v = hnum(x[ci]), xx = X(i) - bw * sh.num.length / 2 + k * bw; return '<rect class="cl" x="' + xx.toFixed(1) + '" y="' + Y(v).toFixed(1) + '" width="' + (bw - 2).toFixed(1) + '" height="' + (Y(0) - Y(v)).toFixed(1) + '" fill="' + col + '" style="--i:' + i + '" data-tt="' + E(x[0] + ' · ' + sh.head[ci] + '|' + dfmt(v, sh)) + '"/>'; }).join(''); }
+        else { var d = b.map(function (x, i) { return (i ? 'L' : 'M') + X(i).toFixed(1) + ' ' + Y(hnum(x[ci])).toFixed(1); }).join(' ');
+          if (ty === 'area') H += '<path class="ar2" d="' + d + ' L' + X(nb - 1) + ' ' + Y(0) + ' L' + X(0) + ' ' + Y(0) + 'Z" fill="' + col + '"/>';
+          H += '<path class="ln2" d="' + d + '" stroke="' + col + '" pathLength="1"/>' + b.map(function (x, i) { return '<circle class="pt2" cx="' + X(i).toFixed(1) + '" cy="' + Y(hnum(x[ci])).toFixed(1) + '" r="4" stroke="' + col + '" style="--i:' + i + '"/>'; }).join(''); }
+      });
+      if (ty !== 'col') H += b.map(function (x, i) { var w = (W0 - L - R) / Math.max(1, nb - 1); return '<rect class="hz" x="' + (X(i) - w / 2).toFixed(1) + '" y="' + Tp + '" width="' + w.toFixed(1) + '" height="' + (H0 - Tp - B) + '" data-tt="' + E(x[0] + '|' + sh.num.map(function (ci) { return sh.head[ci] + ': ' + dfmt(hnum(x[ci]), sh); }).join(' · ')) + '"/>'; }).join('');
+      if (ty !== 'col') { var mi = 0; b.forEach(function (x, i) { if (hnum(x[n0]) > hnum(b[mi][n0])) mi = i; }); H += '<g class="pk2"><circle cx="' + X(mi) + '" cy="' + Y(hnum(b[mi][n0])) + '" r="9" fill="' + c + '"/><text x="' + Math.min(W0 - 60, Math.max(70, X(mi))) + '" y="' + (Y(hnum(b[mi][n0])) - 13) + '" fill="' + c + '">' + T('Máximo', 'Peak') + ' ' + E(String(b[mi][0]).slice(0, 9)) + '</text></g>'; }
+      return { types: dtypes(sh), ty: ty, html: '<svg viewBox="0 0 ' + W0 + ' ' + H0 + '" class="dyn">' + H + '</svg>' + (n1 ? '<div class="dlg">' + lg + '</div>' : '') };
+    }
+    var rows = b.slice().sort(function (p, q) { return hnum(q[n0]) - hnum(p[n0]); }).slice(0, 10), mx2 = Math.max.apply(null, rows.map(function (x) { return Math.max(hnum(x[n0]), n1 ? hnum(x[n1]) : 0); })) || 1;
+    if (ty === 'donut' || ty === 'dots') {
+      var tot = rows.reduce(function (s, x) { return s + hnum(x[n0]); }, 0) || 1;
+      if (ty === 'dots') { var cells = [], acc = 0; rows.forEach(function (x, i) { var k = Math.round((acc + hnum(x[n0])) / tot * 100) - Math.round(acc / tot * 100); acc += hnum(x[n0]); for (var j = 0; j < k; j++) cells.push(i); });
+        return { types: dtypes(sh), ty: ty, html: '<div class="dwaf"><div class="dd">' + cells.map(function (ci, i) { return '<i style="background:' + DCOL[ci % 10] + ';--i:' + i + '" data-tt="' + E(rows[ci][0] + '|' + N(hnum(rows[ci][n0]) / tot * 100, 1) + ' %') + '"></i>'; }).join('') + '</div><div class="dlg v">' + rows.map(function (x, i) { return '<span><i style="background:' + DCOL[i % 10] + '"></i>' + E(x[0]) + ' <b>' + N(hnum(x[n0]) / tot * 100, 1) + ' %</b></span>'; }).join('') + '</div></div><p class="dnote">' + T('Cada punto es el 1 % del total.', 'Each dot is 1% of the total.') + '</p>' }; }
+      var a = 0, ci2 = 2 * Math.PI * 70;
+      H = rows.map(function (x, i) { var f = hnum(x[n0]) / tot, s = '<circle class="dn" r="70" cx="110" cy="110" stroke="' + DCOL[i % 10] + '" stroke-dasharray="' + (f * ci2).toFixed(1) + ' ' + ci2.toFixed(1) + '" stroke-dashoffset="' + (-a * ci2).toFixed(1) + '" style="--i:' + i + '" data-tt="' + E(x[0] + '|' + dfmt(hnum(x[n0]), sh) + ' · ' + N(f * 100, 1) + ' %') + '"/>'; a += f; return s; }).join('');
+      return { types: dtypes(sh), ty: ty, html: '<div class="ddon"><svg viewBox="0 0 220 220" class="dyn don">' + H + '<text x="110" y="106" class="dc1">' + dfmt(tot, sh) + '</text><text x="110" y="126" class="dc2">' + E(sh.head[n0]) + '</text></svg><div class="dlg v">' + rows.map(function (x, i) { return '<span><i style="background:' + DCOL[i % 10] + '"></i>' + E(x[0]) + ' <b>' + N(hnum(x[n0]) / tot * 100, 1) + ' %</b></span>'; }).join('') + '</div></div>' };
+    }
+    if (ty === 'range') {
+      return { types: dtypes(sh), ty: ty, html: '<div class="drng">' + rows.map(function (x, i) { var v0 = hnum(x[n0]), v1 = hnum(x[n1]), lo = Math.min(v0, v1) / mx2 * 100, hi = Math.max(v0, v1) / mx2 * 100; return '<div class="rr" style="--i:' + i + '" data-tt="' + E(x[0] + '|' + sh.head[n0] + ': ' + dfmt(v0, sh) + ' · ' + sh.head[n1] + ': ' + dfmt(v1, sh)) + '"><span>' + E(x[0]) + '</span><i><em style="left:' + lo + '%;width:' + (hi - lo) + '%"></em><b style="left:' + (v0 / mx2 * 100) + '%;background:' + c + '"></b><b style="left:' + (v1 / mx2 * 100) + '%;background:#1A82B9"></b></i><small>' + T('brecha ', 'gap ') + dfmt(Math.abs(v0 - v1), sh) + '</small></div>'; }).join('') + '</div><div class="dlg">' + lg + '</div>' };
+    }
+    return { types: dtypes(sh), ty: ty, html: '<div class="dbar">' + rows.map(function (x, i) { return '<div class="br" style="--i:' + i + '"><span>' + E(x[0]) + '</span><i>' + sh.num.map(function (ci, k) { return '<em style="--w:' + (hnum(x[ci]) / mx2 * 100).toFixed(1) + '%;background:' + cols[k] + '" data-tt="' + E(x[0] + ' · ' + sh.head[ci] + '|' + dfmt(hnum(x[ci]), sh)) + '"></em>'; }).join('') + '</i><b>' + dfmt(hnum(x[n0]), sh) + '</b></div>'; }).join('') + '</div>' + (n1 ? '<div class="dlg">' + lg + '</div>' : '') };
+  }
+  function dynBlock(id, c) {
+    var d = dynSVG(id, c); if (!d) return null;
+    return '<div class="dynw" data-an="' + id + '"><div class="dsw" role="group" aria-label="' + T('Tipo de gráfica', 'Chart type') + '">' + d.types.map(function (t) { return '<button type="button"' + (t[0] === d.ty ? ' class="on"' : '') + ' onclick="LV11.dynSet(\'' + id + '\',\'' + t[0] + '\',this)">' + t[1] + '</button>'; }).join('') + '</div><div class="dbody">' + d.html + '</div></div>';
+  }
+  (function () {
+    var tip = null;
+    D.addEventListener('pointermove', function (e) {
+      var t = e.target.closest && e.target.closest('[data-tt]');
+      if (!tip) { tip = D.createElement('div'); tip.id = 'lv31tip'; D.body.appendChild(tip); }
+      if (!t) { tip.classList.remove('on'); return; }
+      var p = t.dataset.tt.split('|'); tip.innerHTML = '<b>' + E(p[0]) + '</b><span>' + E(p[1] || '') + '</span>';
+      tip.style.left = Math.min(innerWidth - 240, e.clientX + 14) + 'px'; tip.style.top = (e.clientY + 16) + 'px'; tip.classList.add('on');
+    }, { passive: true });
+  })();
   function vizCard(id, c) {
     var a = DEF.analyses.find(function (z) { return z.id === id; }), r = AN[id] && AN[id](); if (!a || !r) return '';
-    var body = r.chart || (r.mapd ? choropleth(r.mapd.values, { color: c, fmt: r.mapd.fmt }) : r.extra || '');
-    if (r.chart && r.mapd) body += choropleth(r.mapd.values, { color: c, fmt: r.mapd.fmt });
+    var dyn = dynBlock(id, c), body = dyn || r.chart || (r.mapd ? choropleth(r.mapd.values, { color: c, fmt: r.mapd.fmt }) : r.extra || '');
+    if (!dyn && r.chart && r.mapd) body += choropleth(r.mapd.values, { color: c, fmt: r.mapd.fmt });
     return '<section class="lv11card lv11viz" style="--c:' + c + ';--ci:' + ink(c) + '"><div class="lv11cardhead"><h3>' + E(analysisText(id, a).title) + '</h3></div><div class="lv11hero sm"><b data-count>' + E(r.head) + '</b><span>' + E(r.sub) + '</span></div>' + body + '<p class="lv11vizread">' + E(r.read[0]) + '</p><p class="lv11src">' + E(r.src) + '</p><div class="lv11row"><button class="lv11btn ghost" onclick="LV11.openAnalysis(\'' + id + '\')">' + T('Ampliar', 'Expand') + '</button>' + (r.rows ? '<button class="lv11btn ghost" onclick="LV11.csv(\'' + id + '\')">' + icon('download', 16) + ' CSV</button>' : '') + (r.ind ? '<button class="lv11btn ghost" onclick="LV11.openIndicator(\'' + r.ind + '\')">' + T('Ficha', 'Indicator') + '</button>' : '') + '</div></section>';
   }
   // Vista del micrositio dentro del panorama: parte superior (acervo) y parte inferior (catálogo, normas, observatorios).
@@ -2625,9 +2687,21 @@ window.LV11_DEFAULTS = (function () {
     return '<section class="lv29tbl" style="--c:' + c + '"><div class="h"><div><b>' + E(t.title) + '</b><small>' + E(t.sub) + '</small></div><span class="vw"><span class="seg">' + [['tabla', T('Tabla', 'Table')], ['calor', T('Mapa de calor', 'Heatmap')], ['barras', T('Barras', 'Bars')]].map(function (v) { return '<button type="button"' + (anView === v[0] ? ' class="on"' : '') + ' onclick="LV11.anViewSet(\'' + v[0] + '\')">' + v[1] + '</button>'; }).join('') + '</span><button type="button" onclick="LV11.anCsv()">' + icon('download', 15) + ' CSV</button></span></div>' +
       (anSel ? (function () { var r = rows.filter(function (x) { return x[0] === anSel; })[0]; if (!r) return ''; return '<div class="sum"><b>' + E(r[0]) + '</b>' + t.head.slice(1).map(function (h, j) { var i = j + 1, ord = rows.slice().sort(function (a, b) { return (b[i] || 0) - (a[i] || 0); }), p = ord.indexOf(r) + 1; return '<span><small>' + E(h) + '</small><em>' + fmt(r[i]) + '</em><i>' + T('puesto ', 'rank ') + p + '/' + rows.length + '</i></span>'; }).join('') + '<button type="button" onclick="LV11.anPick(\'\')" aria-label="' + T('Cerrar', 'Close') + '">×</button></div>'; })() : '<p class="hint">' + T('Toca una fila para ver su resumen · toca un título de columna para ordenar.', 'Tap a row for its summary · tap a column header to sort.') + '</p>') +
       (anView === 'barras' ? '<div class="bv">' + rows.slice(0, anAll ? rows.length : 15).map(function (r, ri) { var v = r[col]; return '<button type="button" class="' + (anSel === r[0] ? 'sel' : '') + '" style="--i:' + ri + '" onclick="LV11.anPick(\'' + E(String(r[0]).replace(/'/g, '')) + '\')"><span>' + E(r[0]) + '</span><i><em style="width:' + (typeof v === 'number' && v > 0 ? Math.max(2, v / mx * 100) : 0) + '%"></em></i><b>' + fmt(v) + '</b></button>'; }).join('') + '</div><div class="bvcols">' + t.head.slice(1).map(function (h, j) { return '<button type="button"' + (col === j + 1 ? ' class="on"' : '') + ' onclick="LV11.anSortBy(' + (j + 1) + ')">' + E(h) + '</button>'; }).join('') + '</div>' : '') +
-      (anView === 'barras' ? '<div class="w" hidden>' : '<div class="w">') + '<table><thead><tr>' + t.head.map(function (h, i) { return '<th' + (i ? ' class="n"' : '') + '><button type="button" onclick="LV11.anSortBy(' + i + ')"' + (i === col ? ' class="on"' : '') + '>' + E(h) + (i === col ? (anSort.d < 0 ? ' ↓' : ' ↑') : '') + '</button></th>'; }).join('') + '</tr></thead><tbody>' +
+      (anView === 'calor' ? heatMap(t, rows, col) : '') + (anView === 'barras' ? '<div class="w" hidden>' : '<div class="w">') + '<table><thead><tr>' + t.head.map(function (h, i) { return '<th' + (i ? ' class="n"' : '') + '><button type="button" onclick="LV11.anSortBy(' + i + ')"' + (i === col ? ' class="on"' : '') + '>' + E(h) + (i === col ? (anSort.d < 0 ? ' ↓' : ' ↑') : '') + '</button></th>'; }).join('') + '</tr></thead><tbody>' +
       show.map(function (r, ri) { return '<tr style="--i:' + ri + '"' + (anSel === r[0] ? ' class="sel"' : '') + ' onclick="LV11.anPick(\'' + E(String(r[0]).replace(/'/g, '')) + '\')">' + r.map(function (v, i) { var cm = cmax[i] || 1, a = typeof v === 'number' && v > 0 ? v / cm : 0; return i === 0 ? '<td><span class="rk">' + (ri + 1) + '</span>' + E(v) + '</td>' : '<td class="n' + (i === col ? ' on' : '') + '"' + (anView === 'calor' ? ' style="background:color-mix(in srgb,var(--c) ' + Math.round(6 + a * 70) + '%,#fff);color:' + (a > .55 ? '#fff' : 'inherit') + '"' : '') + '>' + (anView === 'tabla' && i === col && typeof v === 'number' && v > 0 ? '<i style="width:' + Math.max(3, v / mx * 100) + '%"></i>' : '') + '<span>' + fmt(v) + '</span></td>'; }).join('') + '</tr>'; }).join('') + '</tbody></table></div>' +
       (rows.length > 10 ? '<button type="button" class="more" onclick="LV11.anAllT()">' + (anAll ? T('Ver menos', 'Show less') : T('Ver las ' + rows.length + ' filas', 'Show all ' + rows.length + ' rows')) + '</button>' : '') + '</section>';
+  }
+  function nrm(x) { return String(x || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z]/g, ''); }
+  function heatMap(t, rows, col) {
+    var G = W.LV22_GEO; if (!G || !G.dep) return '';
+    var byName = {}; Object.keys(G.dep).forEach(function (c) { byName[nrm(deptName(c))] = c; }); byName[nrm('Bogotá')] = '11'; byName[nrm('San Andrés')] = '88';
+    var val = {}, hit = 0; rows.forEach(function (r) { var c = byName[nrm(r[0])] || byName[nrm(String(r[0]).split(',')[0])]; if (c && typeof r[col] === 'number') { val[c] = r; hit++; } });
+    if (hit < 10) return '';
+    var vs = Object.keys(val).map(function (c) { return Math.max(0, val[c][col]); }), mx = Math.max.apply(null, vs.concat([1])), mn = Math.min.apply(null, vs);
+    var fmt = function (v) { return typeof v === 'number' ? (v < 0 ? '1–4' : v.toLocaleString(en() ? 'en-US' : 'es-CO')) : v; };
+    var sel = anSel && rows.filter(function (r) { return r[0] === anSel; })[0];
+    return '<div class="hm"><div class="hmm"><svg viewBox="20 10 380 470" role="img" aria-label="' + T('Mapa de calor por departamento', 'Heat map by department') + '">' + Object.keys(G.dep).map(function (c) { var r = val[c], v = r ? Math.max(0, r[col]) : null, a = v == null ? 0 : (v - mn) / ((mx - mn) || 1); return '<path d="' + G.dep[c] + '" style="fill:' + (v == null ? '#f1ecf5' : 'color-mix(in srgb,var(--c) ' + Math.round(10 + a * 85) + '%,#fff)') + '"' + (r ? ' data-tt="' + E(r[0] + '|' + t.head[col] + ': ' + fmt(r[col])) + '" onclick="LV11.anPick(\'' + E(String(r[0]).replace(/\'/g, '')) + '\')"' : '') + (sel && sel === r ? ' class="on"' : '') + '/>'; }).join('') + '</svg></div>' +
+      '<div class="hml"><b>' + E(t.head[col]) + '</b><small>' + T('Se actualiza al instante cuando cambias la columna o eliges un departamento.', 'Updates instantly when you change column or pick a department.') + '</small><div class="sc"><i></i><span>' + fmt(mn) + '</span><span>' + fmt(mx) + '</span></div><div class="cols">' + t.head.slice(1).map(function (h, j) { return '<button type="button"' + (col === j + 1 ? ' class="on"' : '') + ' onclick="LV11.anSortBy(' + (j + 1) + ')">' + E(h) + '</button>'; }).join('') + '</div><ol>' + rows.slice(0, 5).map(function (r) { return '<li>' + E(r[0]) + ' <b>' + fmt(r[col]) + '</b></li>'; }).join('') + '</ol></div></div>';
   }
   function renderAnalyses() {
     var sec = sectionEl('publicaciones');
@@ -2657,6 +2731,14 @@ window.LV11_DEFAULTS = (function () {
     return '<h2 class="lv11h2">' + T('Elige el tipo de norma', 'Choose the type of law') + '</h2><div class="lv30types"><button type="button" class="' + (!nf.tipo ? 'on' : '') + '" style="--c:#6E24A8" onclick="LV11.nf(\'tipo\',\'\')"><span class="ic">' + icon('spark', 22) + '</span><b>' + T('Todas', 'All') + '</b><small>' + T('Ver todas las normas', 'See all laws') + '</small><em>' + all.length + '</em></button>' +
       ks.map(function (k) { return '<button type="button" class="' + (nf.tipo === k ? 'on' : '') + '" style="--c:' + TIPOC[k] + '" onclick="LV11.nf(\'tipo\',\'' + (nf.tipo === k ? '' : k) + '\')"><span class="ic">' + icon(TIPOI[k] || 'doc', 22) + '</span><b>' + E(({ 'Constitución': T('Constitución', 'Constitution'), 'Tratado internacional': T('Tratados internacionales', 'International treaties'), 'Ley': T('Leyes', 'Laws'), 'Decreto': T('Decretos', 'Decrees'), 'Sentencia': T('Sentencias', 'Rulings'), 'Auto': T('Autos', 'Court orders'), 'Resolución': T('Resoluciones', 'Resolutions'), 'Política pública': T('Políticas públicas', 'Public policies') })[k] || k) + '</b><small>' + E(T((TIPOD[k] || ['', ''])[0], (TIPOD[k] || ['', ''])[1])) + '</small><em>' + cnt[k] + '</em></button>'; }).join('') + '</div>';
   }
+  var normOpen = null;
+  function normAcc(list) {
+    var ks = Object.keys(TIPOC).filter(function (k) { return list.some(function (n) { return n.tipo === k; }); }), filt = !!(nf.q || nf.right || nf.site);
+    if (!ks.length) return '<p class="lv11note">' + T('No hay normas con ese filtro.', 'No laws match.') + '</p>';
+    return '<div class="lv31acc">' + ks.map(function (k, i) { var l = list.filter(function (n) { return n.tipo === k; }), open = filt || normOpen === k;
+      return '<details data-k="' + E(k) + '" style="--c:' + TIPOC[k] + '"' + (open ? ' open' : '') + ' ontoggle="LV11.normTog(this)"><summary><span class="ic">' + icon(TIPOI[k] || 'doc', 22) + '</span><span class="tx"><b>' + E(({ 'Constitución': T('Constitución', 'Constitution'), 'Tratado internacional': T('Tratados internacionales', 'International treaties'), 'Ley': T('Leyes', 'Laws'), 'Decreto': T('Decretos', 'Decrees'), 'Sentencia': T('Sentencias', 'Rulings'), 'Auto': T('Autos', 'Court orders'), 'Resolución': T('Resoluciones', 'Resolutions'), 'Política pública': T('Políticas públicas', 'Public policies') })[k] || k) + '</b><small>' + E(T((TIPOD[k] || ['', ''])[0], (TIPOD[k] || ['', ''])[1])) + '</small></span><em>' + l.length + '</em><i class="pl" aria-hidden="true"></i></summary>' +
+        '<ol>' + l.map(function (n) { return '<li><button type="button" onclick="LV11.openNorm(\'' + n.id + '\')"><span class="y">' + E(n.y) + '</span><span class="t"><b>' + E(n.n) + '</b><small>' + E(T(n.d, n.de)) + '</small></span><span class="go">' + icon('arrow', 16) + '</span></button></li>'; }).join('') + '</ol></details>'; }).join('') + '</div>';
+  }
   function normList(list) {
     return '<div class="lv30nlist" id="lv11normlist">' + (list.length ? list.map(normCard).join('') : '<p class="lv11note">' + T('No hay normas con ese filtro.', 'No laws match.') + '</p>') + '</div>';
   }
@@ -2675,9 +2757,9 @@ window.LV11_DEFAULTS = (function () {
     var all = S.norms.filter(function (n) { return n.pub; }), y0 = Math.min.apply(null, all.map(function (n) { return n.y; })), y1 = Math.max.apply(null, all.map(function (n) { return n.y; }));
     var tl = '<div class="lv11timeline" aria-label="' + T('Línea de tiempo normativa', 'Legal timeline') + '"><div class="lv11tlbar"></div>' + all.map(function (n, i) { var pct = ((n.y - y0) / (y1 - y0 || 1) * 100); var stack = all.filter(function (m, j) { return j < i && m.y === n.y; }).length; return '<button class="lv11tldot' + (list.indexOf(n) < 0 ? ' off' : '') + '" style="left:' + pct + '%;bottom:' + (26 + stack * 24) + 'px;background:' + (TIPOC[n.tipo] || '#9E2C5A') + '" data-tip="' + E('<b>' + n.n + '</b><br>' + n.tipo) + '" onclick="LV11.openNorm(\'' + n.id + '\')" aria-label="' + E(n.n) + '"></button>'; }).join('') + [y0, 1991, 2000, 2008, 2015, y1].filter(function (v, i, a) { return a.indexOf(v) === i; }).map(function (y) { return '<span class="lv11tly" style="left:' + ((y - y0) / (y1 - y0 || 1) * 100) + '%">' + y + '</span>'; }).join('') + '</div><div class="lvlegend">' + Object.keys(TIPOC).map(function (k) { return '<span><i style="background:' + TIPOC[k] + '"></i>' + E(k) + '</span>'; }).join('') + '</div>';
     sec.innerHTML = (target ? '' : pageHead(T('Normativa y derechos', 'Laws and rights'), T('Los derechos de las mujeres, en la ley.', 'Women’s rights, in law.'), T('Constitución, tratados, leyes, decretos, sentencias y políticas que reconocen y protegen los derechos de las mujeres en todas sus diversidades.', 'Constitution, treaties, laws, decrees, rulings and policies protecting women’s rights in all their diversity.'))) +
-      typeTiles(all) +
+      '<h2 class="lv11h2">' + T('Normas por tipo', 'Laws by type') + '</h2><p class="lv31lead">' + T('Toca un tipo para ver sus normas. Toca una norma para ver su ficha.', 'Tap a type to see its laws. Tap a law to see its details.') + '</p>' +
       '<div class="lv11tools"><label class="lv11search">' + icon('search', 18) + '<input value="' + E(nf.q) + '" placeholder="' + T('Buscar ley, número o tema…', 'Search law, number or topic…') + '" oninput="LV11.nf(\'q\',this.value,1)"></label><select onchange="LV11.nf(\'tipo\',this.value)"><option value="">' + T('Todos los tipos', 'All types') + '</option>' + Object.keys(TIPOC).map(function (k) { return '<option' + (nf.tipo === k ? ' selected' : '') + '>' + k + '</option>'; }).join('') + '</select><select onchange="LV11.nf(\'site\',this.value)"><option value="">' + T('Todos los micrositios', 'All microsites') + '</option>' + sites().map(function (s) { return '<option value="' + s.id + '"' + (nf.site === s.id ? ' selected' : '') + '>' + E(sName(s)) + '</option>'; }).join('') + '</select></div><p class="lv11count">' + list.length + ' ' + T('normas', 'laws') + (nf.right ? ' · ' + E(T(DEF.rights.find(function (r) { return r.id === nf.right; }).es, DEF.rights.find(function (r) { return r.id === nf.right; }).en)) : '') + '</p>' +
-      normList(list) + '<p class="lv11note">' + T('Base inicial verificada para consulta. Antes de la publicación oficial, cada ficha debe confirmar vigencia, modificaciones y responsable de actualización.', 'Initial base for consultation; confirm validity before official publication.') + '</p>' +
+      normAcc(list) + '<p class="lv11note">' + T('Base inicial verificada para consulta. Antes de la publicación oficial, cada ficha debe confirmar vigencia, modificaciones y responsable de actualización.', 'Initial base for consultation; confirm validity before official publication.') + '</p>' +
       '<h2 class="lv11h2">' + T('Línea de tiempo', 'Timeline') + '</h2>' + tl +
       '<h2 class="lv11h2">' + T('Derechos de las mujeres', 'Women’s rights') + '</h2><div class="lv11rights">' + DEF.rights.map(function (r, i) { var cnt = all.filter(function (n) { return (n.rights || []).indexOf(r.id) > -1; }).length; return '<button class="lv11right' + (nf.right === r.id ? ' on' : '') + '" style="--c:' + ['#D33B78', '#9E2C5A', '#5B5BD6', '#22A37A', '#17A58C', '#9E2C5A', '#B243EA', '#3A86C8'][i] + '" onclick="LV11.nf(\'right\',\'' + (nf.right === r.id ? '' : r.id) + '\')"><b>' + E(T(r.es, r.en)) + '</b><small>' + E(r.d) + '</small><em>' + cnt + ' ' + T('normas', 'laws') + '</em></button>'; }).join('') + '</div>';
     if (!target) { var hd2 = sec.querySelector('.lv11head'), xs = nf.site && site(nf.site); if (hd2) hd2.insertAdjacentHTML('afterend', siteFilterChip(nf.site, 'normativa') + (xs && xs.info && xs.info.length ? '<h2 class="lv11h2">' + T('Marco e instancia', 'Framework and body') + ' · ' + E(sName(xs)) + '</h2><div class="lv11info">' + xs.info.map(function (p) { return '<div class="lv11infocard" style="--c:' + xs.c + '"><b>' + E(p[0]) + '</b><p>' + E(p[1]) + '</p></div>'; }).join('') + '</div>' : '')); }
@@ -2914,6 +2996,8 @@ window.LV11_DEFAULTS = (function () {
     anViewSet: function (v) { anView = v; renderAnalyses(); }, anPick: function (r) { anSel = anSel === r || !r ? null : r; renderAnalyses(); },
     anCsv: function () { if (!anTab) return; var t = [anTab.head].concat(anTab.rows).map(function (r) { return r.map(function (v) { return '"' + String(v < 0 ? '1-4' : v).replace(/"/g, '""') + '"'; }).join(','); }).join('\n'); var a = D.createElement('a'); a.href = URL.createObjectURL(new Blob(['\ufeff' + t], { type: 'text/csv;charset=utf-8' })); a.download = 'tabla_' + anCat + '.csv'; D.body.appendChild(a); a.click(); setTimeout(function () { a.remove(); }, 500); },
     kpi: function (c) { var k = IND[c] ? indKpi(c) : null; if (!k) return null; var x = catalog().find(function (i) { return i.code === c; }); var p = plain(c, x ? x.name : c, k.v); return { v: k.v, n: pnum(k.v), t: p.t, s: p.s, site: x ? indSite(x) : '' }; }, published: function () { return published().length; },
+    dynSet: function (id, ty, btn) { DYN[id] = ty; var w = btn && btn.closest('.dynw'), card = w && w.closest('.lv11viz'), c = card ? getComputedStyle(card).getPropertyValue('--c').trim() : '#8E36CF', d = dynSVG(id, c); if (!w || !d) return; w.querySelector('.dbody').innerHTML = d.html; w.querySelectorAll('.dsw button').forEach(function (b) { b.classList.toggle('on', b === btn); }); },
+    normTog: function (d) { if (d.open) { normOpen = d.dataset.k; d.parentNode.querySelectorAll('details[open]').forEach(function (o) { if (o !== d && !(nf.q || nf.right || nf.site)) o.open = false; }); } else if (normOpen === d.dataset.k) normOpen = null; },
     an: function (id) { try { return AN[id] ? AN[id]() : null; } catch (e) { return null; } }, deptName: function (c) { return deptName(c); },
     norms: function () { return S.norms.filter(function (n) { return n.pub; }); }, normCard: function (n) { return normCard(n); },
     sites: function () { return sites(); }, site: site, siteName: sName, render: renderAll, adm: ADM, icon: icon
@@ -6441,6 +6525,129 @@ html.lv23calm .l30race .bar,html.lv23calm .l30race .tr i,html.lv23calm .l30flow 
 #l30tip span{font-size:15px;font-weight:800}
 html.lv23calm .sun path,html.lv23calm .l30dots i,html.lv23calm .bb .b,html.lv23calm .l30gau .nd,html.lv23calm .ln .lp{animation:none!important;stroke-dashoffset:0}
 @media (max-width:860px){.l30sun,.l30waf{grid-template-columns:1fr}.l30dots{gap:3px}}
+
+/* ======================= v31 ======================= */
+/* encabezados de página: compactos, foto integrada al fondo */
+main .lv15band{position:relative!important;overflow:hidden!important;min-height:clamp(220px,22vw,300px)!important;padding:clamp(26px,3vw,40px) clamp(22px,3vw,44px)!important;border-radius:30px 8px 30px 8px!important;display:flex!important;flex-direction:column;justify-content:center}
+main .lv15band > :not(.lv15art){position:relative;z-index:2;max-width:min(580px,56%)!important}
+main .lv15band h1{font-size:clamp(30px,3.4vw,50px)!important;line-height:1.02!important;margin:10px 0 10px!important}
+main .lv15band p{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-size:15.5px!important;line-height:1.5!important;margin:0!important;opacity:.92}
+main .lv15band .eyebrow{font-size:11px!important}
+main .lv15band h1:after,main .lv15band .lv11bar{display:none!important}
+main .lv15band .lv15art{z-index:1!important;pointer-events:auto}
+main .lv15band .lv15fig{position:absolute!important;inset:0 0 0 42%!important;width:auto!important;height:100%!important;transform:none!important;bottom:0!important;right:0!important;left:42%!important}
+main .lv15band .lv15fig .lv23ph.xband{width:100%!important;height:100%!important;aspect-ratio:auto!important;border:0!important;border-radius:0!important;box-shadow:none!important}
+main .lv15band .lv15fig .lv23ph.xband:after{content:"";position:absolute;inset:0;z-index:3;background:linear-gradient(90deg,var(--band-c,#8E36CF) 0%,color-mix(in srgb,var(--band-c,#8E36CF) 55%,transparent) 30%,transparent 75%)}
+main .lv15band .lv15fig .lv23ph .ph0 :is(small,code){display:none}
+main .lv15band{--band-c:#a8379a}
+@media (max-width:860px){main .lv15band > :not(.lv15art){max-width:100%!important}main .lv15band .lv15fig{left:0!important;opacity:.35}main .lv15band{min-height:200px!important}}
+
+/* «Empieza con una pregunta»: tarjetas más limpias */
+#lv30q .t{font-size:15px;letter-spacing:.06em;text-transform:uppercase;color:var(--l23-p)}
+#lv30q .g{gap:12px}
+#lv30q button{flex-direction:column;align-items:flex-start;gap:10px;min-height:118px;padding:16px 18px;border-radius:22px 6px 22px 6px;background:#fff;box-shadow:0 8px 22px rgba(40,10,70,.06)}
+#lv30q button .ic{width:34px;height:34px;font-size:14px}
+#lv30q button.on{box-shadow:0 14px 30px color-mix(in srgb,var(--c) 35%,transparent)}
+
+/* gráficas dinámicas de las tarjetas */
+.dynw{margin:6px 0 4px}
+.dsw{display:inline-flex;background:#f4eef9;border-radius:999px;padding:4px;margin:0 0 10px}
+.dsw button{border:0;background:none;border-radius:999px;padding:7px 14px;font:800 12.5px var(--lv-display);color:var(--l23-mut);cursor:pointer}
+.dsw button.on{background:#fff;color:var(--c,#8E36CF);box-shadow:0 3px 10px rgba(40,10,70,.1)}
+.dbody{animation:lv25in .35s ease both}
+svg.dyn{width:100%;height:auto;display:block;font-family:var(--lv-display)}
+.dyn .g{stroke:#efe8f5}.dyn .ax{fill:#8a7d97;font-size:11px;font-weight:700;text-anchor:end}.dyn .ax.mid{text-anchor:middle}
+.dyn .ln2{fill:none;stroke-width:3.5;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:1;animation:l30draw 1.3s ease forwards}
+.dyn .ar2{opacity:.14;animation:lv25in .8s ease both}
+.dyn .pt2{fill:#fff;stroke-width:2.5;animation:l30pop .3s ease both;animation-delay:calc(.6s + var(--i) * 50ms)}
+.dyn .hz{fill:transparent;cursor:crosshair}.dyn .hz:hover{fill:rgba(142,54,207,.06)}
+.dyn .cl{transform-box:fill-box;transform-origin:bottom;animation:d31grow .6s cubic-bezier(.3,.9,.3,1) both;animation-delay:calc(var(--i) * 40ms);cursor:pointer;rx:3}
+.dyn .cl:hover{opacity:.8}
+@keyframes d31grow{from{transform:scaleY(0)}to{transform:none}}
+.dyn .pk2 circle{opacity:.22}.dyn .pk2 text{font-size:11.5px;font-weight:800;text-anchor:middle}
+.dbar{display:flex;flex-direction:column;gap:8px}
+.dbar .br{display:grid;grid-template-columns:minmax(0,42%) 1fr auto;gap:10px;align-items:center;animation:lv27up .35s ease both;animation-delay:calc(var(--i) * 45ms)}
+.dbar span{font-size:12.5px;font-weight:700;color:var(--l23-ink);line-height:1.25}
+.dbar i{display:flex;flex-direction:column;gap:3px}
+.dbar em{display:block;height:14px;width:var(--w);border-radius:4px 10px 10px 4px;animation:d31w .8s cubic-bezier(.3,.9,.3,1) both;animation-delay:calc(var(--i) * 45ms);cursor:pointer}
+.dbar em:hover{filter:brightness(1.1)}
+@keyframes d31w{from{width:0}}
+.dbar b{font-size:13.5px;font-weight:800;color:var(--c);text-align:right}
+.ddon{display:grid;grid-template-columns:200px 1fr;gap:18px;align-items:center}
+.dyn.don .dn{fill:none;stroke-width:34;transform:rotate(-90deg);transform-origin:110px 110px;cursor:pointer;animation:d31don .9s ease both;animation-delay:calc(var(--i) * 70ms)}
+.dyn.don .dn:hover{stroke-width:40}
+@keyframes d31don{from{opacity:0;stroke-width:6}}
+.dyn .dc1{font-size:22px;font-weight:800;text-anchor:middle;fill:var(--l23-ink)}.dyn .dc2{font-size:10.5px;font-weight:700;text-anchor:middle;fill:var(--l23-mut)}
+.dlg{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:10px;font-size:12.5px;font-weight:700}
+.dlg span{display:inline-flex;align-items:center;gap:6px}
+.dlg i{width:11px;height:11px;border-radius:3px;display:inline-block;flex:none}
+.dlg.v{flex-direction:column;margin:0}
+.dlg.v span{display:grid;grid-template-columns:11px 1fr auto;gap:8px}
+.dwaf{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:center}
+.dwaf .dd{display:grid;grid-template-columns:repeat(10,1fr);gap:4px}
+.dwaf .dd i{aspect-ratio:1;border-radius:50%;animation:l30pop .3s ease both;animation-delay:calc(var(--i) * 8ms);cursor:pointer}
+.dwaf .dd i:hover{transform:scale(1.3)}
+.dnote{font-size:12px;color:var(--l23-mut);margin:8px 0 0}
+.drng{display:flex;flex-direction:column;gap:10px}
+.drng .rr{display:grid;grid-template-columns:minmax(0,38%) 1fr 90px;gap:10px;align-items:center;animation:lv27up .35s ease both;animation-delay:calc(var(--i) * 50ms);cursor:pointer}
+.drng span{font-size:12.5px;font-weight:700;line-height:1.25}
+.drng i{position:relative;height:16px;background:#f4eef9;border-radius:8px}
+.drng em{position:absolute;top:6px;height:4px;background:#cdb8de;border-radius:4px;animation:lv25in .6s ease both}
+.drng b{position:absolute;top:1px;width:14px;height:14px;border-radius:50%;margin-left:-7px;border:2px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,.2);animation:l30pop .5s ease both}
+.drng small{font-size:11.5px;font-weight:800;color:var(--l23-mut);text-align:right}
+#lv31tip{position:fixed;z-index:300;pointer-events:none;background:#2a1240;color:#fff;border-radius:12px;padding:8px 12px;font:700 12.5px var(--lv-display);display:flex;flex-direction:column;gap:2px;opacity:0;transition:opacity .12s;max-width:240px}
+#lv31tip.on{opacity:1}#lv31tip span{font-size:14px;font-weight:800}
+html.lv23calm .dyn *,html.lv23calm .dbar *,html.lv23calm .dwaf *,html.lv23calm .drng *{animation:none!important;stroke-dashoffset:0!important}
+@media (max-width:560px){.ddon,.dwaf{grid-template-columns:1fr}.ddon svg{max-width:220px;margin:auto}}
+
+/* normativa por ítems */
+.lv31lead{margin:-6px 0 14px;color:var(--l23-mut);font-weight:600}
+.lv31acc{display:flex;flex-direction:column;gap:10px;margin:0 0 26px}
+.lv31acc details{background:#fff;border:1px solid var(--l23-line);border-radius:18px;overflow:hidden;transition:box-shadow .2s,border-color .2s}
+.lv31acc details[open]{border-color:color-mix(in srgb,var(--c) 40%,#fff);box-shadow:0 14px 34px rgba(40,10,70,.08)}
+.lv31acc summary{display:grid;grid-template-columns:48px 1fr auto 36px;gap:14px;align-items:center;padding:14px 18px;cursor:pointer;list-style:none}
+.lv31acc summary::-webkit-details-marker{display:none}
+.lv31acc summary:hover{background:#fcf9fe}
+.lv31acc .ic{width:48px;height:48px;border-radius:15px 4px 15px 4px;display:grid;place-items:center;background:color-mix(in srgb,var(--c) 13%,#fff);color:var(--c)}
+.lv31acc .tx{display:flex;flex-direction:column;gap:2px}
+.lv31acc .tx b{font:800 17.5px var(--lv-display);color:var(--l23-ink)}
+.lv31acc .tx small{font-size:13px;color:var(--l23-mut)}
+.lv31acc summary em{font:800 13px var(--lv-display);font-style:normal;color:var(--c);background:color-mix(in srgb,var(--c) 12%,#fff);border-radius:999px;padding:4px 12px}
+.lv31acc .pl{width:34px;height:34px;border-radius:50%;background:#f4eef9;position:relative;transition:transform .25s,background .2s}
+.lv31acc .pl:before,.lv31acc .pl:after{content:"";position:absolute;left:50%;top:50%;width:12px;height:2.5px;background:var(--l23-p);border-radius:2px;translate:-50% -50%}
+.lv31acc .pl:after{rotate:90deg}
+.lv31acc details[open] .pl{transform:rotate(45deg);background:var(--c)}
+.lv31acc details[open] .pl:before,.lv31acc details[open] .pl:after{background:#fff}
+.lv31acc ol{list-style:none;margin:0;padding:0 18px 16px 80px;display:flex;flex-direction:column;gap:6px;animation:lv25in .3s ease both}
+.lv31acc li button{width:100%;display:grid;grid-template-columns:58px 1fr 24px;gap:14px;align-items:center;text-align:left;border:0;background:#faf7fc;border-radius:14px;padding:12px 14px;cursor:pointer;font-family:var(--lv-display);transition:background .2s,transform .2s}
+.lv31acc li button:hover{background:color-mix(in srgb,var(--c) 9%,#fff);transform:translateX(3px)}
+.lv31acc .y{font:800 15px var(--lv-display);color:var(--c)}
+.lv31acc .t{display:flex;flex-direction:column;gap:2px}
+.lv31acc .t b{font-size:15px;font-weight:800;color:var(--l23-ink)}
+.lv31acc .t small{font-size:13px;color:var(--l23-mut);line-height:1.4}
+.lv31acc .go{color:var(--c)}
+@media (max-width:700px){.lv31acc summary{grid-template-columns:40px 1fr auto;gap:10px;padding:12px}.lv31acc .pl{display:none}.lv31acc .ic{width:40px;height:40px}.lv31acc .tx small{display:none}.lv31acc ol{padding:0 10px 12px}.lv31acc li button{grid-template-columns:46px 1fr}.lv31acc .go{display:none}}
+#normativa .lv11tools select:first-of-type{display:none}
+main .lv15band .lv15art .lv15fig:has(.lv23ph){width:auto!important;left:42%!important;right:0!important}
+main .lv15band > .eyebrow,main .lv15band > div > .eyebrow{align-self:flex-start;width:auto!important;max-width:max-content!important}
+main .lv15band .eyebrow{display:inline-block!important;width:auto!important}
+/* mapa de calor en vivo */
+.lv29tbl .hm{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:20px;align-items:center;margin:0 0 16px;background:linear-gradient(160deg,#faf6fd,#fff);border-radius:20px;padding:12px 16px}
+.lv29tbl .hmm svg{width:100%;max-height:440px;display:block}
+.lv29tbl .hmm path{stroke:#fff;stroke-width:.9;transition:fill .6s ease,transform .2s;cursor:pointer;transform-box:fill-box;transform-origin:center}
+.lv29tbl .hmm path:hover{stroke:#2a1240;stroke-width:1.4}
+.lv29tbl .hmm path.on{stroke:#2a1240;stroke-width:2}
+.lv29tbl .hml b{display:block;font-size:18px;font-weight:800;color:var(--c)}
+.lv29tbl .hml small{display:block;font-size:12.5px;color:var(--l23-mut);margin:2px 0 10px}
+.lv29tbl .hml .sc{position:relative;display:flex;justify-content:space-between;padding-top:16px;font-size:12px;font-weight:800;color:var(--l23-mut);margin-bottom:12px}
+.lv29tbl .hml .sc i{position:absolute;left:0;right:0;top:0;height:10px;border-radius:6px;background:linear-gradient(90deg,color-mix(in srgb,var(--c) 10%,#fff),var(--c))}
+.lv29tbl .hml .cols{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.lv29tbl .hml .cols button{border:1.5px solid var(--l23-line);background:#fff;border-radius:999px;padding:6px 11px;font:800 12px var(--lv-display);color:var(--l23-mut);cursor:pointer}
+.lv29tbl .hml .cols button.on{background:var(--c);border-color:var(--c);color:#fff}
+.lv29tbl .hml ol{margin:0;padding-left:18px;font-size:13.5px;font-weight:700;color:var(--l23-ink)}
+.lv29tbl .hml ol b{color:var(--c);float:right}
+@media (max-width:860px){.lv29tbl .hm{grid-template-columns:1fr}}
+.lv29tbl .hml ol li{display:flex;justify-content:space-between;gap:10px;padding:2px 0}.lv29tbl .hml ol b{float:none}
 </style><script id="lv23-js">/* ==========================================================================
    LIBRES v24 · Inicio limpio, accesibilidad, ruta de navegación y fotografías
    - Barra superior: logos de cooperación + herramientas de accesibilidad

@@ -1675,6 +1675,11 @@ window.LV11_DEFAULTS = (function () {
     { id: 'd1710', tipo: 'Decreto', n: 'Decreto 1710 de 2020', y: 2020, d: 'Mecanismo articulador para el abordaje integral de las violencias por razones de sexo y género.', de: 'Coordination mechanism for gender-based violence.', rights: ['vida'], sites: ['violencias', 'rutas', 'comite-1257'], url: FP(153846) },
     { id: 'ley2126', tipo: 'Ley', n: 'Ley 2126 de 2021', y: 2021, d: 'Regula la creación, conformación y funcionamiento de las comisarías de familia.', de: 'Regulates family police stations (comisarías de familia).', rights: ['vida', 'justicia'], sites: ['rutas', 'violencias'], url: FP(168066) },
     { id: 'c055', tipo: 'Sentencia', n: 'Sentencia C-055 de 2022', y: 2022, d: 'Interrupción voluntaria del embarazo sin causales hasta la semana 24; después, bajo las causales de la C-355 de 2006.', de: 'Abortion on request up to week 24.', rights: ['dsr'], sites: ['salud-dsr'], url: 'https://www.corteconstitucional.gov.co/relatoria/2022/C-055-22.htm' },
+    { id: 't967', tipo: 'Sentencia', n: 'Sentencia T-967 de 2014', y: 2014, d: 'Reconoce la violencia psicológica y económica en el hogar y exige a los jueces de familia decidir con perspectiva de género.', de: 'Recognises psychological and economic violence at home; family judges must apply a gender perspective.', rights: ['vida', 'justicia'], sites: ['violencias', 'rutas'], url: 'https://www.corteconstitucional.gov.co/relatoria/2014/T-967-14.htm' },
+    { id: 't878', tipo: 'Sentencia', n: 'Sentencia T-878 de 2014', y: 2014, d: 'Las autoridades y los empleadores deben actuar con perspectiva de género para prevenir y atender la violencia contra las mujeres.', de: 'Authorities and employers must act with a gender perspective against violence towards women.', rights: ['vida', 'trabajo', 'justicia'], sites: ['violencias', 'autonomia'], url: 'https://www.corteconstitucional.gov.co/relatoria/2014/T-878-14.htm' },
+    { id: 'c754', tipo: 'Sentencia', n: 'Sentencia C-754 de 2015', y: 2015, d: 'Hace obligatorio aplicar el protocolo y el modelo de atención en salud para víctimas de violencia sexual.', de: 'Makes the health care protocol for sexual violence victims mandatory.', rights: ['dsr', 'vida'], sites: ['salud-dsr', 'comite-1719'], url: 'https://www.corteconstitucional.gov.co/relatoria/2015/C-754-15.htm' },
+    { id: 'c297', tipo: 'Sentencia', n: 'Sentencia C-297 de 2016', y: 2016, d: 'Precisa cómo se interpreta el delito de feminicidio de la Ley 1761 de 2015 ("Rosa Elvira Cely").', de: 'Clarifies the femicide offence of Law 1761 of 2015.', rights: ['vida', 'justicia'], sites: ['violencias', 'comites-tecnico-juridicos'], url: 'https://www.corteconstitucional.gov.co/relatoria/2016/C-297-16.htm' },
+    { id: 'su080', tipo: 'Sentencia', n: 'Sentencia SU-080 de 2020', y: 2020, d: 'Las mujeres víctimas de violencia intrafamiliar pueden pedir reparación dentro de los procesos de familia.', de: 'Victims of domestic violence may claim reparation within family proceedings.', rights: ['vida', 'justicia'], sites: ['violencias', 'rutas'], url: 'https://www.corteconstitucional.gov.co/relatoria/2020/SU080-20.htm' },
     { id: 'conpes4080', tipo: 'Política pública', n: 'CONPES 4080 de 2022', y: 2022, d: 'Política Pública de Equidad de Género para las Mujeres: hacia el desarrollo sostenible del país.', de: 'National gender equity policy for women.', rights: ['igualdad', 'trabajo', 'participacion', 'vida'], sites: ['autonomia', 'participacion', 'violencias', 'educacion'], url: 'https://sidn.ramajudicial.gov.co/SIDN/NORMATIVA/TEXTOS_COMPLETOS/91_1_DOCUMENTO CONPES/Documento Conpes 4080 de 2022.pdf' },
     { id: 'ley2215', tipo: 'Ley', n: 'Ley 2215 de 2022 · Casas refugio', y: 2022, d: 'Establece las casas refugio: objeto, funciones, operación, responsabilidades y Red Nacional.', de: 'Establishes shelters and the National Shelter Network.', rights: ['vida', 'justicia'], sites: ['casas-refugio', 'rutas'], url: 'https://www.alcaldiabogota.gov.co/sisjur/normas/Norma1.jsp?i=124940' },
     { id: 'ley2244', tipo: 'Ley', n: 'Ley 2244 de 2022 · Parto digno', y: 2022, d: 'Reconoce los derechos durante el embarazo, trabajo de parto, parto y posparto: parto digno, respetado y humanizado.', de: 'Rights to dignified, respectful childbirth.', rights: ['dsr'], sites: ['salud-dsr'], url: 'https://sidn.ramajudicial.gov.co/SIDN/NORMATIVA/TEXTOS_COMPLETOS/7_LEYES/LEYES 2022/Ley 2244 de 2022 (Ley de Parto Digno, Respetado y Humanizado).pdf' },
@@ -2257,7 +2262,7 @@ window.LV11_DEFAULTS = (function () {
     var c = s.c, k = siteCounts(s), h = '<button class="lv11back" onclick="LV11.openSite(null)">' + icon('back', 18) + T('Todos los micrositios', 'All microsites') + '</button>';
     h += '<div class="lv11sitehero' + (s.rainbow ? ' rainbow' : '') + '" style="--c:' + c + ';--ci:' + ink(c) + '"><span class="lv11sico big">' + sicon(s.ico, 34) + '</span><div><div class="eyebrow">' + T('Micrositio', 'Microsite') + '</div><h1>' + E(sName(s)) + '</h1><p>' + E(T(s.d, s.de)) + '</p><div class="lv11meta light"><i>' + k.ind + ' ' + T('indicadores', 'indicators') + '</i><i>' + k.norms + ' ' + T('normas', 'laws') + '</i><i>' + k.obs + ' ' + T('observatorios y fuentes', 'observatories & sources') + '</i></div>' +
       ((s.panorama || s.topic) ? '<button class="lv11btn light" onclick="LV11.panorama(\'' + (s.panorama || '') + '\',\'' + (s.topic || '') + '\')">' + T('Explorar en el panorama interactivo', 'Explore in the interactive overview') + ' ' + icon('arrow', 16) + '</button>' : '') + '</div></div>';
-    var kp = (s.kpis || []).map(function (code) { var f = IND[code], r = f && f(); var x = catalog().find(function (i) { return i.code === code; }); return r && x ? '<button class="lv11kpi tile" style="--c:' + c + '" onclick="LV11.openIndicator(\'' + code + '\')"><b data-count>' + E(r.kpis[0][0]) + '</b><span>' + E(x.name) + '</span><em>' + E(r.kpis[0][1]) + '</em></button>' : ''; }).join('');
+    var kp = (s.kpis || []).map(function (code) { var f = IND[code], r = f && f(); var x = catalog().find(function (i) { return i.code === code; }); return r && x ? '<button class="lv11kpi tile" style="--c:' + c + '" onclick="LV11.openIndicator(\'' + code + '\')"><b data-count>' + E(r.kpis[0][0]) + '</b><span>' + E(plain(code, x.name, r.kpis[0][0]).t) + '</span><em>' + E(plain(code, x.name, r.kpis[0][0]).s || r.kpis[0][1]) + '</em></button>' : ''; }).join('');
     if (kp) h += '<div class="lv11kpis tiles">' + kp + '</div>';
     var ans = (s.analyses || []).filter(function (id) { return S.analyses.hidden.indexOf(id) < 0 && AN[id]; });
     if (ans.length) {
@@ -2300,10 +2305,10 @@ window.LV11_DEFAULTS = (function () {
   function panoTop(s) {
     var c = s.c, k = siteCounts(s);
     var h = '<div class="lv11sitehero pano' + (s.rainbow ? ' rainbow' : '') + '" style="--c:' + c + ';--ci:' + ink(c) + '"><span class="lv11sico big">' + sicon(s.ico, 34) + '</span><div><h1>' + E(sName(s)) + '</h1><p>' + E(T(s.d, s.de)) + '</p><div class="lv11meta light"><i>' + k.ind + ' ' + (k.ind === 1 ? T('indicador', 'indicator') : T('indicadores', 'indicators')) + '</i><i>' + k.norms + ' ' + (k.norms === 1 ? T('norma', 'law') : T('normas', 'laws')) + '</i><i>' + k.obs + ' ' + T('observatorios y fuentes', 'observatories & sources') + '</i></div><button class="lv11btn light" onclick="LV11.openSite(null)">' + icon('back', 16) + ' ' + T('Volver al panorama general', 'Back to overview') + '</button></div></div>';
-    var kp = (s.kpis || []).map(function (code) { var f = IND[code], r = f && f(); var x = catalog().find(function (i) { return i.code === code; }); return r && x ? '<button class="lv11kpi tile" style="--c:' + c + '" onclick="LV11.openIndicator(\'' + code + '\')"><b data-count>' + E(r.kpis[0][0]) + '</b><span>' + E(x.name) + '</span><em>' + E(r.kpis[0][1]) + '</em></button>' : ''; }).join('');
+    var kp = (s.kpis || []).map(function (code) { var f = IND[code], r = f && f(); var x = catalog().find(function (i) { return i.code === code; }); return r && x ? '<button class="lv11kpi tile" style="--c:' + c + '" onclick="LV11.openIndicator(\'' + code + '\')"><b data-count>' + E(r.kpis[0][0]) + '</b><span>' + E(plain(code, x.name, r.kpis[0][0]).t) + '</span><em>' + E(plain(code, x.name, r.kpis[0][0]).s || r.kpis[0][1]) + '</em></button>' : ''; }).join('');
     if (kp) h += '<div class="lv11kpis tiles">' + kp + '</div>';
     var ans = (s.analyses || []).filter(function (id) { return S.analyses.hidden.indexOf(id) < 0 && AN[id]; });
-    h += '<h2 class="lv11h2">' + T('Acervo de datos procesados', 'Processed data collection') + '</h2>';
+    h += '<h2 class="lv11h2">' + T('Las cifras en gráficas', 'Processed data collection') + '</h2>';
     if (ans.length) h += '<p class="lv11note">' + T('Gráficas construidas con los datos y boletines que ya tiene el Observatorio. Toca un punto o una barra para ver el valor.', 'Charts built from the data and bulletins the Observatory already holds.') + '</p><div class="lv11gallery">' + ans.map(function (id) { return vizCard(id, c); }).join('') + '</div>';
     else h += '<div class="lv11card lv11pending"><h3>' + T('Todavía no hay datos procesados para esta línea', 'No processed data for this line yet') + '</h3><p>' + T('Abajo verás qué indicadores están listos para calcularse y qué fuentes se necesitan.', 'Below you can see which indicators are ready and which sources are needed.') + '</p></div>';
     h += readiness(s);
@@ -2364,6 +2369,28 @@ window.LV11_DEFAULTS = (function () {
     }).join('') + '</tbody></table></div>';
   }
   var indFilter = { q: '', site: '', data: false };
+  /* v28: lenguaje sencillo para cada indicador con datos (título claro + frase que explica la cifra) */
+  function pnum(v) { var m = /(-?[\d.]*\d(?:,\d+)?)/.exec(String(v)); return m ? parseFloat(m[1].replace(/\./g, '').replace(',', '.')) : null; }
+  function about(x) { var r = Math.round(x); return (r - x > 0.05 ? T('casi ', 'almost ') : '') + r; }
+  function of100(v) { var n = pnum(v); return n == null ? '' : about(n); }
+  function of10(v) { var n = pnum(v); return n == null ? '' : about(n / 10); }
+  function PLAIN() { return {
+    'VBG-04': [T('Víctimas de violencia de pareja que son mujeres', 'Partner violence victims who are women'), function (v) { return T('De cada 10 personas lesionadas por su pareja, ' + of10(v) + ' son mujeres.', 'Out of 10 people injured by a partner, ' + of10(v) + ' are women.'); }],
+    'VBG-01': [T('Mujeres examinadas por violencia sexual', 'Women examined for sexual violence'), function () { return T('Exámenes que hizo Medicina Legal a mujeres por posible violencia sexual.', 'Forensic exams of women for possible sexual violence.'); }],
+    'AMP-V07': [T('Mujeres examinadas por violencia sexual', 'Women examined for sexual violence'), function () { return T('Exámenes que hizo Medicina Legal a mujeres por posible violencia sexual.', 'Forensic exams of women for possible sexual violence.'); }],
+    'VBG-02': [T('Víctimas de violencia sexual que son mujeres', 'Sexual violence victims who are women'), function (v) { return T('De cada 10 personas examinadas por violencia sexual, ' + of10(v) + ' son mujeres.', 'Out of 10 people examined for sexual violence, ' + of10(v) + ' are women.'); }],
+    'VBG-05': [T('Mujeres atendidas en salud por violencia', 'Women treated in health services for violence'), function () { return T('Casos de violencia contra mujeres que reportaron hospitales y centros de salud.', 'Cases of violence against women reported by health services.'); }],
+    'AMP-V06': [T('Violencia contra mujeres reportada en salud', 'Violence against women reported by health services'), function (v) { return T('Por cada 100.000 mujeres se reportaron ' + of100(v) + ' casos.', 'For every 100,000 women, ' + of100(v) + ' cases were reported.'); }],
+    'AMP-V01': [T('Muertes violentas de mujeres', 'Violent deaths of women'), function () { return T('Mujeres asesinadas registradas en el año. La cifra aún puede cambiar.', 'Women killed in the year. The figure may still change.'); }],
+    'ECO-01': [T('Mujeres que trabajan o buscan trabajo', 'Women working or looking for work'), function (v) { return T('De cada 100 mujeres en edad de trabajar, ' + of100(v) + ' trabajan o buscan empleo.', 'Out of 100 working-age women, ' + of100(v) + ' work or look for work.'); }],
+    'ECO-02': [T('Mujeres con empleo', 'Women in employment'), function (v) { return T('De cada 100 mujeres en edad de trabajar, ' + of100(v) + ' tienen empleo.', 'Out of 100 working-age women, ' + of100(v) + ' have a job.'); }],
+    'ECO-03': [T('Mujeres que buscan empleo y no lo encuentran', 'Women looking for work without finding it'), function (v) { return T('De cada 100 mujeres que quieren trabajar, ' + of100(v) + ' no consiguen empleo.', 'Out of 100 women who want to work, ' + of100(v) + ' cannot find a job.'); }],
+    'CUI-01': [T('Horas al día en el hogar y el cuidado', 'Daily hours of housework and care'), function () { return T('Tiempo que las mujeres dedican cada día a cocinar, limpiar y cuidar, sin pago.', 'Time women spend each day cooking, cleaning and caring, unpaid.'); }],
+    'CUI-02': [T('Tiempo extra que cuidan las mujeres', 'Extra time women spend caring'), function () { return T('Es cuánto tiempo más que los hombres dedican las mujeres cada día a estas tareas.', 'How much more time than men women spend on these tasks each day.'); }],
+    'CUI-04': [T('Mujeres que hacen trabajo del hogar', 'Women doing housework'), function (v) { return T('De cada 10 mujeres, ' + of10(v) + ' hacen trabajo doméstico o de cuidado sin pago.', 'Out of 10 women, ' + of10(v) + ' do unpaid domestic or care work.'); }],
+    'DEM-01': [T('Mujeres en la población', 'Women in the population'), function (v) { return T('De cada 100 personas en Colombia, ' + of100(v) + ' son mujeres.', 'Out of 100 people in Colombia, ' + of100(v) + ' are women.'); }]
+  }; }
+  function plain(code, name, v) { var p = PLAIN()[code]; return p ? { t: p[0], s: p[1](v) } : { t: name, s: '' }; }
   /* v25: catálogo dinámico de indicadores en tarjetas agrupadas por línea temática */
   var indVal = {};
   function indKpi(code) {
@@ -2375,8 +2402,8 @@ window.LV11_DEFAULTS = (function () {
   function indCard(x, c, i) {
     var k = IND[x.code] ? indKpi(x.code) : null, pc = k ? pctOf(k.v) : null;
     return '<button type="button" class="lv25card' + (k ? ' has' : '') + (pc != null ? ' pc' : '') + '" style="--c:' + c + ';--i:' + (i || 0) + (pc != null ? ';--p:' + Math.max(0, Math.min(100, pc)) : '') + '" onclick="LV11.openIndicator(\'' + x.code + '\')">' +
-      '<span class="lv25tag">' + (k ? T('Con datos', 'With data') : T('Ficha', 'Spec')) + '</span><b>' + E(x.name) + '</b>' +
-      (k ? (pc != null ? '<span class="lv25ring" aria-hidden="true"></span>' : '') + '<span class="lv25val"><em>' + E(k.v) + '</em><small>' + E(k.l) + '</small></span>' : '<span class="lv25pend">' + T('Datos en preparación', 'Data in preparation') + '</span>') +
+      '<span class="lv25tag">' + (k ? T('Dato disponible', 'Data available') : T('En preparación', 'In preparation')) + '</span><b>' + E(k ? plain(x.code, x.name, k.v).t : x.name) + '</b>' +
+      (k ? (pc != null ? '<span class="lv25ring" aria-hidden="true"></span>' : '') + '<span class="lv25val"><em>' + E(k.v) + '</em><small>' + E(plain(x.code, x.name, k.v).s || k.l) + '</small></span>' : '') +
       '<i class="lv25go">' + icon('arrow', 16) + '</i></button>';
   }
   function renderIndicators() {
@@ -2391,10 +2418,12 @@ window.LV11_DEFAULTS = (function () {
       '<div class="lv25bar"><div class="lv25nums"><span><b data-count>' + published().length + '</b>' + T('indicadores', 'indicators') + '</span><span><b data-count>' + withData + '</b>' + T('con datos', 'with data') + '</span><span><b data-count>' + used.length + '</b>' + T('líneas', 'lines') + '</span></div>' +
       '<label class="lv11search lv25q">' + icon('search', 18) + '<input value="' + E(indFilter.q) + '" placeholder="' + T('Buscar indicador…', 'Search indicator…') + '" oninput="LV11.indQ(this.value)"></label>' +
       '<button type="button" class="lv25sw' + (indFilter.data ? ' on' : '') + '" aria-pressed="' + !!indFilter.data + '" onclick="LV11.indData(' + !indFilter.data + ')"><i></i>' + T('Solo con datos', 'Only with data') + '</button></div>' +
-      (function () { var fe = published().filter(function (x) { return IND[x.code] && indKpi(x.code); }); if (!fe.length || indFilter.q || indFilter.site) return ''; return '<section class="lv25feat" aria-label="' + T('Indicadores destacados', 'Featured indicators') + '"><div class="lv25fh"><b>' + T('Lo que ya muestran los datos', 'What the data already shows') + '</b><span><button type="button" class="lv25nav" aria-label="' + T('Anterior', 'Previous') + '" onclick="this.closest(\'.lv25feat\').querySelector(\'.lv25track\').scrollBy({left:-340,behavior:\'smooth\'})">‹</button><button type="button" class="lv25nav" aria-label="' + T('Siguiente', 'Next') + '" onclick="this.closest(\'.lv25feat\').querySelector(\'.lv25track\').scrollBy({left:340,behavior:\'smooth\'})">›</button></span></div><div class="lv25track">' + fe.map(function (x) { var st = site(indSite(x)) || { c: '#8E36CF' }, k = indKpi(x.code); return '<button type="button" class="lv25fc" style="--c:' + st.c + '" onclick="LV11.openIndicator(\'' + x.code + '\')"><small>' + E(sName(st)) + '</small><em>' + E(k.v) + '</em><b>' + E(x.name) + '</b><span>' + E(k.l) + '</span></button>'; }).join('') + '</div></section>'; })() +
+      (function () { var fe = published().filter(function (x) { return IND[x.code] && indKpi(x.code); }); if (!fe.length || indFilter.q || indFilter.site) return ''; return '<section class="lv25feat" aria-label="' + T('Indicadores destacados', 'Featured indicators') + '"><div class="lv25fh"><b>' + T('Lo que ya muestran los datos', 'What the data already shows') + '</b><span><button type="button" class="lv25nav" aria-label="' + T('Anterior', 'Previous') + '" onclick="this.closest(\'.lv25feat\').querySelector(\'.lv25track\').scrollBy({left:-340,behavior:\'smooth\'})">‹</button><button type="button" class="lv25nav" aria-label="' + T('Siguiente', 'Next') + '" onclick="this.closest(\'.lv25feat\').querySelector(\'.lv25track\').scrollBy({left:340,behavior:\'smooth\'})">›</button></span></div><div class="lv25track">' + fe.map(function (x) { var st = site(indSite(x)) || { c: '#8E36CF' }, k = indKpi(x.code); return '<button type="button" class="lv25fc" style="--c:' + st.c + '" onclick="LV11.openIndicator(\'' + x.code + '\')"><small>' + E(sName(st)) + '</small><em>' + E(k.v) + '</em><b>' + E(plain(x.code, x.name, k.v).t) + '</b><span>' + E(plain(x.code, x.name, k.v).s || k.l) + '</span></button>'; }).join('') + '</div></section>'; })() +
       '<div class="lv25chips" role="group" aria-label="' + T('Línea temática', 'Thematic line') + '"><button type="button"' + (!indFilter.site ? ' class="on"' : '') + ' onclick="LV11.indSite(\'\')">' + T('Todas', 'All') + '</button>' +
       used.map(function (s) { var n = published().filter(function (x) { return indSite(x) === s.id; }).length; return '<button type="button" style="--c:' + s.c + '"' + (indFilter.site === s.id ? ' class="on"' : '') + ' onclick="LV11.indSite(\'' + (indFilter.site === s.id ? '' : s.id) + '\')">' + sicon(s.ico, 16) + E(sName(s)) + '<small>' + n + '</small></button>'; }).join('') + '</div>' +
-      (groups.length ? groups.map(function (g) { return '<section class="lv25grp" style="--c:' + g.s.c + '"><h2><span>' + sicon(g.s.ico, 20) + '</span>' + E(sName(g.s)) + '<small>' + g.l.length + '</small></h2><div class="lv25grid">' + g.l.map(function (x, i) { return indCard(x, g.s.c, i); }).join('') + '</div></section>'; }).join('') : '<p class="lv11note">' + T('No hay indicadores con ese filtro.', 'No indicators match.') + '</p>');
+      (groups.length ? groups.map(function (g) { return '<section class="lv25grp" style="--c:' + g.s.c + '"><h2><span>' + sicon(g.s.ico, 20) + '</span>' + E(sName(g.s)) + '<small>' + g.l.length + '</small></h2>' + (function () { var seen = {}, wd = g.l.filter(function (x) { if (!IND[x.code] || !indKpi(x.code)) return false; var k = plain(x.code, x.name, indKpi(x.code).v).t + '|' + indKpi(x.code).v; if (seen[k]) return false; seen[k] = 1; return true; }), pend = g.l.filter(function (x) { return !(IND[x.code] && indKpi(x.code)); });
+        return (wd.length ? '<div class="lv25grid">' + wd.map(function (x, i) { return indCard(x, g.s.c, i); }).join('') + '</div>' : '') +
+          (pend.length ? '<details class="lv30pend"><summary>' + T('En preparación', 'In preparation') + ' <small>' + pend.length + '</small></summary><ul>' + pend.map(function (x) { return '<li><button type="button" onclick="LV11.openIndicator(\'' + x.code + '\')">' + E(x.name) + '</button></li>'; }).join('') + '</ul></details>' : ''); })() + '</section>'; }).join('') : '<p class="lv11note">' + T('No hay indicadores con ese filtro.', 'No indicators match.') + '</p>');
     countUp(sec);
   }
 
@@ -2404,31 +2433,93 @@ window.LV11_DEFAULTS = (function () {
     return '<button class="lv11an" style="--c:' + (s.c || '#9E2C5A') + ';--ci:' + ink(s.c || '#9E2C5A') + '" onclick="LV11.openAnalysis(\'' + id + '\')"><span class="lv11chip">' + icon(s.ico || 'chart', 14) + ' ' + E(sName(s)) + '</span><b class="lv11anh" data-count>' + E(r.head) + '</b><small>' + E(r.sub) + '</small><strong>' + E(tx.title) + '</strong><span class="lv11src">' + E(r.src) + '</span><span class="lv11go">' + icon('arrow', 18) + '</span></button>';
   }
   var anFilter = '';
+  /* v29: Datos y análisis por categorías, con una tabla prioritaria arriba */
+  var ANCATS = [
+    ['vio', 'Violencias', 'Violence', '#D33B78', ['pareja-serie', 'nofatal-mujeres', 'sexual-sexo', 'fatal-manera', 'ins-notificacion']],
+    ['eco', 'Trabajo e ingresos', 'Work and income', '#22A37A', ['geih-td', 'geih-brechas']],
+    ['cui', 'Cuidados y tiempo', 'Care and time', '#E0A800', ['enut-horas', 'enut-participacion', 'enut-departamentos']],
+    ['pob', 'Población y territorio', 'Population and territory', '#A05CC8', ['poblacion-mujeres', 'obs-red']]
+  ];
+  var anCat = 'vio', anSort = { c: 1, d: -1 }, anAll = false, anTab = null, anView = 'tabla', anSel = null;
+  function priTable(cat) {
+    var t = null, TT = W.LV23_TERR;
+    if (cat === 'vio' && TT && TT.K) {
+      var K = TT.K, keys = [['PAR', T('Violencia de pareja', 'Partner violence')], ['SEX', T('Violencia sexual', 'Sexual violence')], ['NNA', T('Violencia contra niñas', 'Violence against girls')], ['HOM', T('Homicidios', 'Homicides')], ['SUI', T('Suicidios', 'Suicides')]];
+      var deps = {}; keys.forEach(function (k) { Object.keys((K[k[0]] || {}).dep || {}).forEach(function (d) { deps[d] = 1; }); });
+      t = { title: T('Violencias contra mujeres por departamento', 'Violence against women by department'), sub: T('Mujeres · 2025, cifras preliminares · Medicina Legal', 'Women · 2025, preliminary · Forensic institute'), head: [T('Departamento', 'Department')].concat(keys.map(function (k) { return k[1]; })),
+        rows: Object.keys(deps).map(function (d) { return [deptName(d) || d].concat(keys.map(function (k) { var a = (K[k[0]].dep || {})[d]; return a ? a[0] : 0; })); }) };
+    } else {
+      var src = { eco: 'geih-brechas', cui: 'enut-departamentos', pob: 'poblacion-mujeres' }[cat], a = src && DEF.analyses.find(function (z) { return z.id === src; }), r = src && AN[src] && AN[src]();
+      if (r && r.rows) { t = { title: T(a.es, a.en || a.es), sub: r.src || '', head: r.rows[0], rows: r.rows.slice(1) };
+        if (cat === 'cui') { t.head = t.head.concat([T('Brecha (p.p.)', 'Gap (pp)')]); t.rows = t.rows.map(function (x) { return x.concat([Math.round((x[1] - x[2]) * 10) / 10]); }); } }
+    }
+    return t;
+  }
+  function tableHTML(t, c) {
+    if (!t) return '';
+    var rows = t.rows.slice().sort(function (a, b) { var x = a[anSort.c], y = b[anSort.c]; x = x < 0 ? 2 : x; y = y < 0 ? 2 : y; return typeof x === 'number' && typeof y === 'number' ? (x - y) * anSort.d : String(x).localeCompare(String(y)) * anSort.d; });
+    anTab = { head: t.head, rows: rows, title: t.title };
+    var cmax = t.head.map(function (h, i) { return Math.max.apply(null, rows.map(function (r) { return typeof r[i] === 'number' ? r[i] : 0; }).concat([1])); });
+    var show = anAll ? rows : rows.slice(0, 10), col = anSort.c, mx = Math.max.apply(null, rows.map(function (r) { return typeof r[col] === 'number' ? r[col] : 0; }).concat([1]));
+    var fmt = function (v) { return typeof v === 'number' ? (v < 0 ? '1–4' : v.toLocaleString(en() ? 'en-US' : 'es-CO')) : E(v); };
+    return '<section class="lv29tbl" style="--c:' + c + '"><div class="h"><div><b>' + E(t.title) + '</b><small>' + E(t.sub) + '</small></div><span class="vw"><span class="seg">' + [['tabla', T('Tabla', 'Table')], ['calor', T('Mapa de calor', 'Heatmap')], ['barras', T('Barras', 'Bars')]].map(function (v) { return '<button type="button"' + (anView === v[0] ? ' class="on"' : '') + ' onclick="LV11.anViewSet(\'' + v[0] + '\')">' + v[1] + '</button>'; }).join('') + '</span><button type="button" onclick="LV11.anCsv()">' + icon('download', 15) + ' CSV</button></span></div>' +
+      (anSel ? (function () { var r = rows.filter(function (x) { return x[0] === anSel; })[0]; if (!r) return ''; return '<div class="sum"><b>' + E(r[0]) + '</b>' + t.head.slice(1).map(function (h, j) { var i = j + 1, ord = rows.slice().sort(function (a, b) { return (b[i] || 0) - (a[i] || 0); }), p = ord.indexOf(r) + 1; return '<span><small>' + E(h) + '</small><em>' + fmt(r[i]) + '</em><i>' + T('puesto ', 'rank ') + p + '/' + rows.length + '</i></span>'; }).join('') + '<button type="button" onclick="LV11.anPick(\'\')" aria-label="' + T('Cerrar', 'Close') + '">×</button></div>'; })() : '<p class="hint">' + T('Toca una fila para ver su resumen · toca un título de columna para ordenar.', 'Tap a row for its summary · tap a column header to sort.') + '</p>') +
+      (anView === 'barras' ? '<div class="bv">' + rows.slice(0, anAll ? rows.length : 15).map(function (r, ri) { var v = r[col]; return '<button type="button" class="' + (anSel === r[0] ? 'sel' : '') + '" style="--i:' + ri + '" onclick="LV11.anPick(\'' + E(String(r[0]).replace(/'/g, '')) + '\')"><span>' + E(r[0]) + '</span><i><em style="width:' + (typeof v === 'number' && v > 0 ? Math.max(2, v / mx * 100) : 0) + '%"></em></i><b>' + fmt(v) + '</b></button>'; }).join('') + '</div><div class="bvcols">' + t.head.slice(1).map(function (h, j) { return '<button type="button"' + (col === j + 1 ? ' class="on"' : '') + ' onclick="LV11.anSortBy(' + (j + 1) + ')">' + E(h) + '</button>'; }).join('') + '</div>' : '') +
+      (anView === 'barras' ? '<div class="w" hidden>' : '<div class="w">') + '<table><thead><tr>' + t.head.map(function (h, i) { return '<th' + (i ? ' class="n"' : '') + '><button type="button" onclick="LV11.anSortBy(' + i + ')"' + (i === col ? ' class="on"' : '') + '>' + E(h) + (i === col ? (anSort.d < 0 ? ' ↓' : ' ↑') : '') + '</button></th>'; }).join('') + '</tr></thead><tbody>' +
+      show.map(function (r, ri) { return '<tr style="--i:' + ri + '"' + (anSel === r[0] ? ' class="sel"' : '') + ' onclick="LV11.anPick(\'' + E(String(r[0]).replace(/'/g, '')) + '\')">' + r.map(function (v, i) { var cm = cmax[i] || 1, a = typeof v === 'number' && v > 0 ? v / cm : 0; return i === 0 ? '<td><span class="rk">' + (ri + 1) + '</span>' + E(v) + '</td>' : '<td class="n' + (i === col ? ' on' : '') + '"' + (anView === 'calor' ? ' style="background:color-mix(in srgb,var(--c) ' + Math.round(6 + a * 70) + '%,#fff);color:' + (a > .55 ? '#fff' : 'inherit') + '"' : '') + '>' + (anView === 'tabla' && i === col && typeof v === 'number' && v > 0 ? '<i style="width:' + Math.max(3, v / mx * 100) + '%"></i>' : '') + '<span>' + fmt(v) + '</span></td>'; }).join('') + '</tr>'; }).join('') + '</tbody></table></div>' +
+      (rows.length > 10 ? '<button type="button" class="more" onclick="LV11.anAllT()">' + (anAll ? T('Ver menos', 'Show less') : T('Ver las ' + rows.length + ' filas', 'Show all ' + rows.length + ' rows')) + '</button>' : '') + '</section>';
+  }
   function renderAnalyses() {
     var sec = sectionEl('publicaciones');
-    var ids = DEF.analyses.filter(function (a) { return S.analyses.hidden.indexOf(a.id) < 0 && (!anFilter || a.site === anFilter); }).map(function (a) { return a.id; });
-    var used = sites(true).filter(function (s) { return DEF.analyses.some(function (a) { return a.site === s.id; }); });
-    sec.innerHTML = pageHead(T('Datos y análisis', 'Data and analysis'), T('Lo que dicen los datos que ya tenemos.', 'What the data we have already say.'), T('Análisis generados con los agregados recibidos de Medicina Legal y DANE, y con los boletines del DANE y del INS entregados al Observatorio. Cada uno indica su fuente, su corte y sus límites.', 'Analyses built from the aggregates received and from DANE and INS bulletins. Each shows its source, cut-off and limits.')) +
-      '<div class="lv11chips"><button class="' + (!anFilter ? 'on' : '') + '" onclick="LV11.anSite(\'\')">' + T('Todos', 'All') + '</button>' + used.map(function (s) { return '<button style="--c:' + s.c + '" class="' + (anFilter === s.id ? 'on' : '') + '" onclick="LV11.anSite(\'' + s.id + '\')">' + E(sName(s)) + '</button>'; }).join('') + '</div>' +
-      '<div class="lv11grid3">' + ids.map(analysisCard).join('') + '</div>' +
-      '<p class="lv11note">' + T('Los registros administrativos no equivalen a personas únicas. Las celdas con 1 a 4 casos se protegen y los totales se muestran como mínimos visibles. 2026 cubre enero–junio en lesiones preliminares.', 'Administrative records are not unique persons. Cells with 1–4 cases are protected.') + '</p>';
+    if (anFilter) { var fc = ANCATS.filter(function (c) { return c[4].some(function (id) { var a = DEF.analyses.find(function (z) { return z.id === id; }); return a && a.site === anFilter; }); })[0]; if (fc) anCat = fc[0]; anFilter = ''; }
+    var hidden = S.analyses.hidden, cat = ANCATS.filter(function (c) { return c[0] === anCat; })[0] || ANCATS[0];
+    var ids = cat[4].filter(function (id) { return hidden.indexOf(id) < 0 && DEF.analyses.some(function (a) { return a.id === id; }); });
+    sec.innerHTML = pageHead(T('Datos y análisis', 'Data and analysis'), T('Lo que dicen los datos que ya tenemos.', 'What the data we have says.'), T('Elige una categoría. Arriba verás la tabla más consultada; abajo, las gráficas.', 'Choose a category. The key table is on top; charts below.')) +
+      '<div class="lv29cats" role="tablist">' + ANCATS.map(function (c) { var n = c[4].filter(function (id) { return hidden.indexOf(id) < 0; }).length; return '<button type="button" role="tab" aria-selected="' + (c[0] === cat[0]) + '" style="--c:' + c[3] + '"' + (c[0] === cat[0] ? ' class="on"' : '') + ' onclick="LV11.anCat(\'' + c[0] + '\')"><b>' + E(T(c[1], c[2])) + '</b><small>' + n + ' ' + T('análisis', 'analyses') + '</small></button>'; }).join('') + '</div>' +
+      tableHTML(priTable(cat[0]), cat[3]) +
+      '<h2 class="lv11h2">' + T('Gráficas', 'Charts') + '</h2><div class="lv11grid3">' + ids.map(analysisCard).join('') + '</div>' +
+      '<p class="lv11note">' + T('Los registros no son personas únicas. Las celdas con 1 a 4 casos se protegen.', 'Records are not unique people. Cells with 1–4 cases are protected.') + '</p>';
     countUp(sec);
   }
+
 
   /* ---------------- normativa ---------------- */
   var nf = { q: '', tipo: '', right: '', site: '' };
   function normCard(n) { return '<button class="lv11norm" onclick="LV11.openNorm(\'' + n.id + '\')"><span class="lv11year">' + E(n.y) + '</span><em>' + E(n.tipo) + '</em><b>' + E(n.n) + '</b><small>' + E(T(n.d, n.de)) + '</small><span class="lv11dots">' + (n.sites || []).slice(0, 6).map(function (s) { var x = site(s); return x ? '<i style="background:' + x.c + '" title="' + E(sName(x)) + '"></i>' : ''; }).join('') + '</span></button>'; }
   var TIPOC = { 'Constitución': '#3c3c3b', 'Tratado internacional': '#1A82B9', 'Ley': '#9E2C5A', 'Decreto': '#22A37A', 'Sentencia': '#D33B78', 'Auto': '#9E2C5A', 'Resolución': '#8A6400', 'Política pública': '#5B5BD6' };
+  /* v29: normas en cajas desplegables por grupo (líneas temáticas, comités, redes, rutas) */
+  /* v30: normativa por tipo: se elige el tipo y de ahí se desprenden las normas */
+  var TIPOD = { 'Constitución': ['La base de todos los derechos', 'The foundation of all rights'], 'Tratado internacional': ['Compromisos de Colombia ante el mundo', 'Colombia\'s international commitments'], 'Ley': ['Normas aprobadas por el Congreso', 'Acts passed by Congress'], 'Decreto': ['Cómo el Gobierno aplica las leyes', 'How the Government applies laws'], 'Sentencia': ['Decisiones de la Corte Constitucional', 'Constitutional Court decisions'], 'Auto': ['Órdenes de seguimiento de la Corte', 'Court follow-up orders'], 'Resolución': ['Reglas de entidades del Estado', 'Rules issued by agencies'], 'Política pública': ['Planes del Estado para las mujeres', 'Government plans for women'] };
+  var TIPOI = { 'Constitución': 'book', 'Tratado internacional': 'network', 'Ley': 'scale', 'Decreto': 'doc', 'Sentencia': 'gavel', 'Auto': 'gavel', 'Resolución': 'doc', 'Política pública': 'people' };
+  function typeTiles(all) {
+    var cnt = {}; all.forEach(function (n) { cnt[n.tipo] = (cnt[n.tipo] || 0) + 1; });
+    var ks = Object.keys(TIPOC).filter(function (k) { return cnt[k]; });
+    return '<h2 class="lv11h2">' + T('Elige el tipo de norma', 'Choose the type of law') + '</h2><div class="lv30types"><button type="button" class="' + (!nf.tipo ? 'on' : '') + '" style="--c:#6E24A8" onclick="LV11.nf(\'tipo\',\'\')"><span class="ic">' + icon('spark', 22) + '</span><b>' + T('Todas', 'All') + '</b><small>' + T('Ver todas las normas', 'See all laws') + '</small><em>' + all.length + '</em></button>' +
+      ks.map(function (k) { return '<button type="button" class="' + (nf.tipo === k ? 'on' : '') + '" style="--c:' + TIPOC[k] + '" onclick="LV11.nf(\'tipo\',\'' + (nf.tipo === k ? '' : k) + '\')"><span class="ic">' + icon(TIPOI[k] || 'doc', 22) + '</span><b>' + E(({ 'Constitución': T('Constitución', 'Constitution'), 'Tratado internacional': T('Tratados internacionales', 'International treaties'), 'Ley': T('Leyes', 'Laws'), 'Decreto': T('Decretos', 'Decrees'), 'Sentencia': T('Sentencias', 'Rulings'), 'Auto': T('Autos', 'Court orders'), 'Resolución': T('Resoluciones', 'Resolutions'), 'Política pública': T('Políticas públicas', 'Public policies') })[k] || k) + '</b><small>' + E(T((TIPOD[k] || ['', ''])[0], (TIPOD[k] || ['', ''])[1])) + '</small><em>' + cnt[k] + '</em></button>'; }).join('') + '</div>';
+  }
+  function normList(list) {
+    return '<div class="lv30nlist" id="lv11normlist">' + (list.length ? list.map(normCard).join('') : '<p class="lv11note">' + T('No hay normas con ese filtro.', 'No laws match.') + '</p>') + '</div>';
+  }
+  function normGroups(list, openAll) {
+    var G = W.LV23_GROUPS || [['todas', 'Todas', 'All', sites().map(function (s) { return s.id; })]], used = {};
+    var boxes = G.map(function (g, gi) { var l = list.filter(function (n) { return (n.sites || []).some(function (id) { return g[3].indexOf(id) > -1; }); }); l.forEach(function (n) { used[n.id] = 1; }); return [g, l, gi]; });
+    var rest = list.filter(function (n) { return !used[n.id]; }); if (rest.length) boxes.push([['otras', 'Otras normas generales', 'Other general laws', []], rest, 9]);
+    return '<div class="lv26acc" id="lv11normlist">' + boxes.filter(function (b) { return b[1].length; }).map(function (b) {
+      var g = b[0], tipos = {}; b[1].forEach(function (n) { tipos[n.tipo] = (tipos[n.tipo] || 0) + 1; });
+      return '<details' + (openAll || b[2] === 0 ? ' open' : '') + '><summary><span class="t">' + E(en() ? g[2] : g[1]) + '</span><span class="m">' + b[1].length + ' ' + T('normas', 'laws') + ' · ' + Object.keys(tipos).map(function (k) { return tipos[k] + ' ' + k.toLowerCase(); }).join(', ') + '</span><i aria-hidden="true">+</i></summary><div class="lv11grid3">' + b[1].map(normCard).join('') + '</div></details>';
+    }).join('') + '</div>';
+  }
   function renderNorms(target) {
     var sec = target || sectionEl('normativa');
     var list = S.norms.filter(function (n) { var q = nf.q.toLowerCase(); return n.pub && (!q || (n.n + ' ' + n.d).toLowerCase().indexOf(q) > -1) && (!nf.tipo || n.tipo === nf.tipo) && (!nf.right || (n.rights || []).indexOf(nf.right) > -1) && (!nf.site || (n.sites || []).indexOf(nf.site) > -1); }).sort(function (a, b) { return b.y - a.y; });
     var all = S.norms.filter(function (n) { return n.pub; }), y0 = Math.min.apply(null, all.map(function (n) { return n.y; })), y1 = Math.max.apply(null, all.map(function (n) { return n.y; }));
-    var tl = '<div class="lv11timeline" aria-label="' + T('Línea de tiempo normativa', 'Legal timeline') + '"><div class="lv11tlbar"></div>' + all.map(function (n, i) { var pct = ((n.y - y0) / (y1 - y0 || 1) * 100); var stack = all.filter(function (m, j) { return j < i && m.y === n.y; }).length; return '<button class="lv11tldot' + (list.indexOf(n) < 0 ? ' off' : '') + '" style="left:' + pct + '%;bottom:' + (18 + stack * 15) + 'px;background:' + (TIPOC[n.tipo] || '#9E2C5A') + '" data-tip="' + E('<b>' + n.n + '</b><br>' + n.tipo) + '" onclick="LV11.openNorm(\'' + n.id + '\')" aria-label="' + E(n.n) + '"></button>'; }).join('') + [y0, 1991, 2000, 2008, 2015, y1].filter(function (v, i, a) { return a.indexOf(v) === i; }).map(function (y) { return '<span class="lv11tly" style="left:' + ((y - y0) / (y1 - y0 || 1) * 100) + '%">' + y + '</span>'; }).join('') + '</div><div class="lvlegend">' + Object.keys(TIPOC).map(function (k) { return '<span><i style="background:' + TIPOC[k] + '"></i>' + E(k) + '</span>'; }).join('') + '</div>';
+    var tl = '<div class="lv11timeline" aria-label="' + T('Línea de tiempo normativa', 'Legal timeline') + '"><div class="lv11tlbar"></div>' + all.map(function (n, i) { var pct = ((n.y - y0) / (y1 - y0 || 1) * 100); var stack = all.filter(function (m, j) { return j < i && m.y === n.y; }).length; return '<button class="lv11tldot' + (list.indexOf(n) < 0 ? ' off' : '') + '" style="left:' + pct + '%;bottom:' + (26 + stack * 24) + 'px;background:' + (TIPOC[n.tipo] || '#9E2C5A') + '" data-tip="' + E('<b>' + n.n + '</b><br>' + n.tipo) + '" onclick="LV11.openNorm(\'' + n.id + '\')" aria-label="' + E(n.n) + '"></button>'; }).join('') + [y0, 1991, 2000, 2008, 2015, y1].filter(function (v, i, a) { return a.indexOf(v) === i; }).map(function (y) { return '<span class="lv11tly" style="left:' + ((y - y0) / (y1 - y0 || 1) * 100) + '%">' + y + '</span>'; }).join('') + '</div><div class="lvlegend">' + Object.keys(TIPOC).map(function (k) { return '<span><i style="background:' + TIPOC[k] + '"></i>' + E(k) + '</span>'; }).join('') + '</div>';
     sec.innerHTML = (target ? '' : pageHead(T('Normativa y derechos', 'Laws and rights'), T('Los derechos de las mujeres, en la ley.', 'Women’s rights, in law.'), T('Constitución, tratados, leyes, decretos, sentencias y políticas que reconocen y protegen los derechos de las mujeres en todas sus diversidades.', 'Constitution, treaties, laws, decrees, rulings and policies protecting women’s rights in all their diversity.'))) +
-      '<h2 class="lv11h2">' + T('Derechos de las mujeres', 'Women’s rights') + '</h2><div class="lv11rights">' + DEF.rights.map(function (r, i) { var cnt = all.filter(function (n) { return (n.rights || []).indexOf(r.id) > -1; }).length; return '<button class="lv11right' + (nf.right === r.id ? ' on' : '') + '" style="--c:' + ['#D33B78', '#9E2C5A', '#5B5BD6', '#22A37A', '#17A58C', '#9E2C5A', '#B243EA', '#3A86C8'][i] + '" onclick="LV11.nf(\'right\',\'' + (nf.right === r.id ? '' : r.id) + '\')"><b>' + E(T(r.es, r.en)) + '</b><small>' + E(r.d) + '</small><em>' + cnt + ' ' + T('normas', 'laws') + '</em></button>'; }).join('') + '</div>' +
-      '<h2 class="lv11h2">' + T('Línea de tiempo', 'Timeline') + '</h2>' + tl +
+      typeTiles(all) +
       '<div class="lv11tools"><label class="lv11search">' + icon('search', 18) + '<input value="' + E(nf.q) + '" placeholder="' + T('Buscar ley, número o tema…', 'Search law, number or topic…') + '" oninput="LV11.nf(\'q\',this.value,1)"></label><select onchange="LV11.nf(\'tipo\',this.value)"><option value="">' + T('Todos los tipos', 'All types') + '</option>' + Object.keys(TIPOC).map(function (k) { return '<option' + (nf.tipo === k ? ' selected' : '') + '>' + k + '</option>'; }).join('') + '</select><select onchange="LV11.nf(\'site\',this.value)"><option value="">' + T('Todos los micrositios', 'All microsites') + '</option>' + sites().map(function (s) { return '<option value="' + s.id + '"' + (nf.site === s.id ? ' selected' : '') + '>' + E(sName(s)) + '</option>'; }).join('') + '</select></div><p class="lv11count">' + list.length + ' ' + T('normas', 'laws') + (nf.right ? ' · ' + E(T(DEF.rights.find(function (r) { return r.id === nf.right; }).es, DEF.rights.find(function (r) { return r.id === nf.right; }).en)) : '') + '</p>' +
-      '<div class="lv11grid3" id="lv11normlist">' + list.map(normCard).join('') + '</div><p class="lv11note">' + T('Base inicial verificada para consulta. Antes de la publicación oficial, cada ficha debe confirmar vigencia, modificaciones y responsable de actualización.', 'Initial base for consultation; confirm validity before official publication.') + '</p>';
+      normList(list) + '<p class="lv11note">' + T('Base inicial verificada para consulta. Antes de la publicación oficial, cada ficha debe confirmar vigencia, modificaciones y responsable de actualización.', 'Initial base for consultation; confirm validity before official publication.') + '</p>' +
+      '<h2 class="lv11h2">' + T('Línea de tiempo', 'Timeline') + '</h2>' + tl +
+      '<h2 class="lv11h2">' + T('Derechos de las mujeres', 'Women’s rights') + '</h2><div class="lv11rights">' + DEF.rights.map(function (r, i) { var cnt = all.filter(function (n) { return (n.rights || []).indexOf(r.id) > -1; }).length; return '<button class="lv11right' + (nf.right === r.id ? ' on' : '') + '" style="--c:' + ['#D33B78', '#9E2C5A', '#5B5BD6', '#22A37A', '#17A58C', '#9E2C5A', '#B243EA', '#3A86C8'][i] + '" onclick="LV11.nf(\'right\',\'' + (nf.right === r.id ? '' : r.id) + '\')"><b>' + E(T(r.es, r.en)) + '</b><small>' + E(r.d) + '</small><em>' + cnt + ' ' + T('normas', 'laws') + '</em></button>'; }).join('') + '</div>';
     if (!target) { var hd2 = sec.querySelector('.lv11head'), xs = nf.site && site(nf.site); if (hd2) hd2.insertAdjacentHTML('afterend', siteFilterChip(nf.site, 'normativa') + (xs && xs.info && xs.info.length ? '<h2 class="lv11h2">' + T('Marco e instancia', 'Framework and body') + ' · ' + E(sName(xs)) + '</h2><div class="lv11info">' + xs.info.map(function (p) { return '<div class="lv11infocard" style="--c:' + xs.c + '"><b>' + E(p[0]) + '</b><p>' + E(p[1]) + '</p></div>'; }).join('') + '</div>' : '')); }
   }
 
@@ -2485,7 +2576,12 @@ window.LV11_DEFAULTS = (function () {
     if (typeof W.v8Render !== 'function' || ISADM()) return;
     W.v9Side = function () {
       var cur = panoSite;
-      return '<aside class="v9side lv11side" data-no-translate><h2>LIBRES</h2><p>' + T('Micrositios de consulta', 'Microsites') + '</p><div class="lv11sidelist"><button class="' + (!cur ? 'active' : '') + '" style="--c:#f0b3ca" onclick="LV11.openSite(null)"><span>' + icon('spark', 16) + '</span>' + T('Panorama general', 'Overview') + '</button>' + sites().map(function (s) { return '<button class="' + (cur === s.id ? 'active' : '') + '" style="--c:' + s.c + '" onclick="LV11.openSite(\'' + s.id + '\')"><span>' + sicon(s.ico, 16) + '</span>' + E(sName(s)) + '</button>'; }).join('') + '</div><hr><button onclick="v8Docs()"><span>▤</span>' + T('Biblioteca de datos', 'Data library') + '</button><small>' + T('Cada cifra conserva su fuente. Cada vacío también cuenta.', 'Every figure keeps its source.') + '</small></aside>';
+      return '<aside class="v9side lv11side" data-no-translate><h2>' + T('Temas', 'Topics') + '</h2><div class="lv11sidelist">' + (function () {
+        var G = W.LV23_GROUPS, all = sites(), by = {}; all.forEach(function (s) { by[s.id] = s; });
+        var btn = function (s) { return '<button class="' + (cur === s.id ? 'active' : '') + '" style="--c:' + s.c + '" onclick="LV11.openSite(\'' + s.id + '\')"><span>' + sicon(s.ico, 16) + '</span>' + E(sName(s)) + '</button>'; };
+        if (!G) return all.map(btn).join('');
+        return G.map(function (g) { var l = g[3].filter(function (id) { return by[id]; }); return l.length ? '<div class="lv26grp"><h3>' + E(en() ? g[2] : g[1]) + '</h3>' + l.map(function (id) { return btn(by[id]); }).join('') + '</div>' : ''; }).join('');
+      })() + '</div><hr><button onclick="v8Docs()"><span>▤</span>' + T('Biblioteca de datos', 'Data library') + '</button><small>' + T('Cada cifra conserva su fuente. Cada vacío también cuenta.', 'Every figure keeps its source.') + '</small></aside>';
     };
     // Periodo por defecto: el último año completo cuando la fuente es preliminar.
     var _chg = W.v9Change;
@@ -2654,6 +2750,12 @@ window.LV11_DEFAULTS = (function () {
     obsDept: function (c) { of.dept = of.dept === c ? '' : c; renderObs(obsTarget()); },
     mapPick: function (c) { W.v8Set('dept', ST().dept === c ? (W.v8Source().measure === 'percent' ? '11' : '*') : c); },
     panorama: function (source, topic) { var d = D.getElementById('lv11Dialog'); if (d && d.open) d.close(); if (topic && typeof W.v8Topic === 'function') W.v8Topic(topic); else if (typeof W.go === 'function') W.go('libres'); if (source && typeof W.v9Change === 'function') setTimeout(function () { W.v9Change('source', source); var t = D.querySelector('.v9contextbar'); if (t) scrollTo({ top: t.getBoundingClientRect().top + scrollY - 150, behavior: 'smooth' }); }, 80); },
+    anCat: function (v) { anCat = v; anAll = false; anSort = { c: 1, d: -1 }; renderAnalyses(); }, anSortBy: function (i) { if (anSort.c === i) anSort.d = -anSort.d; else anSort = { c: i, d: i ? -1 : 1 }; renderAnalyses(); }, anAllT: function () { anAll = !anAll; renderAnalyses(); },
+    anViewSet: function (v) { anView = v; renderAnalyses(); }, anPick: function (r) { anSel = anSel === r || !r ? null : r; renderAnalyses(); },
+    anCsv: function () { if (!anTab) return; var t = [anTab.head].concat(anTab.rows).map(function (r) { return r.map(function (v) { return '"' + String(v < 0 ? '1-4' : v).replace(/"/g, '""') + '"'; }).join(','); }).join('\n'); var a = D.createElement('a'); a.href = URL.createObjectURL(new Blob(['\ufeff' + t], { type: 'text/csv;charset=utf-8' })); a.download = 'tabla_' + anCat + '.csv'; D.body.appendChild(a); a.click(); setTimeout(function () { a.remove(); }, 500); },
+    kpi: function (c) { var k = IND[c] ? indKpi(c) : null; if (!k) return null; var x = catalog().find(function (i) { return i.code === c; }); var p = plain(c, x ? x.name : c, k.v); return { v: k.v, n: pnum(k.v), t: p.t, s: p.s, site: x ? indSite(x) : '' }; }, published: function () { return published().length; },
+    an: function (id) { try { return AN[id] ? AN[id]() : null; } catch (e) { return null; } }, deptName: function (c) { return deptName(c); },
+    norms: function () { return S.norms.filter(function (n) { return n.pub; }); }, normCard: function (n) { return normCard(n); },
     sites: function () { return sites(); }, site: site, siteName: sName, render: renderAll, adm: ADM, icon: icon
   };
   W.LV11 = API;
@@ -5806,6 +5908,379 @@ html.lv23calm .lv25card{animation:none}
 #asistente .lv14flist .lv14q.l23hide{display:none}
 #asistente .l23faqmore{display:block;margin:14px auto 0;border:1.5px solid var(--l23-p);background:#fff;color:var(--l23-p);border-radius:999px;padding:11px 22px;font:800 14px var(--lv-display);cursor:pointer}
 #asistente .l23faqmore:hover{background:var(--l23-p);color:#fff}
+/* v28: pie de página sin la línea de versión; resumen sin detalles técnicos */
+footer.lv12foot .lv12bottom{display:none!important}
+html.lv23site [data-l23tab="res"] .lv11viz .lv11src,html.lv23site [data-l23tab="res"] .lv11viz .lv11row .lv11btn:not(:first-child){display:none!important}
+html.lv23site .lv11kpi.tile span{font-size:15px;font-weight:800;line-height:1.3}
+html.lv23site .lv11kpi.tile em{font-style:normal;font-size:13.5px;line-height:1.4;color:var(--l23-mut)}
+#lv23tabs button{font-size:14px}
+
+/* ======================= v29 ======================= */
+/* encabezado: nombre del observatorio más grande */
+.brandTitle strong{font-size:23px!important;letter-spacing:-.3px}
+.brandTitle small{display:block!important;font-size:14px!important;font-weight:700;color:var(--l23-mut)!important;margin-top:2px}
+@media (max-width:700px){.brandTitle strong{font-size:18px!important}.brandTitle small{font-size:12px!important}}
+/* sin la página Conocimiento */
+#navigation button[onclick*="'conocimiento'"],#conocimiento{display:none!important}
+
+/* portada: título = nombre del observatorio; subtítulo más pequeño */
+#lv23home .xhero h1{font-size:clamp(44px,5.6vw,92px);line-height:.98;letter-spacing:-2.5px;margin:0 0 14px;max-width:14ch}
+#lv23home .xhero h1 em{font-size:.62em;letter-spacing:-1px;margin-top:8px;line-height:1.05}
+#lv23home .xhero .xsub2{margin:0 0 30px;font:800 clamp(18px,1.6vw,24px) var(--lv-display);color:rgba(255,255,255,.85);letter-spacing:.02em}
+
+/* ruta de 6 pasos */
+#lv23home .xroute ol.n6{grid-template-columns:repeat(6,minmax(0,1fr))}
+#lv23home .xroute ol.n6 li:first-child .xn{background:#F8C20A;border-color:#F8C20A;color:#2a1240}
+@media (max-width:860px){#lv23home .xroute ol.n6{grid-template-columns:1fr}}
+
+/* temas en cuatro grupos */
+#lv23home .xgtabs{display:flex;gap:8px;flex-wrap:wrap;margin:-6px 0 18px}
+#lv23home .xgtabs button{display:inline-flex;align-items:center;gap:8px;border:1.5px solid var(--l23-line);background:#fff;border-radius:999px;padding:11px 20px;font:800 15px var(--lv-display);color:var(--l23-ink);cursor:pointer;transition:all .2s}
+#lv23home .xgtabs button small{background:#f1e9f7;color:var(--l23-p);border-radius:999px;padding:1px 9px;font-size:12px}
+#lv23home .xgtabs button.on{background:var(--l23-p);border-color:var(--l23-p);color:#fff;box-shadow:0 8px 20px rgba(110,36,168,.25)}
+#lv23home .xgtabs button.on small{background:rgba(255,255,255,.22);color:#fff}
+@media (max-width:560px){#lv23home .xgtabs{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}#lv23home .xgtabs button{flex:none}}
+
+/* barra lateral de temas: sin fondo morado, agrupada */
+.v9side.lv11side{background:transparent!important;box-shadow:none!important;border:0!important;padding:4px 4px 12px!important}
+.v9side.lv11side h2{color:var(--l23-ink)!important;font-size:20px!important;margin:0 8px 10px!important;letter-spacing:-.3px}
+.v9side.lv11side > p,.v9side.lv11side > small{color:var(--l23-mut)!important}
+.v9side.lv11side hr{border-color:var(--l23-line)!important}
+.v9side.lv11side .lv11sidelist{max-height:calc(100vh - 260px)!important;scrollbar-color:#d8c8e6 transparent!important}
+.v9side.lv11side .lv26grp{margin:0 0 12px}
+.v9side.lv11side .lv26grp h3{margin:6px 10px 6px;font:800 11px var(--lv-display);letter-spacing:.12em;text-transform:uppercase;color:#9a86ad}
+.v9side.lv11side button{color:var(--l23-ink)!important;background:transparent!important;border-radius:12px!important;font-weight:700!important}
+.v9side.lv11side button span{width:28px;height:28px;border-radius:9px;display:inline-grid;place-items:center;background:color-mix(in srgb,var(--c) 14%,#fff)!important;color:var(--c)!important;filter:none!important;margin-right:8px;flex:none}
+.v9side.lv11side button:before{display:none!important}
+.v9side.lv11side button:hover{background:#fff!important;box-shadow:0 4px 14px rgba(60,20,100,.08)}
+.v9side.lv11side button.active{background:#fff!important;box-shadow:0 6px 18px rgba(60,20,100,.12);color:var(--c)!important}
+.v9side.lv11side button.active span{background:var(--c)!important;color:#fff!important}
+
+/* normativa: línea de tiempo más grande y normas en cajas */
+.lv11timeline{height:220px!important;margin:10px 0 18px!important}
+.lv11timeline .lv11tlbar{height:6px!important;bottom:18px!important}
+.lv11timeline .lv11tldot{width:18px!important;height:18px!important;border:3px solid #fff!important;box-shadow:0 2px 8px rgba(40,10,70,.25)!important;transform:translateX(-50%)}
+.lv11timeline .lv11tldot:hover{transform:translateX(-50%) scale(1.3)}
+.lv11timeline .lv11tly{font-size:13px!important;font-weight:800!important}
+.lv26acc{display:flex;flex-direction:column;gap:12px;margin:10px 0 18px}
+.lv26acc details{background:#fff;border:1px solid var(--l23-line);border-radius:18px;overflow:hidden;transition:box-shadow .2s}
+.lv26acc details[open]{box-shadow:0 14px 34px rgba(40,10,70,.08)}
+.lv26acc summary{display:grid;grid-template-columns:1fr auto;gap:2px 16px;align-items:center;padding:18px 22px;cursor:pointer;list-style:none}
+.lv26acc summary::-webkit-details-marker{display:none}
+.lv26acc summary .t{font:800 18px var(--lv-display);color:var(--l23-ink)}
+.lv26acc summary .m{grid-column:1;font-size:13px;color:var(--l23-mut);font-weight:700}
+.lv26acc summary i{grid-row:1/span 2;grid-column:2;width:34px;height:34px;border-radius:50%;background:#f1e9f7;color:var(--l23-p);display:grid;place-items:center;font:800 20px/1 var(--lv-display);font-style:normal;transition:transform .25s,background .2s}
+.lv26acc details[open] summary i{transform:rotate(45deg);background:var(--l23-p);color:#fff}
+.lv26acc details > .lv11grid3{padding:0 18px 20px}
+
+/* página Sentencias */
+#sentencias .lv26sh{position:relative;overflow:hidden;min-height:260px}
+#sentencias .lv26sh > :not(.lv23ph){position:relative;z-index:2;max-width:min(560px,58%)}
+#sentencias .lv23ph.xsent{position:absolute;inset:0 0 0 45%;z-index:1}
+#sentencias .lv23ph.xsent:after{content:"";position:absolute;inset:0;z-index:3;background:linear-gradient(90deg,#9E2C5A 0%,rgba(158,44,90,.4) 40%,transparent)}
+#sentencias .lv23ph.xsent .ph0 :is(b,small,code){display:none}
+.lv26sbar{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin:22px 0 14px}
+.lv26sbar .lv25chips{padding:0}
+.lv26sent{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px;position:relative}
+.lv26sent:before{content:"";position:absolute;left:52px;top:10px;bottom:10px;border-left:3px dotted #e2d3ee}
+.lv26sent li{animation:lv27up .45s ease both;animation-delay:calc(var(--i) * 60ms)}
+.lv26sent button{width:100%;display:grid;grid-template-columns:106px 1fr auto;gap:18px;align-items:center;text-align:left;background:#fff;border:1px solid var(--l23-line);border-radius:18px;padding:16px 20px;cursor:pointer;font-family:var(--lv-display);color:var(--l23-ink);transition:transform .2s,box-shadow .2s;position:relative}
+.lv26sent button:hover{transform:translateX(4px);box-shadow:0 12px 28px rgba(40,10,70,.1)}
+.lv26sent .y{justify-self:center;width:76px;height:76px;border-radius:50%;background:linear-gradient(135deg,#9E2C5A,#6E24A8);color:#fff;display:grid;place-items:center;font:800 20px var(--lv-display)}
+.lv26sent .tx{display:flex;flex-direction:column;gap:3px}
+.lv26sent em{font-style:normal;font-size:11.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#9E2C5A}
+.lv26sent b{font-size:19px;font-weight:800}
+.lv26sent small{font-size:14px;color:var(--l23-mut);line-height:1.45}
+.lv26sent i{color:var(--l23-p)}
+@media (max-width:700px){#sentencias .lv26sh > :not(.lv23ph){max-width:100%}#sentencias .lv23ph.xsent{inset:0;opacity:.35}.lv26sent:before{left:36px}.lv26sent button{grid-template-columns:72px 1fr;gap:12px;padding:14px}.lv26sent .y{width:58px;height:58px;font-size:16px}.lv26sent i{display:none}}
+.lv26acc .lv11norm,.lv26acc .lv12rv{opacity:1!important;transform:none!important;filter:none!important}
+/* datos y análisis: categorías y tabla prioritaria */
+.lv29cats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:22px 0 18px}
+.lv29cats button{display:flex;flex-direction:column;align-items:flex-start;gap:4px;text-align:left;background:#fff;border:1.5px solid var(--l23-line);border-radius:20px 6px 20px 6px;padding:18px 20px;cursor:pointer;font-family:var(--lv-display);color:var(--l23-ink);position:relative;overflow:hidden;transition:all .2s}
+.lv29cats button:before{content:"";position:absolute;left:0;top:0;bottom:0;width:6px;background:var(--c)}
+.lv29cats b{font-size:18px;font-weight:800}
+.lv29cats small{font-size:13px;color:var(--l23-mut);font-weight:700}
+.lv29cats button.on{background:var(--c);border-color:var(--c);color:#fff;box-shadow:0 14px 30px color-mix(in srgb,var(--c) 35%,transparent)}
+.lv29cats button.on small{color:rgba(255,255,255,.85)}
+.lv29cats button:hover:not(.on){border-color:var(--c);transform:translateY(-2px)}
+.lv29tbl{background:#fff;border:1px solid var(--l23-line);border-radius:24px 8px 24px 8px;padding:20px 22px;margin:0 0 26px;box-shadow:0 18px 40px rgba(40,10,70,.07);font-family:var(--lv-display)}
+.lv29tbl .h{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:12px}
+.lv29tbl .h b{display:block;font-size:20px;font-weight:800;color:var(--l23-ink)}
+.lv29tbl .h small{font-size:13px;color:var(--l23-mut);font-weight:700}
+.lv29tbl .h > button,.lv29tbl .more{display:inline-flex;align-items:center;gap:6px;border:1.5px solid var(--c);color:var(--c);background:#fff;border-radius:999px;padding:8px 14px;font:800 13px var(--lv-display);cursor:pointer;flex:none}
+.lv29tbl .more{margin:12px auto 0;display:flex}
+.lv29tbl .w{overflow-x:auto}
+.lv29tbl table{width:100%;border-collapse:collapse;font-size:14px}
+.lv29tbl th{text-align:left;border-bottom:2px solid var(--l23-line);padding:0}
+.lv29tbl th.n{text-align:right}
+.lv29tbl th button{border:0;background:none;padding:10px 10px;font:800 12.5px var(--lv-display);color:var(--l23-mut);cursor:pointer;white-space:nowrap;text-transform:uppercase;letter-spacing:.04em}
+.lv29tbl th button.on{color:var(--c)}
+.lv29tbl td{padding:9px 10px;border-bottom:1px solid #f3eef7;font-weight:600;color:var(--l23-ink)}
+.lv29tbl tbody tr{animation:lv27up .35s ease both;animation-delay:calc(var(--i) * 25ms)}
+.lv29tbl tbody tr:hover td{background:#fbf8fd}
+.lv29tbl td .rk{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:8px;background:#f4eef9;color:var(--l23-mut);font-size:11.5px;font-weight:800;margin-right:10px}
+.lv29tbl tbody tr:nth-child(-n+3) td .rk{background:var(--c);color:#fff}
+.lv29tbl td.n{text-align:right;position:relative;font-variant-numeric:tabular-nums;white-space:nowrap}
+.lv29tbl td.n.on{font-weight:800}
+.lv29tbl td.n i{position:absolute;right:0;top:6px;bottom:6px;background:color-mix(in srgb,var(--c) 16%,transparent);border-radius:6px;z-index:0}
+.lv29tbl td.n span{position:relative;z-index:1;padding-right:6px}
+@media (max-width:860px){.lv29cats{grid-template-columns:1fr 1fr}.lv29tbl{padding:14px}}
+/* geovisor v29: más claro */
+#rutas .lv15band{min-height:0!important;padding-top:26px!important;padding-bottom:26px!important}
+#rutas .lv15band h1{font-size:clamp(30px,3.4vw,46px)!important}
+#lv24geo{padding:clamp(18px,2.4vw,32px)}
+#lv24geo .g24body{grid-template-columns:minmax(0,1.35fr) minmax(320px,1fr)!important;gap:26px}
+#lv24geo .g24map{display:flex;flex-direction:column;min-height:560px;background:linear-gradient(160deg,#f6effb,#fdf3f8)}
+#lv24geo svg.mp{flex:1;min-height:420px;max-height:none}
+#lv24geo .g24mtitle{flex-wrap:wrap;align-items:center}
+#lv24geo .g24zm{margin-left:auto;margin-right:136px;display:inline-flex;background:#fff;border-radius:999px;padding:3px;box-shadow:0 4px 12px rgba(40,10,70,.08)}
+#lv24geo .g24zm button{border:0;background:none;border-radius:999px;padding:6px 12px;font:800 12px var(--lv-display);color:var(--l23-mut);cursor:pointer}
+#lv24geo .g24zm button.on{background:var(--l23-p);color:#fff}
+#lv24geo .g24sos{display:flex;align-items:center;gap:14px;background:linear-gradient(135deg,#D33B78,#9E2C5A);color:#fff;border-radius:16px;padding:12px 16px;margin:0 0 16px;text-decoration:none;box-shadow:0 10px 24px rgba(211,59,120,.3)}
+#lv24geo .g24sos b{font:800 30px/1 var(--lv-display)}
+#lv24geo .g24sos span{font-size:13.5px;font-weight:700;line-height:1.3}
+#lv24geo .g24panel{position:sticky;top:150px}
+#lv24geo .g24steps li{transition:transform .2s,box-shadow .2s}
+#lv24geo .g24steps li:hover{transform:translateX(4px);box-shadow:0 8px 20px rgba(40,10,70,.08)}
+@media (max-width:900px){#lv24geo .g24zm{margin-right:0}#lv24geo .g24panel{position:static}#lv24geo .g24map{min-height:0}#lv24geo svg.mp{min-height:300px}}
+
+/* ======== v29 · visualizaciones interactivas (lv25.js) ======== */
+#indicadores.l30alt #lv30 ~ *{display:none!important}
+#lv30{margin:20px 0 6px;font-family:var(--lv-display)}
+.l30tabs{display:flex;gap:6px;background:#fff;border:1px solid var(--l23-line);border-radius:18px;padding:6px;width:max-content;max-width:100%;overflow-x:auto;scrollbar-width:none}
+.l30tabs button{flex:none;border:0;background:none;border-radius:13px;padding:12px 20px;font:800 14.5px var(--lv-display);color:var(--l23-mut);cursor:pointer;transition:all .2s}
+.l30tabs button.on{background:var(--l23-p);color:#fff;box-shadow:0 8px 18px rgba(110,36,168,.25)}
+.l30cmp,.l30proc{margin-top:18px;background:#fff;border:1px solid var(--l23-line);border-radius:26px 8px 26px 8px;padding:clamp(18px,2.4vw,30px);box-shadow:0 18px 44px rgba(40,10,70,.07);animation:lv25in .4s ease both}
+.l30ctl{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:18px}
+.l30chips{display:flex;gap:8px;flex-wrap:wrap}
+.l30chips button{border:1.5px solid color-mix(in srgb,var(--c) 35%,#fff);background:#fff;color:var(--c);border-radius:999px;padding:9px 15px;font:800 13.5px var(--lv-display);cursor:pointer;transition:all .2s}
+.l30chips button.on{background:var(--c);border-color:var(--c);color:#fff}
+.l30seg{display:inline-flex;background:#f4eef9;border-radius:999px;padding:4px;align-self:flex-start}
+.l30seg button{border:0;background:none;border-radius:999px;padding:8px 14px;font:800 13px var(--lv-display);color:var(--l23-mut);cursor:pointer}
+.l30seg button.on{background:#fff;color:var(--l23-ink);box-shadow:0 3px 10px rgba(40,10,70,.1)}
+.l30race{position:relative;transition:height .5s ease}
+.l30race .bar{position:absolute;left:0;right:0;top:0;height:32px;display:grid;grid-template-columns:minmax(120px,22%) 1fr 80px;gap:12px;align-items:center;transition:transform .6s cubic-bezier(.3,.9,.3,1),opacity .4s}
+.l30race .nm{font-size:14px;font-weight:800;color:var(--l23-ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.l30race .tr{height:24px;background:#f6f1fa;border-radius:6px 14px 14px 6px;overflow:hidden}
+.l30race .tr i{display:block;height:100%;width:0;background:linear-gradient(90deg,color-mix(in srgb,var(--c) 70%,#fff),var(--c));border-radius:6px 14px 14px 6px;transition:width .7s cubic-bezier(.3,.9,.3,1)}
+.l30race b{font-size:16px;font-weight:800;color:var(--c);text-align:right;font-variant-numeric:tabular-nums}
+.l30foot{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-top:14px}
+.l30foot button{border:1.5px solid var(--c);color:var(--c);background:#fff;border-radius:999px;padding:9px 18px;font:800 13.5px var(--lv-display);cursor:pointer}
+.l30foot small{font-size:12.5px;color:var(--l23-mut)}
+.l30lead{margin:0 0 18px;font-size:16px;color:var(--l23-mut);font-weight:600}
+.l30flow{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px;align-items:end}
+.l30flow li{display:flex;flex-direction:column;gap:6px;position:relative}
+.l30flow .col{height:190px;display:flex;align-items:flex-end;background:linear-gradient(180deg,transparent,#f7f2fb);border-radius:14px;overflow:hidden;position:relative}
+.l30flow .fill{display:block;width:100%;height:0;background:linear-gradient(180deg,color-mix(in srgb,var(--c) 60%,#fff),var(--c));border-radius:14px 14px 4px 4px;transition:height 1s cubic-bezier(.3,.9,.3,1);transition-delay:calc(var(--i) * 260ms)}
+.l30proc.go .fill{height:var(--h)}
+.l30flow li:not(:last-child) .col:after{content:"›";position:absolute;right:-14px;top:42%;font:800 26px var(--lv-display);color:#cdb8de;z-index:2}
+.l30flow b{font-size:clamp(22px,2.2vw,32px);font-weight:800;color:var(--c);letter-spacing:-.5px;font-variant-numeric:tabular-nums}
+.l30flow em{font-style:normal;font-size:15px;font-weight:800;color:var(--l23-ink)}
+.l30flow small{font-size:13px;color:var(--l23-mut);line-height:1.4}
+.l30safe{margin-top:20px;display:flex;gap:14px;align-items:center;background:#ecfbf6;border:1px solid #bfeedd;border-radius:16px;padding:14px 18px}
+.l30safe b{color:#0f8a6f;font-size:15px;flex:none}
+.l30safe span{font-size:14px;color:#24574b}
+html.lv23calm .l30race .bar,html.lv23calm .l30race .tr i,html.lv23calm .l30flow .fill{transition:none}
+@media (max-width:860px){.l30flow{grid-template-columns:1fr}.l30flow li{display:grid;grid-template-columns:60px 1fr;grid-template-rows:auto auto auto;column-gap:14px}.l30flow .col{grid-row:1/span 3;height:110px}.l30flow li:not(:last-child) .col:after{display:none}.l30race .bar{grid-template-columns:110px 1fr 56px;gap:8px}.l30race .nm{font-size:12.5px}.l30safe{flex-direction:column;align-items:flex-start}}
+/* mapa: preguntas rápidas */
+#lv30q{margin:0 0 14px;font-family:var(--lv-display)}
+#lv30q .t{display:block;font-size:18px;font-weight:800;color:var(--l23-ink);margin:0 0 10px}
+#lv30q .g{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+#lv30q button{display:flex;align-items:center;gap:12px;text-align:left;background:#fff;border:1.5px solid var(--l23-line);border-radius:18px 6px 18px 6px;padding:14px 16px;font:800 14.5px var(--lv-display);color:var(--l23-ink);cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
+#lv30q button .ic{flex:none;width:36px;height:36px;border-radius:12px;display:grid;place-items:center;background:color-mix(in srgb,var(--c) 14%,#fff);color:var(--c);font-weight:800}
+#lv30q button:hover{border-color:var(--c);transform:translateY(-2px);box-shadow:0 10px 22px color-mix(in srgb,var(--c) 18%,transparent)}
+#lv30q button.on{background:var(--c);border-color:var(--c);color:#fff}
+#lv30q button.on .ic{background:rgba(255,255,255,.22);color:#fff}
+@media (max-width:860px){#lv30q .g{grid-template-columns:1fr 1fr}#lv30q button{font-size:13px;padding:12px}}
+#lv24geo svg.mp path.out{fill:#f1ecf5;opacity:.75}#lv24geo svg.mp path.out.lb{fill:#fff3cf}
+
+/* ======================= v30 ======================= */
+/* inicio: cuatro apartados grandes */
+#lv23home .xg4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin:0 0 20px}
+#lv23home .xg4 button{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:6px;text-align:left;min-height:210px;padding:22px 22px 20px;border:0;border-radius:28px 8px 28px 8px;cursor:pointer;font-family:var(--lv-display);color:var(--l23-ink);background:#fff;box-shadow:0 1px 0 var(--l23-line),0 12px 30px rgba(40,10,70,.07);overflow:hidden;transition:transform .25s,box-shadow .25s,color .25s}
+#lv23home .xg4 button:before{content:"";position:absolute;inset:0;background:linear-gradient(150deg,var(--c),color-mix(in srgb,var(--c) 60%,#24093f));opacity:0;transition:opacity .3s;z-index:0}
+#lv23home .xg4 button > *{position:relative;z-index:1}
+#lv23home .xg4 .xi{width:60px;height:60px;border-radius:20px 6px 20px 6px;display:grid;place-items:center;background:color-mix(in srgb,var(--c) 13%,#fff);color:var(--c);margin-bottom:8px;transition:all .3s}
+#lv23home .xg4 .xn2{position:absolute;right:20px;top:18px;font:800 44px/1 var(--lv-display);color:color-mix(in srgb,var(--c) 22%,#fff);letter-spacing:-2px}
+#lv23home .xg4 b{font-size:21px;font-weight:800;letter-spacing:-.4px}
+#lv23home .xg4 small{font-size:13.5px;line-height:1.4;color:var(--l23-mut);font-weight:600}
+#lv23home .xg4 .xa{margin-top:auto;width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:color-mix(in srgb,var(--c) 12%,#fff);color:var(--c);transition:transform .2s}
+#lv23home .xg4 button:hover{transform:translateY(-4px);box-shadow:0 20px 40px color-mix(in srgb,var(--c) 22%,transparent)}
+#lv23home .xg4 button:hover .xa{transform:translateX(4px)}
+#lv23home .xg4 button.on{color:#fff;box-shadow:0 22px 44px color-mix(in srgb,var(--c) 38%,transparent)}
+#lv23home .xg4 button.on:before{opacity:1}
+#lv23home .xg4 button.on .xi{background:rgba(255,255,255,.2);color:#fff}
+#lv23home .xg4 button.on .xn2{color:rgba(255,255,255,.25)}
+#lv23home .xg4 button.on small{color:rgba(255,255,255,.88)}
+#lv23home .xg4 button.on .xa{background:#fff;color:var(--c);transform:rotate(90deg)}
+#lv23home .xthemes .xtl{background:color-mix(in srgb,var(--g) 6%,#fff);border:1px solid color-mix(in srgb,var(--g) 18%,#fff);border-radius:26px 8px 26px 8px;padding:18px;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:12px}
+#lv23home .xthemes .xtl button{background:#fff!important;color:var(--l23-ink)!important;box-shadow:0 4px 14px rgba(40,10,70,.06)!important;min-height:78px!important;border-left:5px solid var(--c)}
+#lv23home .xthemes .xtl .xic{background:color-mix(in srgb,var(--c) 14%,#fff)!important;color:var(--c)!important}
+#lv23home .xthemes .xtl b{color:var(--l23-ink)!important;font-size:14.5px!important}
+#lv23home .xthemes .xtl button i{color:var(--c)}
+#lv23home .xthemes .xtl button:hover{box-shadow:0 12px 26px color-mix(in srgb,var(--c) 22%,transparent)!important}
+#lv23home .xkpi{grid-template-columns:repeat(3,minmax(0,1fr)) auto!important}
+#lv23home .xkpi span{max-width:32ch!important}
+@media (max-width:1100px){#lv23home .xg4{grid-template-columns:1fr 1fr}#lv23home .xthemes .xtl{grid-template-columns:1fr 1fr!important}}
+@media (max-width:560px){#lv23home .xg4 button{min-height:150px;padding:16px}#lv23home .xg4 .xi{width:46px;height:46px}#lv23home .xg4 b{font-size:17px}#lv23home .xg4 small{display:none}#lv23home .xg4 .xn2{font-size:32px}#lv23home .xthemes .xtl{grid-template-columns:1fr!important;padding:10px}}
+
+/* pestañas de subpáginas: sin selección de texto accidental */
+#lv23tabs{z-index:45!important;user-select:none;-webkit-user-select:none}
+#lv23tabs button{user-select:none}
+
+/* menú lateral */
+.v9side.lv11side{background:#fff!important;border:1px solid var(--l23-line)!important;border-radius:24px!important;padding:18px 12px 14px!important;box-shadow:0 14px 34px rgba(40,10,70,.06)!important}
+.v9side.lv11side h2{font-size:13px!important;letter-spacing:.14em!important;text-transform:uppercase;color:var(--l23-p)!important;margin:0 10px 12px!important}
+.v9side.lv11side .lv26grp{margin:0 0 6px;padding:0 0 8px;border-bottom:1px dashed #ece2f4}
+.v9side.lv11side .lv26grp:last-child{border-bottom:0}
+.v9side.lv11side .lv26grp h3{display:flex;align-items:center;gap:8px;color:var(--l23-ink)!important;font-size:12px!important;letter-spacing:.06em!important;margin:8px 10px!important}
+.v9side.lv11side .lv26grp h3:before{content:"";width:8px;height:8px;border-radius:50%;background:var(--l23-p)}
+.v9side.lv11side .lv26grp:nth-child(2) h3:before{background:#9E2C5A}.v9side.lv11side .lv26grp:nth-child(3) h3:before{background:#1A82B9}.v9side.lv11side .lv26grp:nth-child(4) h3:before{background:#D33B78}
+.v9side.lv11side .lv11sidelist button{display:flex!important;align-items:center;gap:0;padding:7px 10px!important;font-size:13px!important;line-height:1.3!important;margin:1px 0;position:relative;border-radius:12px!important;overflow:hidden;display:-webkit-box}
+.v9side.lv11side .lv11sidelist button span{width:30px!important;height:30px!important}
+.v9side.lv11side .lv11sidelist button.active{background:color-mix(in srgb,var(--c) 10%,#fff)!important;box-shadow:none!important;color:color-mix(in srgb,var(--c) 80%,#000)!important}
+.v9side.lv11side .lv11sidelist button.active:after{content:"";position:absolute;right:0;top:8px;bottom:8px;width:4px;border-radius:4px;background:var(--c)}
+.v9side.lv11side hr,.v9side.lv11side > small{display:none}
+.v9side.lv11side > button{margin-top:6px;border:1px solid var(--l23-line)!important;justify-content:center}
+
+/* observatorios: mapa grande y tarjetas ordenadas */
+#red .lv11obsgrid{grid-template-columns:minmax(0,1.05fr) minmax(0,1fr)!important;gap:24px;align-items:start}
+#red .lv11obsgrid > .lv11card{position:sticky;top:150px;padding:22px;border-radius:26px 8px 26px 8px}
+#red .lv11obsgrid > .lv11card svg{width:100%!important;height:auto!important;max-height:640px}
+#red .lv11obsgrid > div > .lv11grid3,#red .lv11obsgrid .lv11grid3{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:14px}
+#red .lv11obs{border-radius:20px 6px 20px 6px;padding:18px 18px 16px 22px;min-height:190px;transition:transform .2s,box-shadow .2s}
+#red .lv11obs:hover{transform:translateY(-3px);box-shadow:0 14px 30px rgba(40,10,70,.1)}
+#red .lv11obs b{font-size:16px}
+#red .lv11stats{grid-template-columns:repeat(5,minmax(0,1fr))!important;gap:10px}
+#red .lv11stats > button{border-radius:18px 6px 18px 6px!important;padding:14px 16px!important}
+@media (max-width:1000px){#red .lv11obsgrid{grid-template-columns:1fr!important}#red .lv11obsgrid > .lv11card{position:static}#red .lv11stats{grid-template-columns:repeat(3,1fr)!important}}
+@media (max-width:560px){#red .lv11obsgrid .lv11grid3{grid-template-columns:1fr!important}#red .lv11stats{grid-template-columns:1fr 1fr!important}}
+
+/* normativa: tipos */
+.lv30types{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px;margin:6px 0 22px}
+.lv30types button{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:4px;text-align:left;background:#fff;border:1.5px solid var(--l23-line);border-radius:22px 6px 22px 6px;padding:18px 18px 16px;cursor:pointer;font-family:var(--lv-display);color:var(--l23-ink);transition:all .2s;overflow:hidden}
+.lv30types .ic{width:44px;height:44px;border-radius:14px 4px 14px 4px;display:grid;place-items:center;background:color-mix(in srgb,var(--c) 13%,#fff);color:var(--c);margin-bottom:6px}
+.lv30types b{font-size:17px;font-weight:800}
+.lv30types small{font-size:13px;color:var(--l23-mut);line-height:1.35}
+.lv30types em{position:absolute;right:16px;top:14px;font:800 30px/1 var(--lv-display);font-style:normal;color:color-mix(in srgb,var(--c) 30%,#fff)}
+.lv30types button:hover{border-color:var(--c);transform:translateY(-3px);box-shadow:0 12px 26px color-mix(in srgb,var(--c) 18%,transparent)}
+.lv30types button.on{background:var(--c);border-color:var(--c);color:#fff}
+.lv30types button.on .ic{background:rgba(255,255,255,.2);color:#fff}
+.lv30types button.on small{color:rgba(255,255,255,.88)}
+.lv30types button.on em{color:rgba(255,255,255,.4)}
+.lv30nlist{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;margin:8px 0 24px}
+.lv30nlist .lv11norm{opacity:1!important;transform:none!important;animation:lv27up .4s ease both}
+
+/* indicadores: tarjetas */
+.lv25grid{grid-template-columns:repeat(auto-fill,minmax(260px,1fr))!important;gap:14px!important}
+.lv25card{min-height:210px!important;padding:20px 20px 18px!important;border-radius:22px 6px 22px 6px!important;border:1px solid var(--l23-line)!important;box-shadow:0 6px 18px rgba(40,10,70,.05)}
+.lv25card:before{width:100%!important;height:5px!important;bottom:auto!important;opacity:1!important}
+.lv25card .lv25val em{font-size:34px!important}
+.lv25card b{font-size:16px!important}
+.lv25tag{color:var(--c)!important;opacity:.9}
+.lv30pend{margin:12px 0 0;background:#fff;border:1px dashed #dccdea;border-radius:16px;padding:10px 16px}
+.lv30pend summary{cursor:pointer;font:800 14px var(--lv-display);color:var(--l23-mut);list-style:none}
+.lv30pend summary small{background:#f1e9f7;border-radius:999px;padding:1px 8px;margin-left:4px}
+.lv30pend ul{margin:8px 0 2px;padding:0;list-style:none;display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:4px 16px}
+.lv30pend li button{border:0;background:none;padding:6px 0;text-align:left;font:600 13.5px var(--lv-display);color:var(--l23-ink);cursor:pointer}
+.lv30pend li button:hover{color:var(--l23-p);text-decoration:underline}
+
+/* datos y análisis: vistas */
+.lv29tbl .vw{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.lv29tbl .seg{display:inline-flex;background:#f4eef9;border-radius:999px;padding:4px}
+.lv29tbl .seg button{border:0;background:none;border-radius:999px;padding:7px 14px;font:800 12.5px var(--lv-display);color:var(--l23-mut);cursor:pointer}
+.lv29tbl .seg button.on{background:#fff;color:var(--c);box-shadow:0 3px 10px rgba(40,10,70,.1)}
+.lv29tbl .hint{margin:0 0 10px;font-size:13px;color:var(--l23-mut);font-weight:600}
+.lv29tbl tbody tr{cursor:pointer}
+.lv29tbl tbody tr.sel td{background:color-mix(in srgb,var(--c) 12%,#fff)!important;font-weight:800}
+.lv29tbl .sum{position:relative;display:flex;flex-wrap:wrap;gap:10px;align-items:stretch;background:linear-gradient(135deg,color-mix(in srgb,var(--c) 92%,#000),var(--c));color:#fff;border-radius:18px;padding:14px 50px 14px 16px;margin:0 0 12px;animation:lv25in .3s ease both}
+.lv29tbl .sum > b{font-size:20px;align-self:center;margin-right:8px}
+.lv29tbl .sum span{display:flex;flex-direction:column;background:rgba(255,255,255,.14);border-radius:12px;padding:8px 12px;min-width:120px}
+.lv29tbl .sum small{font-size:11px;font-weight:800;opacity:.85;text-transform:uppercase;letter-spacing:.04em}
+.lv29tbl .sum em{font-style:normal;font-size:22px;font-weight:800}
+.lv29tbl .sum i{font-style:normal;font-size:12px;opacity:.85}
+.lv29tbl .sum > button{position:absolute;right:12px;top:12px;width:30px;height:30px;border-radius:50%;border:0;background:rgba(255,255,255,.2);color:#fff;font-size:18px;cursor:pointer}
+.lv29tbl .bv{display:flex;flex-direction:column;gap:6px}
+.lv29tbl .bv button{display:grid;grid-template-columns:minmax(120px,22%) 1fr 80px;gap:12px;align-items:center;border:0;background:none;padding:3px 4px;border-radius:10px;cursor:pointer;font-family:var(--lv-display);text-align:left;animation:lv27up .35s ease both;animation-delay:calc(var(--i) * 30ms)}
+.lv29tbl .bv button:hover,.lv29tbl .bv button.sel{background:#f8f3fb}
+.lv29tbl .bv span{font-size:14px;font-weight:700;color:var(--l23-ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lv29tbl .bv i{height:22px;background:#f4eef9;border-radius:6px 12px 12px 6px;overflow:hidden}
+.lv29tbl .bv em{display:block;height:100%;background:linear-gradient(90deg,color-mix(in srgb,var(--c) 60%,#fff),var(--c));border-radius:6px 12px 12px 6px}
+.lv29tbl .bv b{text-align:right;font-weight:800;color:var(--c)}
+.lv29tbl .bvcols{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
+.lv29tbl .bvcols button{border:1.5px solid var(--l23-line);background:#fff;border-radius:999px;padding:6px 12px;font:800 12.5px var(--lv-display);color:var(--l23-mut);cursor:pointer}
+.lv29tbl .bvcols button.on{border-color:var(--c);background:var(--c);color:#fff}
+
+/* visualizaciones v30 */
+.l30tabs{width:auto!important}
+.l30box{margin-top:18px;background:#fff;border:1px solid var(--l23-line);border-radius:26px 8px 26px 8px;padding:clamp(18px,2.4vw,30px);box-shadow:0 18px 44px rgba(40,10,70,.07);animation:lv25in .4s ease both;font-family:var(--lv-display)}
+.l30box h3{margin:0 0 6px;font-size:clamp(20px,1.8vw,26px);font-weight:800;color:var(--l23-ink);letter-spacing:-.4px}
+.l30box p{margin:0 0 14px;color:var(--l23-mut);font-size:14.5px;line-height:1.5}
+.l30box small{font-size:12px;color:var(--l23-mut)}
+.l30top{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:flex-start;margin-bottom:8px}
+.l30sun,.l30waf{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:26px;align-items:center}
+.l30svgw svg{width:100%;max-width:520px;display:block;margin:auto}
+.sun path{stroke:#fff;stroke-width:1.5;cursor:pointer;transition:opacity .2s,transform .2s;transform-origin:200px 200px;animation:l30spin .8s cubic-bezier(.3,.9,.3,1) both}
+.sun path:hover{opacity:.85;transform:scale(1.025)}
+@keyframes l30spin{from{opacity:0;transform:rotate(-30deg) scale(.7)}to{opacity:1;transform:none}}
+.sun text{pointer-events:none;text-anchor:middle;font-family:var(--lv-display)}
+.sun .sl{fill:#fff;font-size:12px;font-weight:800}
+.sun .sz{fill:#3a2350;font-size:10px;font-weight:700}
+.sun .c1{font-size:30px;font-weight:800;fill:var(--l23-ink)}
+.sun .c2{font-size:12px;fill:var(--l23-mut);font-weight:700}
+.l30lg{display:flex;flex-wrap:wrap;gap:8px 14px;margin:6px 0 12px}
+.l30lg span{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:700;color:var(--l23-ink)}
+.l30lg i{width:12px;height:12px;border-radius:4px;display:inline-block}
+.l30lg.v{flex-direction:column;gap:6px}
+.l30lg.v span{display:grid;grid-template-columns:14px 1fr auto;gap:8px;cursor:default;padding:4px 6px;border-radius:8px}
+.l30lg.v span:hover{background:#f8f3fb}
+.l30lg.v b{font-size:15px}
+.l30dims{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 12px}
+.l30dims button{border:1.5px solid var(--l23-line);background:#fff;border-radius:999px;padding:7px 12px;font:800 12.5px var(--lv-display);color:var(--l23-mut);cursor:pointer}
+.l30dims button.on{background:var(--l23-p);border-color:var(--l23-p);color:#fff}
+.l30dots{display:grid;grid-template-columns:repeat(20,1fr);gap:5px}
+.l30dots i{aspect-ratio:1;border-radius:50%;animation:l30pop .3s ease both;animation-delay:calc(var(--i) * 4ms);transition:opacity .2s,transform .2s}
+.l30dots i.dim{opacity:.15;transform:scale(.8)}
+@keyframes l30pop{from{opacity:0;transform:scale(.2)}to{opacity:1;transform:none}}
+.ln{width:100%;height:auto;display:block;margin-top:6px}
+.ln .g{stroke:#efe8f5}
+.ln .ax{fill:#8a7d97;font-size:12px;font-weight:700;text-anchor:end;font-family:var(--lv-display)}
+.ln .band{fill:#f1ecf5}
+.ln .ann{fill:#6a5a7a;font-size:12px;font-weight:800;text-anchor:middle;font-family:var(--lv-display)}
+.ln .ar{fill:url(#none);fill:color-mix(in srgb,#D33B78 12%,transparent)}
+.ln .lp{fill:none;stroke:#D33B78;stroke-width:3.5;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:1;animation:l30draw 1.4s ease forwards}
+@keyframes l30draw{to{stroke-dashoffset:0}}
+.ln .pt{fill:#fff;stroke:#D33B78;stroke-width:2.5}
+.ln .pk circle{fill:#D33B78;opacity:.25}
+.ln .pk text{fill:#9E2C5A;font-size:12px;font-weight:800;text-anchor:middle;font-family:var(--lv-display)}
+.ln .hv line{stroke:#8E36CF;stroke-dasharray:4 4}
+.ln .hv circle{fill:#8E36CF;stroke:#fff;stroke-width:3}
+.ln .hv rect{fill:#2a1240}
+.ln .hv text{fill:#fff;font-family:var(--lv-display)}
+.ln .hv .t1{font-size:12px;font-weight:700;opacity:.8}.ln .hv .t2{font-size:15px;font-weight:800}
+.ln .ov{fill:transparent;cursor:crosshair}
+.bb{width:100%;height:auto;display:block}
+.bb .b{cursor:pointer;animation:l30pop .5s cubic-bezier(.3,1.5,.5,1) both;animation-delay:calc(var(--i) * 25ms)}
+.bb circle{stroke:#fff;stroke-width:2;transition:transform .2s}
+.bb .b:hover circle{transform:scale(1.07)}
+.bb text{text-anchor:middle;fill:#fff;font-size:11.5px;font-weight:800;pointer-events:none;font-family:var(--lv-display)}
+.bb text.v{font-size:13px}
+.l30gau .gg{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
+.l30gau .gc{display:flex;flex-direction:column;align-items:center;text-align:center;background:#fcf9fe;border-radius:20px;padding:14px 14px 16px;animation:lv27up .45s ease both;animation-delay:calc(var(--i) * 70ms)}
+.l30gau svg{width:100%;max-width:210px}
+.l30gau .bg{fill:#efe7f6}
+.l30gau .fg{fill:var(--c)}
+.l30gau .nd{stroke:#2a1240;stroke-width:4;stroke-linecap:round;transform-origin:100px 104px;animation:l30nd 1s cubic-bezier(.3,1.4,.5,1) both}
+@keyframes l30nd{from{transform:rotate(-90deg)}to{transform:none}}
+.l30gau .hub{fill:#2a1240}
+.l30gau b{font-size:30px;font-weight:800;color:var(--c);margin-top:-4px}
+.l30gau em{font-style:normal;font-size:14.5px;font-weight:800;color:var(--l23-ink);line-height:1.3}
+.l30gau small{font-size:12.5px;line-height:1.35;margin-top:4px}
+#l30tip{position:fixed;z-index:200;pointer-events:none;background:#2a1240;color:#fff;border-radius:12px;padding:8px 12px;font:700 13px var(--lv-display);display:flex;flex-direction:column;gap:2px;opacity:0;transition:opacity .15s;max-width:220px}
+#l30tip.on{opacity:1}
+#l30tip span{font-size:15px;font-weight:800}
+html.lv23calm .sun path,html.lv23calm .l30dots i,html.lv23calm .bb .b,html.lv23calm .l30gau .nd,html.lv23calm .ln .lp{animation:none!important;stroke-dashoffset:0}
+@media (max-width:860px){.l30sun,.l30waf{grid-template-columns:1fr}.l30dots{gap:3px}}
 </style><script id="lv23-js">/* ==========================================================================
    LIBRES v24 · Inicio limpio, accesibilidad, ruta de navegación y fotografías
    - Barra superior: logos de cooperación + herramientas de accesibilidad
@@ -5969,25 +6444,45 @@ html.lv23calm .lv25card{animation:none}
       [String(nS), T('líneas temáticas con sus indicadores', 'thematic lines with their indicators'), T('8 derechos · 37 normas · 32 observatorios', '8 rights · 37 laws · 32 observatories'), 'themes', '#1A82B9']
     ];
   }
+  // grupos de micrositios: líneas temáticas, comités, redes y rutas de atención
+  var GROUPS = [
+    ['lineas', 'Líneas temáticas', 'Thematic lines', ['violencias', 'lgbtiq', 'autonomia', 'participacion', 'educacion', 'salud-dsr', 'cuidados', 'demografia', 'etnico', 'pan-1325']],
+    ['comites', 'Comités', 'Committees', ['comite-1257', 'comite-1719', 'comites-tecnico-juridicos']],
+    ['redes', 'Redes', 'Networks', ['casas-refugio', 'red-observatorios']],
+    ['rutas', 'Rutas de atención', 'Support pathways', ['rutas']]
+  ];
+  W.LV23_GROUPS = GROUPS;
+  function groupOf(id) { for (var i = 0; i < GROUPS.length; i++) if (GROUPS[i][3].indexOf(id) > -1) return GROUPS[i]; return GROUPS[0]; }
+  W.LV23_GROUPOF = groupOf;
+  var curGroup = 'lineas';
+  var GDESC = { lineas: ['Violencias, trabajo, cuidados, salud, educación y más', 'Violence, work, care, health, education and more'], comites: ['Seguimiento a las leyes que protegen a las mujeres', 'Monitoring the laws that protect women'], redes: ['Casas refugio y red de observatorios', 'Shelters and the observatory network'], rutas: ['Dónde pedir ayuda y qué pasa en cada paso', 'Where to get help and what happens next'] };
+  var GCOL = { lineas: '#8E36CF', comites: '#9E2C5A', redes: '#1A82B9', rutas: '#D33B78' }, GICO = { lineas: 'spark', comites: 'scale', redes: 'network', rutas: 'route' };
+  function themesHTML() {
+    var sites = W.LV11 ? W.LV11.sites() : [], ic = W.LV11 && W.LV11.icon, by = {}; sites.forEach(function (s) { by[s.id] = s; });
+    var known = {}; GROUPS.forEach(function (g) { g[3].forEach(function (id) { known[id] = 1; }); });
+    sites.forEach(function (s) { if (!known[s.id]) GROUPS[0][3].push(s.id); });
+    var g = GROUPS.filter(function (x) { return x[0] === curGroup; })[0] || GROUPS[0];
+    return '<div class="xg4" role="tablist" aria-label="' + T('Elige el tema', 'Choose the topic') + '">' + GROUPS.map(function (x) { var n = x[3].filter(function (id) { return by[id]; }).length, on = x[0] === g[0]; return '<button type="button" role="tab" data-grp="' + x[0] + '" aria-selected="' + on + '" style="--c:' + GCOL[x[0]] + '"' + (on ? ' class="on"' : '') + '><span class="xi">' + (ic ? ic(GICO[x[0]], 30) : '') + '</span><span class="xn2">' + n + '</span><b>' + T(x[1], x[2]) + '</b><small>' + T(GDESC[x[0]][0], GDESC[x[0]][1]) + '</small><i class="xa">' + ARR + '</i></button>'; }).join('') + '</div>' +
+      '<div class="xtl" role="tabpanel" style="--g:' + GCOL[g[0]] + '">' + g[3].filter(function (id) { return by[id]; }).map(function (id, i) { var s = by[id]; return '<button type="button" data-site="' + s.id + '" style="--c:' + s.c + ';--d:' + (i * 40) + 'ms"><span class="xic">' + (ic ? ic(s.ico, 24) : '') + '</span><b>' + E(en() ? s.en : s.es) + '</b><i>' + ARR + '</i></button>'; }).join('') + '</div>';
+  }
   function homeHTML() {
-    var sites = W.LV11 ? W.LV11.sites() : [], ic = W.LV11 && W.LV11.icon, k = kpis().slice(0, 3);
-    // 1. portada a pantalla completa con foto de fondo
-    var h = '<div class="xhero">' + photo('home', 'xbg') + '<div class="xshade"></div><div class="xtxt"><span class="xeye">' + T('Observatorio de Mujeres en todas sus diversidades', 'Observatory of Women in all their diversity') + '</span>' +
-      '<h1>' + T('Mujeres, territorios <em>y realidades</em>', 'Women, territories <em>and realities</em>') + '</h1>' +
+    // 1. portada con foto de fondo: el nombre del observatorio es el título principal
+    var h = '<div class="xhero">' + photo('home', 'xbg') + '<div class="xshade"></div><div class="xtxt">' +
+      '<h1>' + T('Observatorio de Mujeres <em>en todas sus diversidades</em>', 'Observatory of Women <em>in all their diversity</em>') + '</h1>' +
+      '<p class="xsub2">' + T('Mujeres, territorios y realidades', 'Women, territories and realities') + '</p>' +
       '<form class="xsx" role="search"><label class="sr" for="lv23q">' + T('Buscar en el observatorio', 'Search the observatory') + '</label><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input id="lv23q" type="search" autocomplete="off" placeholder="' + T('¿Qué quieres consultar?', 'What would you like to check?') + '"><button type="submit">' + T('Buscar', 'Search') + '</button></form>' +
       '<div class="xcta"><button type="button" class="xb1" data-go="mapa">' + T('Explorar el mapa', 'Explore the map') + ' ' + ARR + '</button><button type="button" class="xb2" data-go="indicadores">' + T('Ver indicadores', 'See indicators') + '</button></div></div></div>';
-    // 2. cifras superpuestas
-    h += '<div class="xkpi" role="group" aria-label="' + T('Cifras clave', 'Key figures') + '">' + k.map(function (x) { return '<button type="button" data-go="' + x[3] + '" style="--c:' + x[4] + '"><b>' + x[0] + '</b><span>' + x[1] + '</span></button>'; }).join('') +
+    // 2. cifras: indicadores, datos interseccionales y datos territorializados
+    var np = W.LV11 && W.LV11.published ? W.LV11.published() : 39;
+    h += '<div class="xkpi" role="group" aria-label="' + T('El observatorio en cifras', 'The observatory in figures') + '">' +
+      [[String(np), T('indicadores en el observatorio', 'indicators in the observatory'), 'indicadores', '#D33B78', ''], ['6', T('datos interseccionales: edad, etnia, discapacidad, orientación sexual, agresor y zona', 'intersectional data: age, ethnicity, disability, sexual orientation, aggressor and area'), 'indicadores', '#8E36CF', 'quien'], ['1.122', T('datos territorializados: municipios con zona urbana y rural', 'territorial data: municipalities with urban and rural areas'), 'mapa', '#17A58C', '']].map(function (x) { return '<button type="button" data-go="' + x[2] + '"' + (x[4] ? ' data-vt="' + x[4] + '"' : '') + ' style="--c:' + x[3] + '"><b>' + x[0] + '</b><span>' + x[1] + '</span></button>'; }).join('') +
       '<button type="button" class="xmore" data-full="1"><span>' + T('Panorama de cifras', 'Data overview') + '</span>' + ARR + '</button></div>';
-    // 3. líneas temáticas: protagonistas del inicio
-    h += '<section class="xthemes" id="lv23themes" aria-labelledby="lv23th"><h2 id="lv23th">' + T('Líneas temáticas', 'Thematic lines') + '</h2><div class="xtl">' +
-      sites.map(function (s, i) { return '<button type="button" data-site="' + s.id + '" style="--c:' + s.c + ';--d:' + (i * 40) + 'ms"><span class="xic">' + (ic ? ic(s.ico, 26) : '') + '</span><b>' + E(en() ? s.en : s.es) + '</b><i>' + ARR + '</i></button>'; }).join('') + '</div></section>';
-    // 4. ruta por pasos
-    h += '<section class="xroute" aria-labelledby="lv23rt"><h2 id="lv23rt">' + T('¿Por dónde empezar?', 'Where to start?') + '</h2><ol>' +
-      ROUTE.map(function (r, i) { return '<li><button type="button" data-go="' + r[0] + '"><span class="xn">' + (i + 1) + '</span><b>' + T(r[1], r[2]) + '</b></button></li>'; }).join('') + '</ol></section>';
-    // 6. territorios
-    h += '<section class="xterr" aria-labelledby="lv23tr">' + photo('territorios', 'xbg') + '<div class="xshade"></div><div class="xtx"><span class="xeye">' + T('Proyecto ¡LIBRES!', '¡LIBRES! project') + '</span><h2 id="lv23tr">' + T('Siete territorios, un mismo compromiso', 'Seven territories, one commitment') + '</h2><div class="xmun">' +
-      LIBRES.map(function (m) { return '<button type="button" data-mun="' + m[0] + '">' + m[1] + '</button>'; }).join('') + '</div></div></section>';
+    // 2. ruta por pasos: el primero lleva a elegir el tema
+    var R6 = [['themes', 'Elige el tema de tu interés', 'Choose your topic']].concat(ROUTE);
+    h += '<section class="xroute" aria-labelledby="lv23rt"><h2 id="lv23rt">' + T('¿Por dónde empezar?', 'Where to start?') + '</h2><ol class="n6">' +
+      R6.map(function (r, i) { return '<li><button type="button" data-go="' + r[0] + '"><span class="xn">' + (i + 1) + '</span><b>' + T(r[1], r[2]) + '</b></button></li>'; }).join('') + '</ol></section>';
+    // 3. temas divididos en cuatro grupos
+    h += '<section class="xthemes" id="lv23themes" aria-labelledby="lv23th"><h2 id="lv23th">' + T('Elige el tema de tu interés', 'Choose your topic') + '</h2><div id="lv23tw">' + themesHTML() + '</div></section>';
     return h;
   }
   function mountHome() {
@@ -6005,19 +6500,21 @@ html.lv23calm .lv25card{animation:none}
   function wireHome(s) {
     s.addEventListener('submit', function (e) { e.preventDefault(); var q = (s.querySelector('#lv23q') || {}).value; if (q && q.trim()) search(q.trim()); });
     s.addEventListener('click', function (e) {
+      var gb = e.target.closest('[data-grp]'); if (gb) { curGroup = gb.dataset.grp; var tw = D.getElementById('lv23tw'); if (tw) tw.innerHTML = themesHTML(); var nb = tw && tw.querySelector('[data-grp="' + curGroup + '"]'); if (nb) nb.focus(); return; }
       var b = e.target.closest('[data-go],[data-site],[data-mun],[data-q],[data-full]'); if (!b) return; e.preventDefault();
       if (b.dataset.q) return search(b.dataset.q);
       if (b.dataset.full) { full = true; update(); var t = D.getElementById('libresRoot'); setTimeout(function () { scrollTo({ top: (t ? t.getBoundingClientRect().top + scrollY - 140 : 0), behavior: 'smooth' }); }, 60); return; }
       if (b.dataset.site) { full = false; W.LV11.openSite(b.dataset.site); return; }
       if (b.dataset.go === 'themes') return goThemes();
       if (b.dataset.mun) { W.go('mapa'); setTimeout(function () { var h = D.getElementById('lv20host'), r = h && h.shadowRoot, sel = r && r.querySelector('.mlist button[data-mun="' + b.dataset.mun + '"]'); if (W.LV21_PICKMUN) W.LV21_PICKMUN(b.dataset.mun); else if (sel) sel.click(); }, 700); return; }
+      if (b.dataset.vt) W.LV30_TAB = b.dataset.vt;
       W.go(b.dataset.go);
     });
   }
 
   /* ---------------- Estado de la página ---------------- */
   /* ---------------- Subpáginas de línea temática: pestañas ---------------- */
-  var TABS = [['res', 'Resumen', 'Summary'], ['exp', 'Explorar datos', 'Explore data'], ['fue', 'Fuentes y detalle', 'Sources and detail'], ['mas', 'Más de esta línea', 'More on this line']], curTab = 'res';
+  var TABS = [['res', 'Lo más importante', 'Key points'], ['exp', 'Busca más cifras', 'Find more figures'], ['fue', 'De dónde salen los datos', 'Where the data comes from'], ['mas', 'Normas, rutas y más', 'Laws, pathways and more']], curTab = 'res';
   function siteTabs() {
     var sid = activePage() === 'libres' ? siteOpen() : null; R.classList.toggle('lv23site', !!sid);
     if (!sid) { D.querySelectorAll('.l23off').forEach(function (el) { el.classList.remove('l23off'); }); var ob = D.getElementById('lv23tabs'); if (ob) ob.remove(); return; }
@@ -6036,11 +6533,14 @@ html.lv23calm .lv25card{animation:none}
     var after = false;
     [].forEach.call(content.children, function (el) { if (el === pano) { after = true; return; } if (!after) return; el.dataset.l23tab = el.classList.contains('lv11panob') ? 'mas' : 'exp'; });
     var bar = D.getElementById('lv23tabs');
-    if (!bar) { bar = D.createElement('nav'); bar.id = 'lv23tabs'; bar.setAttribute('aria-label', T('Secciones de la línea', 'Line sections')); bar.setAttribute('data-no-translate', ''); bar.addEventListener('click', function (e) { var b = e.target.closest('[data-t]'); if (!b) return; curTab = b.dataset.t; siteTabs(); var top = bar.getBoundingClientRect().top + scrollY - 140; if (scrollY > top) scrollTo({ top: top, behavior: 'smooth' }); }); }
+    if (!bar) { bar = D.createElement('nav'); bar.id = 'lv23tabs'; bar.setAttribute('aria-label', T('Secciones de la línea', 'Line sections')); bar.setAttribute('data-no-translate', ''); bar.addEventListener('pointerdown', function (e) { if (e.button === 0) e.preventDefault(); }); bar.addEventListener('click', function (e) { var b = e.target.closest('[data-t]'); if (!b) return; curTab = b.dataset.t; siteTabs(); var top = bar.getBoundingClientRect().top + scrollY - 140; if (scrollY > top) scrollTo({ top: top, behavior: 'smooth' }); }); }
     if (hero && bar.previousElementSibling !== hero) hero.parentNode.insertBefore(bar, hero.nextSibling);
     var have = {}; D.querySelectorAll('#libresRoot [data-l23tab]').forEach(function (el) { have[el.dataset.l23tab] = 1; });
     if (!have[curTab]) curTab = 'res';
-    bar.innerHTML = TABS.filter(function (x) { return have[x[0]]; }).map(function (x) { return '<button type="button" data-t="' + x[0] + '"' + (x[0] === curTab ? ' class="on" aria-current="true"' : '') + '>' + T(x[1], x[2]) + '</button>'; }).join('');
+    var bh = TABS.filter(function (x) { return have[x[0]]; }).map(function (x) { return '<button type="button" data-t="' + x[0] + '"' + (x[0] === curTab ? ' class="on" aria-current="true"' : '') + '>' + T(x[1], x[2]) + '</button>'; }).join('');
+    if (bar.dataset.sig !== bh) { bar.dataset.sig = bh; bar.innerHTML = bh; }
+    var hd = D.querySelector('body > header'); if (hd) bar.style.top = (Math.round(hd.getBoundingClientRect().height) + 8) + 'px';
+    var on = bar.querySelector('.on'); if (on && (on.offsetLeft < bar.scrollLeft || on.offsetLeft + on.offsetWidth > bar.scrollLeft + bar.clientWidth)) bar.scrollLeft = on.offsetLeft - 12;
     D.querySelectorAll('#libresRoot [data-l23tab]').forEach(function (el) { el.classList.toggle('l23off', el.dataset.l23tab !== curTab); });
     // resumen corto: solo dos gráficas y un botón para ver el resto
     var gal = pano.querySelector('.lv11gallery');
@@ -6061,8 +6561,35 @@ html.lv23calm .lv25card{animation:none}
     if (!open && !filtering && q.length > 6) { if (!b) { b = D.createElement('button'); b.type = 'button'; b.className = 'l23faqmore'; b.onclick = function () { list.dataset.open = 1; cleanFaq(); }; list.parentNode.insertBefore(b, list.nextSibling); } b.textContent = T('Ver las ' + q.length + ' preguntas', 'See all ' + q.length + ' questions'); }
     else if (b) b.remove();
   }
+  /* ---------------- Página «Sentencias» ---------------- */
+  var senF = 'todas', senQ = '';
+  function renderSentencias() {
+    var sec = D.getElementById('sentencias'); if (!sec || !W.LV11 || !W.LV11.norms) return;
+    var all = W.LV11.norms().filter(function (n) { return n.tipo === 'Sentencia' || n.tipo === 'Auto'; }).sort(function (a, b) { return b.y - a.y; });
+    var list = all.filter(function (n) { return (senF === 'todas' || n.tipo === senF) && (!senQ || (n.n + ' ' + n.d).toLowerCase().indexOf(senQ.toLowerCase()) > -1); });
+    var cnt = function (t) { return all.filter(function (n) { return t === 'todas' || n.tipo === t; }).length; };
+    sec.innerHTML = '<div class="lv11content"><div class="lv11rhero lv26sh"><div class="eyebrow">' + T('Sentencias', 'Court rulings') + '</div><h1>' + T('Lo que han decidido los jueces.', 'What the courts have decided.') + '</h1><p>' + T('Decisiones de la Corte Constitucional que protegen los derechos de las mujeres.', 'Constitutional Court decisions protecting women\'s rights.') + '</p>' + photo('normativa', 'xsent') + '</div>' +
+      '<div class="lv26sbar"><div class="lv25chips">' + [['todas', 'Todas', 'All'], ['Sentencia', 'Sentencias', 'Rulings'], ['Auto', 'Autos de seguimiento', 'Follow-up orders']].map(function (x) { return '<button type="button" data-sf="' + x[0] + '"' + (senF === x[0] ? ' class="on"' : '') + '>' + T(x[1], x[2]) + '<small>' + cnt(x[0]) + '</small></button>'; }).join('') + '</div>' +
+      '<label class="lv11search lv25q"><input id="lv26sq" value="' + E(senQ) + '" placeholder="' + T('Buscar sentencia o tema…', 'Search ruling or topic…') + '"></label></div>' +
+      '<ol class="lv26sent">' + list.map(function (n, i) { return '<li style="--i:' + i + '"><button type="button" data-norm="' + n.id + '"><span class="y">' + n.y + '</span><span class="tx"><em>' + E(n.tipo === 'Auto' ? T('Auto de seguimiento', 'Follow-up order') : T('Sentencia', 'Ruling')) + '</em><b>' + E(n.n.replace(/^Sentencia /, '')) + '</b><small>' + E(en() ? (n.de || n.d) : n.d) + '</small></span><i>' + ARR + '</i></button></li>'; }).join('') + '</ol>' +
+      (list.length ? '' : '<p class="lv11note">' + T('No hay sentencias con ese filtro.', 'No rulings match.') + '</p>') + '</div>';
+  }
+  function setupPages() {
+    var main = D.querySelector('main'), nav = D.getElementById('navigation'); if (!main || !nav) return;
+    if (!D.getElementById('sentencias')) {
+      var s = D.createElement('section'); s.id = 'sentencias'; s.className = 'page'; s.setAttribute('data-no-translate', ''); main.appendChild(s);
+      s.addEventListener('click', function (e) { var f = e.target.closest('[data-sf]'); if (f) { senF = f.dataset.sf; renderSentencias(); return; } var n = e.target.closest('[data-norm]'); if (n && W.LV11.openNorm) W.LV11.openNorm(n.dataset.norm); });
+      s.addEventListener('input', function (e) { if (e.target.id === 'lv26sq') { senQ = e.target.value; clearTimeout(setupPages.t); setupPages.t = setTimeout(function () { renderSentencias(); var i = D.getElementById('lv26sq'); if (i) { i.focus(); i.setSelectionRange(i.value.length, i.value.length); } }, 250); } });
+    }
+    if (!nav.querySelector('[data-l26="sentencias"]')) {
+      var nb = [].filter.call(nav.querySelectorAll('button'), function (b) { return (b.getAttribute('onclick') || '').indexOf("'normativa'") > -1; })[0];
+      if (nb) { var c = nb.cloneNode(true); c.setAttribute('onclick', "go('sentencias')"); c.dataset.l26 = 'sentencias'; c.dataset.page = 'sentencias'; c.classList.remove('active'); var tn = [].filter.call(c.childNodes, function (x) { return x.nodeType === 3 && x.textContent.trim(); })[0]; if (tn) tn.textContent = T('Sentencias', 'Rulings'); else c.textContent = T('Sentencias', 'Rulings'); nb.parentNode.insertBefore(c, nb.nextSibling); }
+    }
+  }
   function update() {
     if (!CONSULTA) return;
+    setupPages();
+    if (activePage() === 'sentencias') renderSentencias();
     if (activePage() === 'asistente') { cleanFaq(); setTimeout(cleanFaq, 400); }
     var home = activePage() === 'libres' && !siteOpen() && !full;
     R.classList.toggle('lv23home', home);
@@ -6133,7 +6660,7 @@ html.lv23calm .lv25card{animation:none}
   var LINES = [['155', T('Orientación a mujeres', 'Women\'s helpline')], ['123', T('Emergencias', 'Emergencies')], ['122', T('Fiscalía', 'Prosecutor')], ['141', 'ICBF']];
 
   var DN = { '05': 'Antioquia', '08': 'Atlántico', '11': 'Bogotá D.C.', '13': 'Bolívar', '15': 'Boyacá', '17': 'Caldas', '18': 'Caquetá', '19': 'Cauca', '20': 'Cesar', '23': 'Córdoba', '25': 'Cundinamarca', '27': 'Chocó', '41': 'Huila', '44': 'La Guajira', '47': 'Magdalena', '50': 'Meta', '52': 'Nariño', '54': 'Norte de Santander', '63': 'Quindío', '66': 'Risaralda', '68': 'Santander', '70': 'Sucre', '73': 'Tolima', '76': 'Valle del Cauca', '81': 'Arauca', '85': 'Casanare', '86': 'Putumayo', '88': 'San Andrés y Providencia', '91': 'Amazonas', '94': 'Guainía', '95': 'Guaviare', '97': 'Vaupés', '99': 'Vichada' };
-  var st = { dep: '19', mun: '19573', sit: 0 };
+  var st = { dep: '19', mun: '19573', sit: 0, zoom: 'mun' };
   var G = null, CEN = {}, BY = {};
   function geo() {
     if (G) return G; var TG = W.LV22_GEO; if (!TG) return null;
@@ -6151,6 +6678,8 @@ html.lv23calm .lv25card{animation:none}
     var X0 = 1e9, Y0 = 1e9, X1 = -1e9, Y1 = -1e9;
     (BY[st.dep] || []).forEach(function (m) { var c = CEN[m.c]; X0 = Math.min(X0, c[3]); Y0 = Math.min(Y0, c[4]); X1 = Math.max(X1, c[5]); Y1 = Math.max(Y1, c[6]); });
     var w = X1 - X0, h = Y1 - Y0, s = Math.max(w, h / .85) * 1.12 + .6, cx = (X0 + X1) / 2, cy = (Y0 + Y1) / 2;
+    var c = CEN[st.mun];
+    if (st.zoom !== 'dep' && c) { var s2 = Math.min(s, Math.max(c[2] * 4.2, s * .32)); return [c[0] - s2 / 2, c[1] - s2 * .85 / 2, s2, s2 * .85]; }
     return [cx - s / 2, cy - s * .85 / 2, s, s * .85];
   }
   function mname(c) { var m = G.filter(function (x) { return x.c === c; })[0]; return m ? m.n : c; }
@@ -6165,15 +6694,15 @@ html.lv23calm .lv25card{animation:none}
     var v = vb(), s = SIT[st.sit], m = G.filter(function (x) { return x.c === st.mun; })[0], sw = (v[2] * .0016).toFixed(3);
     var ms = (BY[st.dep] || []).slice().sort(function (a, b) { return a.n.localeCompare(b.n); });
     var mapSvg = '<svg class="mp" viewBox="' + v.map(function (n) { return n.toFixed(3); }).join(' ') + '" role="img" aria-label="' + T('Municipios de ', 'Municipalities of ') + E(DN[st.dep]) + '" style="--sw:' + sw + '">' +
-      ms.map(function (x) { var lb = LIBRES.indexOf(x.c) > -1; return '<path d="' + x.p + '" data-m="' + x.c + '" class="' + (x.c === st.mun ? 'on ' : '') + (lb ? 'lb' : '') + '"><title>' + E(x.n) + '</title></path>'; }).join('') + routeSVG(v) + '</svg>';
+      (st.zoom !== 'dep' ? G.filter(function (x) { var c = CEN[x.c]; return c[5] > v[0] && c[3] < v[0] + v[2] && c[6] > v[1] && c[4] < v[1] + v[3]; }) : ms).map(function (x) { var lb = LIBRES.indexOf(x.c) > -1; return '<path d="' + x.p + '" data-m="' + x.c + '" class="' + (x.c === st.mun ? 'on ' : '') + (lb ? 'lb ' : '') + (x.d !== st.dep ? 'out' : '') + '"><title>' + E(x.n) + (x.d !== st.dep ? ' · ' + E(DN[x.d] || '') : '') + '</title></path>'; }).join('') + routeSVG(v) + '</svg>';
     var TG = W.LV22_GEO, loc = '<svg class="loc" viewBox="20 10 380 470" role="group" aria-label="' + T('Elegir departamento', 'Choose department') + '">' + Object.keys(TG.dep).map(function (d) { return '<path d="' + TG.dep[d] + '" data-dep="' + d + '"' + (d === st.dep ? ' class="on"' : '') + '><title>' + E(DN[d] || d) + '</title></path>'; }).join('') + '</svg>';
     root.innerHTML = '<div class="g24hd"><div><span class="g24eye">' + T('Geovisor · todo el país', 'Map viewer · whole country') + '</span><h2>' + T('La ruta en tu territorio', 'The pathway in your territory') + '</h2></div>' +
       '<div class="g24sel"><label><span>' + T('Departamento', 'Department') + '</span><select data-k="dep">' + Object.keys(DN).sort(function (a, b) { return DN[a].localeCompare(DN[b]); }).map(function (d) { return '<option value="' + d + '"' + (d === st.dep ? ' selected' : '') + '>' + E(DN[d]) + '</option>'; }).join('') + '</select></label>' +
       '<label><span>' + T('Municipio', 'Municipality') + '</span><select data-k="mun">' + ms.map(function (x) { return '<option value="' + x.c + '"' + (x.c === st.mun ? ' selected' : '') + '>' + E(x.n) + (LIBRES.indexOf(x.c) > -1 ? ' ★' : '') + '</option>'; }).join('') + '</select></label></div></div>' +
       '<div class="g24sit" role="group" aria-label="' + T('Situación', 'Situation') + '">' + SIT.map(function (x, i) { return '<button type="button" data-sit="' + i + '"' + (i === st.sit ? ' class="on" aria-pressed="true"' : ' aria-pressed="false"') + '>' + E(x[1]) + '</button>'; }).join('') + '</div>' +
-      '<div class="g24body"><div class="g24map"><div class="g24mtitle"><b>' + E(DN[st.dep]) + '</b><span>' + ms.length + ' ' + T('municipios', 'municipalities') + '</span></div>' + mapSvg + '<div class="g24loc">' + loc + '<small>' + T('Toca otro departamento', 'Tap another department') + '</small></div>' +
+      '<div class="g24body"><div class="g24map"><div class="g24mtitle"><b>' + E(DN[st.dep]) + '</b><span>' + ms.length + ' ' + T('municipios', 'municipalities') + '</span><span class="g24zm" role="group"><button type="button" data-zoom="mun"' + (st.zoom !== 'dep' ? ' class="on"' : '') + '>' + T('Municipio', 'Municipality') + '</button><button type="button" data-zoom="dep"' + (st.zoom === 'dep' ? ' class="on"' : '') + '>' + T('Departamento', 'Department') + '</button></span></div>' + mapSvg + '<div class="g24loc">' + loc + '<small>' + T('Toca otro departamento', 'Tap another department') + '</small></div>' +
       '<div class="g24chips"><span>¡LIBRES!</span>' + LIBRES.map(function (c) { return '<button type="button" data-mun="' + c + '"' + (c === st.mun ? ' class="on"' : '') + '>' + E(mname(c)) + '</button>'; }).join('') + '</div></div>' +
-      '<div class="g24panel"><p class="g24m"><b>' + E(m ? m.n : '') + '</b><span>' + E(DN[st.dep]) + (LIBRES.indexOf(st.mun) > -1 ? ' · ¡LIBRES!' : '') + ' · ' + E(s[1]) + '</span></p><ol class="g24steps">' +
+      '<div class="g24panel"><a class="g24sos" href="tel:123"><b>123</b><span>' + T('¿Estás en peligro ahora? Llama a la línea de emergencias', 'In danger now? Call the emergency line') + '</span></a><p class="g24m"><b>' + E(m ? m.n : '') + '</b><span>' + E(DN[st.dep]) + (LIBRES.indexOf(st.mun) > -1 ? ' · ¡LIBRES!' : '') + ' · ' + E(s[1]) + '</span></p><ol class="g24steps">' +
       s[2].map(function (p, i) { var e = ENT[p[0]]; return '<li style="--c:' + e.c + ';animation-delay:' + (i * 90) + 'ms"><span class="n">' + (i + 1) + '</span><span class="ic">' + icon(p[0], 20) + '</span><div><b>' + E(e.n) + (e.tel ? ' <a href="tel:' + e.tel + '">' + e.tel + '</a>' : '') + '</b><small>' + E(p[1]) + '</small></div></li>'; }).join('') + '</ol>' +
       '<div class="g24lines">' + LINES.map(function (l) { return '<a href="tel:' + l[0] + '"><b>' + l[0] + '</b>' + E(l[1]) + '</a>'; }).join('') + '</div>' +
       '<p class="g24note">' + T('Ubicaciones ilustrativas. Sedes y horarios se validan con cada alcaldía.', 'Illustrative locations. Offices and hours are validated with each municipality.') + '</p></div></div>';
@@ -6187,6 +6716,7 @@ html.lv23calm .lv25card{animation:none}
     if (!g) {
       g = D.createElement('section'); g.id = 'lv24geo'; g.setAttribute('data-no-translate', '');
       g.addEventListener('click', function (e) {
+        var z = e.target.closest('[data-zoom]'); if (z) { st.zoom = z.dataset.zoom; render(g); return; }
         var b = e.target.closest('[data-sit],[data-mun],path[data-m],path[data-dep]'); if (!b) return;
         if (b.dataset.sit != null) st.sit = +b.dataset.sit; else if (b.dataset.dep) setDep(b.dataset.dep); else { st.mun = b.dataset.mun || b.dataset.m; st.dep = st.mun.slice(0, 2); }
         render(g);
@@ -6198,5 +6728,245 @@ html.lv23calm .lv25card{animation:none}
   }
   function init() { mount(); var t; new MutationObserver(function () { clearTimeout(t); t = setTimeout(mount, 200); }).observe(D.querySelector('main') || D.body, { childList: true, subtree: true }); }
   if (D.readyState === 'loading') D.addEventListener('DOMContentLoaded', function () { setTimeout(init, 500); }); else setTimeout(init, 500);
+})();
+</script><script id="lv25-js">/* ==========================================================================
+   LIBRES v29 · Visualizaciones interactivas (referencia de patrones tipo Flourish)
+   - Indicadores: pestañas «Catálogo», «Compara territorios» (barras que se
+     reordenan con animación al cambiar de tema o de zona) y «Cómo procesamos
+     los datos» (recorrido por pasos con contadores y embudo animado).
+   - Indicadores en el mapa: tarjetas de exploración rápida que encienden la
+     capa, el nivel y la zona en el visor con un solo toque.
+   Datos: agregados de Medicina Legal 2025 (preliminar) por departamento y
+   zona (LV23_TERR); celdas de 1 a 4 se muestran como «1–4».
+   ========================================================================== */
+(function () {
+  'use strict';
+  var D = document, W = window;
+  function en() { try { if (typeof language === 'string') return language === 'en'; } catch (e) {} return (D.documentElement.lang || 'es').indexOf('en') === 0; }
+  function T(es, e) { return en() ? e : es; }
+  function E(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function N(v) { return Number(v).toLocaleString(en() ? 'en-US' : 'es-CO'); }
+  var reduced = W.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function calm() { return reduced || D.documentElement.classList.contains('lv23calm'); }
+
+  var THEMES = [
+    ['PAR', 'Violencia de pareja', 'Partner violence', '#D33B78'],
+    ['SEX', 'Violencia sexual', 'Sexual violence', '#8E36CF'],
+    ['NNA', 'Violencia contra niñas', 'Violence against girls', '#EF6B4A'],
+    ['FAM', 'Violencia de otros familiares', 'Violence by other relatives', '#1A82B9'],
+    ['MAY', 'Violencia contra mujeres mayores', 'Violence against older women', '#17A58C'],
+    ['HOM', 'Homicidios de mujeres', 'Homicides of women', '#9E2C5A']
+  ];
+  var st = { tab: 'cat', th: 'PAR', zona: 'T', n: 12 };
+  function dname(c) { return (W.LV11 && W.LV11.deptName && W.LV11.deptName(c)) || c; }
+  function rows() {
+    var K = W.LV23_TERR && W.LV23_TERR.K && W.LV23_TERR.K[st.th]; if (!K) return [];
+    var x = K.x, idx = { T: 0, U: 1, R: 2 }[st.zona] * (x ? 2 : 1);
+    return Object.keys(K.dep).map(function (d) { var v = K.dep[d][idx]; return { d: d, n: dname(d), v: v }; }).filter(function (r) { return r.v !== 0; }).sort(function (a, b) { return (b.v < 0 ? 2 : b.v) - (a.v < 0 ? 2 : a.v); });
+  }
+  function compareHTML() {
+    var th = THEMES.filter(function (t) { return t[0] === st.th; })[0];
+    return '<div class="l30cmp" style="--c:' + th[3] + '"><div class="l30ctl"><div class="l30chips">' + THEMES.map(function (t) { return '<button type="button" data-th="' + t[0] + '" style="--c:' + t[3] + '"' + (t[0] === st.th ? ' class="on"' : '') + '>' + T(t[1], t[2]) + '</button>'; }).join('') + '</div>' +
+      '<div class="l30seg" role="group" aria-label="' + T('Zona', 'Area') + '">' + [['T', 'Todo el territorio', 'All'], ['U', 'Urbano', 'Urban'], ['R', 'Rural', 'Rural']].map(function (z) { return '<button type="button" data-z="' + z[0] + '"' + (z[0] === st.zona ? ' class="on"' : '') + '>' + T(z[1], z[2]) + '</button>'; }).join('') + '</div></div>' +
+      '<div class="l30race" id="l30race" aria-live="polite"></div><div class="l30foot"><button type="button" data-more="1">' + T('Ver todos los departamentos', 'Show all departments') + '</button><small>' + T('Mujeres · 2025, cifras preliminares · Medicina Legal. «1–4»: dato protegido.', 'Women · 2025, preliminary · Forensic institute. «1–4»: protected cell.') + '</small></div></div>';
+  }
+  function race(first) {
+    var box = D.getElementById('l30race'); if (!box) return;
+    var rs = rows(), top = rs.slice(0, st.n), mx = Math.max.apply(null, top.map(function (r) { return r.v; }).concat([1])), H = 38;
+    box.style.height = (top.length * H + 8) + 'px';
+    var seen = {};
+    top.forEach(function (r, i) {
+      seen[r.d] = 1;
+      var el = box.querySelector('[data-d="' + r.d + '"]');
+      if (!el) { el = D.createElement('div'); el.className = 'bar'; el.dataset.d = r.d; el.innerHTML = '<span class="nm"></span><span class="tr"><i></i></span><b></b>'; el.style.transform = 'translateY(' + (top.length * H) + 'px)'; el.style.opacity = '0'; box.appendChild(el); }
+      el.querySelector('.nm').textContent = (i + 1) + '. ' + r.n;
+      requestAnimationFrame(function () { el.style.opacity = '1'; el.style.transform = 'translateY(' + (i * H) + 'px)'; el.querySelector('i').style.width = (r.v < 0 ? 1 : Math.max(1.5, r.v / mx * 100)) + '%'; });
+      countTo(el.querySelector('b'), r.v);
+    });
+    [].forEach.call(box.querySelectorAll('.bar'), function (el) { if (!seen[el.dataset.d]) { el.style.opacity = '0'; setTimeout(function () { if (el.style.opacity === '0') el.remove(); }, 500); } });
+    var mb = D.querySelector('.l30foot [data-more]'); if (mb) mb.textContent = st.n < rs.length ? T('Ver los ' + rs.length + ' departamentos', 'Show all ' + rs.length + ' departments') : T('Ver solo los 12 primeros', 'Show top 12 only');
+  }
+  function countTo(el, v) {
+    if (v < 0) { el.textContent = '1–4'; return; }
+    var from = parseInt(String(el.dataset.v || 0), 10) || 0; el.dataset.v = v;
+    if (calm() || from === v) { el.textContent = N(v); return; }
+    var t0 = performance.now(), dur = 700;
+    (function step(t) { var k = Math.min(1, (t - t0) / dur), e = 1 - Math.pow(1 - k, 3); el.textContent = N(Math.round(from + (v - from) * e)); if (k < 1) requestAnimationFrame(step); })(t0);
+  }
+  // recorrido del procesamiento (ejemplo real: base de lesiones por violencia de pareja)
+  var STEPS = [
+    [438786, 'Registros recibidos', 'Records received', 'Medicina Legal entrega el archivo con cada caso atendido.', 'The forensic institute delivers the file with each case.', '#8E36CF'],
+    [438717, 'Registros revisados', 'Records checked', 'Se descartan duplicados y los 69 casos sin departamento válido.', 'Duplicates and the 69 cases without a valid department are set aside.', '#5B5BD6'],
+    [657, 'Grupos de conteo', 'Count groups', 'Se cuentan los casos por año, departamento y sexo. Nunca se publica un caso suelto.', 'Cases are counted by year, department and sex. No single case is published.', '#1A82B9'],
+    [23, 'Grupos protegidos', 'Protected groups', 'Los grupos con 1 a 4 casos se ocultan para que nadie pueda ser identificada.', 'Groups with 1 to 4 cases are hidden so no one can be identified.', '#E0A800'],
+    [634, 'Cifras publicadas', 'Figures published', 'Son las que ves en el mapa, las gráficas y las descargas.', 'These are the figures on the map, charts and downloads.', '#17A58C']
+  ];
+  function processHTML() {
+    return '<div class="l30proc"><p class="l30lead">' + T('Así pasa un archivo de datos a las cifras que ves. Ejemplo: lesiones por violencia de pareja.', 'How a data file becomes the figures you see. Example: partner violence injuries.') + '</p><ol class="l30flow">' +
+      STEPS.map(function (s, i) { var h = Math.max(8, Math.log10(s[0] + 1) / Math.log10(STEPS[0][0] + 1) * 100); return '<li style="--c:' + s[5] + ';--h:' + h.toFixed(1) + '%;--i:' + i + '"><div class="col"><span class="fill"></span></div><b data-n="' + s[0] + '">0</b><em>' + T(s[1], s[2]) + '</em><small>' + T(s[3], s[4]) + '</small></li>'; }).join('') +
+      '</ol><div class="l30safe"><b>' + T('Lo que nunca se publica', 'What is never published') + '</b><span>' + T('Nombres, documentos, día u hora exactos, dirección ni ningún dato que permita ubicar a una mujer.', 'Names, IDs, exact day or time, address or anything that could locate a woman.') + '</span></div></div>';
+  }
+  function playProcess() {
+    var box = D.querySelector('.l30proc'); if (!box || box.dataset.played) return; box.dataset.played = 1;
+    box.classList.add('go'); box.querySelectorAll('[data-n]').forEach(function (b, i) { setTimeout(function () { countTo(b, +b.dataset.n); }, calm() ? 0 : i * 260); });
+  }
+
+  /* ---------- v30: más tipos de gráfica (patrones tipo Flourish) ---------- */
+  var KEYS = [['PAR', 'Pareja', 'Partner', '#D33B78'], ['SEX', 'Sexual', 'Sexual', '#8E36CF'], ['NNA', 'Niñas', 'Girls', '#EF6B4A'], ['FAM', 'Otros familiares', 'Other relatives', '#1A82B9'], ['MAY', 'Mujeres mayores', 'Older women', '#17A58C'], ['HOM', 'Homicidios', 'Homicides', '#9E2C5A'], ['SUI', 'Suicidios', 'Suicides', '#5B5BD6']];
+  function natZones(k) { var K = W.LV23_TERR && W.LV23_TERR.K[k]; if (!K) return null; var x = K.x, o = { U: 0, R: 0, S: 0 }; Object.keys(K.dep).forEach(function (d) { var a = K.dep[d]; o.U += Math.max(0, a[x ? 2 : 1]); o.R += Math.max(0, a[x ? 4 : 2]); o.S += Math.max(0, a[x ? 6 : 3]); }); return o; }
+  function arc(cx, cy, r0, r1, a0, a1) { var la = a1 - a0 > Math.PI ? 1 : 0, p = function (r, a) { return (cx + r * Math.sin(a)).toFixed(2) + ' ' + (cy - r * Math.cos(a)).toFixed(2); }; return 'M' + p(r1, a0) + 'A' + r1 + ' ' + r1 + ' 0 ' + la + ' 1 ' + p(r1, a1) + 'L' + p(r0, a1) + 'A' + r0 + ' ' + r0 + ' 0 ' + la + ' 0 ' + p(r0, a0) + 'Z'; }
+  function sunHTML() {
+    var data = KEYS.map(function (k) { var z = natZones(k[0]); return z ? { k: k, z: z, t: z.U + z.R + z.S } : null; }).filter(Boolean), tot = data.reduce(function (s, d) { return s + d.t; }, 0), a = 0, h = '';
+    data.forEach(function (d, i) {
+      var a1 = a + d.t / tot * Math.PI * 2, mid = (a + a1) / 2;
+      h += '<path class="s1" d="' + arc(200, 200, 72, 140, a, a1 - .004) + '" fill="' + d.k[3] + '" data-tip="' + E(T(d.k[1], d.k[2]) + '|' + N(d.t) + '|' + (d.t / tot * 100).toFixed(1)) + '" style="--i:' + i + '"/>';
+      if (a1 - a > .22) h += '<text class="sl" x="' + (200 + 106 * Math.sin(mid)).toFixed(1) + '" y="' + (200 - 106 * Math.cos(mid) + 4).toFixed(1) + '">' + E(T(d.k[1], d.k[2])) + '</text>';
+      var b = a; [['U', T('urbano', 'urban'), .92], ['R', T('rural', 'rural'), .62], ['S', T('sin dato', 'no data'), .3]].forEach(function (z) { var v = d.z[z[0]]; if (!v) return; var b1 = b + v / tot * Math.PI * 2; h += '<path class="s2" d="' + arc(200, 200, 144, 196, b, b1 - .003) + '" fill="' + d.k[3] + '" fill-opacity="' + z[2] + '" data-tip="' + E(T(d.k[1], d.k[2]) + ' · ' + z[1] + '|' + N(v) + '|' + (v / d.t * 100).toFixed(1) + ' % ' + T('de este tipo', 'of this type')) + '"/>'; if (b1 - b > .2) { var m = (b + b1) / 2; h += '<text class="sz" x="' + (200 + 170 * Math.sin(m)).toFixed(1) + '" y="' + (200 - 170 * Math.cos(m) + 4).toFixed(1) + '">' + z[1] + '</text>'; } b = b1; });
+      a = a1;
+    });
+    return '<div class="l30box l30sun"><div class="l30txt"><h3>' + T('¿Qué violencias y dónde ocurren?', 'Which violence and where?') + '</h3><p>' + T('Anillo interior: tipo de violencia. Anillo exterior: si pasó en zona urbana o rural. Pasa el puntero o toca para ver el número.', 'Inner ring: type of violence. Outer ring: urban or rural. Hover or tap for the number.') + '</p><div class="l30lg">' + data.map(function (d) { return '<span><i style="background:' + d.k[3] + '"></i>' + T(d.k[1], d.k[2]) + ' · ' + N(d.t) + '</span>'; }).join('') + '</div><small>' + T('Mujeres · 2025, cifras preliminares · Medicina Legal', 'Women · 2025, preliminary · Forensic institute') + '</small></div>' +
+      '<div class="l30svgw"><svg viewBox="0 0 400 400" class="sun" role="img" aria-label="' + T('Gráfico de sol de tipos de violencia y zona', 'Sunburst of violence types and area') + '">' + h + '<circle cx="200" cy="200" r="68" fill="#fff"/><text class="c1" x="200" y="194">' + N(tot) + '</text><text class="c2" x="200" y="216">' + T('casos de mujeres', 'cases of women') + '</text></svg></div></div>';
+  }
+  function perfAgg(key, dim) {
+    var P = W.LV23_TERR && W.LV23_TERR.perf; if (!P) return [];
+    var src = P.p[key] && P.p[key].d, acc = {};
+    Object.keys(src || {}).forEach(function (d) { (src[d][dim] || []).forEach(function (r) { if (r[1] > 0) acc[r[0]] = (acc[r[0]] || 0) + r[1]; }); });
+    var rows = Object.keys(acc).map(function (i) { return [P.lab[i], acc[i]]; }).sort(function (a, b) { return b[1] - a[1]; });
+    var top = rows.slice(0, 5), rest = rows.slice(5).reduce(function (s, r) { return s + r[1]; }, 0); if (rest) top.push([T('Otros', 'Others'), rest]); return top;
+  }
+  var wst = { key: 'PAR', dim: 'cv' };
+  var WCOL = ['#D33B78', '#8E36CF', '#1A82B9', '#17A58C', '#E0A800', '#c9bcd6'];
+  function waffleHTML() {
+    var rows = perfAgg(wst.key, wst.dim), tot = rows.reduce(function (s, r) { return s + r[1]; }, 0) || 1, n = 200, cells = [], acc = 0;
+    rows.forEach(function (r, i) { var c = Math.round((acc + r[1]) / tot * n) - Math.round(acc / tot * n); acc += r[1]; for (var j = 0; j < c; j++) cells.push(i); });
+    var dims = [['cv', 'Edad', 'Age'], ['ag', 'Presunto agresor', 'Aggressor'], ['es', 'Lugar del hecho', 'Place'], ['et', 'Pertenencia étnica', 'Ethnicity'], ['di', 'Discapacidad', 'Disability'], ['os', 'Orientación sexual', 'Sexual orientation']];
+    return '<div class="l30box l30waf"><div class="l30txt"><h3>' + T('¿Quiénes son las víctimas?', 'Who are the victims?') + '</h3><p>' + T('Cada punto es el 0,5 % de las mujeres atendidas en 2024. Elige el tipo de violencia y la característica.', 'Each dot is 0.5% of women attended in 2024. Choose violence type and characteristic.') + '</p>' +
+      '<div class="l30seg">' + [['PAR', 'Violencia de pareja', 'Partner violence'], ['SEX', 'Violencia sexual', 'Sexual violence']].map(function (k) { return '<button type="button" data-wk="' + k[0] + '"' + (wst.key === k[0] ? ' class="on"' : '') + '>' + T(k[1], k[2]) + '</button>'; }).join('') + '</div>' +
+      '<div class="l30dims">' + dims.map(function (d) { return '<button type="button" data-wd="' + d[0] + '"' + (wst.dim === d[0] ? ' class="on"' : '') + '>' + T(d[1], d[2]) + '</button>'; }).join('') + '</div>' +
+      '<div class="l30lg v">' + rows.map(function (r, i) { return '<span data-wi="' + i + '"><i style="background:' + WCOL[i] + '"></i><em>' + E(r[0]) + '</em><b>' + (r[1] / tot * 100).toFixed(1).replace('.', ',') + ' %</b></span>'; }).join('') + '</div></div>' +
+      '<div class="l30dots">' + cells.map(function (c, i) { return '<i data-wi="' + c + '" style="background:' + WCOL[c] + ';--i:' + i + '"></i>'; }).join('') + '</div></div>';
+  }
+  var lst = 'pareja';
+  function lineHTML() {
+    var A = W.LV11 && W.LV11.an, src = lst === 'pareja' ? A && A('pareja-serie') : A && A('ins-notificacion'); if (!src || !src.rows) return '';
+    var pts = src.rows.slice(1).map(function (r) { return [+String(r[0]).slice(0, 4), +r[1]]; }), x0 = pts[0][0], x1 = pts[pts.length - 1][0], ymax = Math.max.apply(null, pts.map(function (p) { return p[1]; })) * 1.15;
+    var W0 = 760, H0 = 300, L = 54, R = 20, Tp = 30, B = 34, X = function (x) { return L + (x - x0) / (x1 - x0) * (W0 - L - R); }, Y = function (y) { return Tp + (1 - y / ymax) * (H0 - Tp - B); };
+    var d = pts.map(function (p, i) { return (i ? 'L' : 'M') + X(p[0]).toFixed(1) + ' ' + Y(p[1]).toFixed(1); }).join(' '), area = d + ' L' + X(x1) + ' ' + Y(0) + ' L' + X(x0) + ' ' + Y(0) + 'Z';
+    var ann = x0 <= 2020 && x1 >= 2020 ? '<rect x="' + (X(2020) - 14) + '" y="' + Tp + '" width="28" height="' + (H0 - Tp - B) + '" class="band"/><text class="ann" x="' + X(2020) + '" y="' + (Tp - 8) + '">' + T('Pandemia 2020', 'Pandemic 2020') + '</text>' : '';
+    var mx = pts.reduce(function (m, p) { return p[1] > m[1] ? p : m; }, pts[0]);
+    var grid = [0, .25, .5, .75, 1].map(function (f) { var v = ymax * f; return '<line x1="' + L + '" x2="' + (W0 - R) + '" y1="' + Y(v) + '" y2="' + Y(v) + '" class="g"/><text class="ax" x="' + (L - 8) + '" y="' + (Y(v) + 4) + '">' + N(Math.round(v / 1000)) + ' mil</text>'; }).join('');
+    return '<div class="l30box l30line"><div class="l30top"><div><h3>' + (lst === 'pareja' ? T('Lesiones por violencia de pareja contra mujeres', 'Partner violence injuries to women') : T('Violencias de género contra mujeres notificadas en salud', 'Gender violence against women notified by health services')) + '</h3><p>' + T('Pasa el puntero por la línea para ver cada año.', 'Hover the line to see each year.') + '</p></div><div class="l30seg"><button type="button" data-ls="pareja"' + (lst === 'pareja' ? ' class="on"' : '') + '>' + T('Medicina Legal', 'Forensic') + '</button><button type="button" data-ls="salud"' + (lst === 'salud' ? ' class="on"' : '') + '>' + T('Sector salud', 'Health') + '</button></div></div>' +
+      '<svg viewBox="0 0 ' + W0 + ' ' + H0 + '" class="ln" data-x0="' + x0 + '" data-pts="' + E(JSON.stringify(pts)) + '">' + grid + ann + '<path class="ar" d="' + area + '"/><path class="lp" d="' + d + '" pathLength="1"/>' + pts.map(function (p) { return '<circle cx="' + X(p[0]).toFixed(1) + '" cy="' + Y(p[1]).toFixed(1) + '" r="4" class="pt"/>'; }).join('') +
+      '<text class="ax" x="' + X(x0) + '" y="' + (H0 - 10) + '" text-anchor="start">' + x0 + '</text><text class="ax" x="' + X(x1) + '" y="' + (H0 - 10) + '" text-anchor="end">' + x1 + '</text>' +
+      '<g class="pk"><circle cx="' + X(mx[0]) + '" cy="' + Y(mx[1]) + '" r="7"/><text x="' + X(mx[0]) + '" y="' + (Y(mx[1]) - 14) + '">' + T('Máximo', 'Peak') + ' ' + mx[0] + ': ' + N(mx[1]) + '</text></g>' +
+      '<g class="hv" style="display:none"><line y1="' + Tp + '" y2="' + (H0 - B) + '"/><circle r="6"/><rect rx="8" width="120" height="44"/><text class="t1"></text><text class="t2"></text></g><rect class="ov" x="' + L + '" y="' + Tp + '" width="' + (W0 - L - R) + '" height="' + (H0 - Tp - B) + '" data-l="' + L + '" data-w="' + (W0 - L - R) + '" data-ymax="' + ymax + '" data-tp="' + Tp + '" data-ih="' + (H0 - Tp - B) + '"/></svg><small>' + E(src.src || '') + '</small></div>';
+  }
+  var bth = 'ALL';
+  function bubData() {
+    var K = W.LV23_TERR && W.LV23_TERR.K, acc = {}; if (!K) return [];
+    (bth === 'ALL' ? ['PAR', 'SEX', 'NNA', 'FAM', 'MAY', 'HOM'] : [bth]).forEach(function (k) { var Q = K[k]; Object.keys(Q.dep).forEach(function (d) { acc[d] = (acc[d] || 0) + Math.max(0, Q.dep[d][0]); }); });
+    return Object.keys(acc).map(function (d) { return { d: d, n: dname(d), v: acc[d] }; }).filter(function (x) { return x.v > 0; }).sort(function (a, b) { return b.v - a.v; });
+  }
+  function pack(items, W0, H0) {
+    var mx = items[0] ? items[0].v : 1, placed = [], k = Math.min(W0, H0) * .2;
+    items.forEach(function (it) { it.r = Math.max(9, Math.sqrt(it.v / mx) * k); });
+    items.forEach(function (it, i) {
+      if (!i) { it.x = W0 / 2; it.y = H0 / 2; placed.push(it); return; }
+      for (var t = 0; t < 6000; t += 1) { var a = t * .21, rr = 2 + t * .35, x = W0 / 2 + rr * Math.cos(a) * 1.35, y = H0 / 2 + rr * Math.sin(a); if (x - it.r < 2 || x + it.r > W0 - 2 || y - it.r < 2 || y + it.r > H0 - 2) continue; if (placed.every(function (p) { var dx = p.x - x, dy = p.y - y; return dx * dx + dy * dy >= Math.pow(p.r + it.r + 2, 2); })) { it.x = x; it.y = y; placed.push(it); return; } }
+    });
+    return placed;
+  }
+  function bubHTML() {
+    var it = pack(bubData(), 760, 460), mx = it[0] ? it[0].v : 1, th = KEYS.filter(function (k) { return k[0] === bth; })[0], col = th ? th[3] : '#8E36CF';
+    return '<div class="l30box l30bub"><div class="l30top"><div><h3>' + T('¿Dónde se concentran los casos?', 'Where are cases concentrated?') + '</h3><p>' + T('Cada burbuja es un departamento; el tamaño es el número de casos de mujeres en 2025.', 'Each bubble is a department; size is the number of cases of women in 2025.') + '</p></div><div class="l30chips">' + [['ALL', 'Todas', 'All', '#8E36CF']].concat(KEYS.slice(0, 6)).map(function (k) { return '<button type="button" data-bt="' + k[0] + '" style="--c:' + k[3] + '"' + (bth === k[0] ? ' class="on"' : '') + '>' + T(k[1], k[2]) + '</button>'; }).join('') + '</div></div>' +
+      '<svg viewBox="0 0 760 460" class="bb">' + it.map(function (b, i) { return '<g transform="translate(' + b.x.toFixed(1) + ' ' + b.y.toFixed(1) + ')"><g class="b" style="--i:' + i + '" data-tip="' + E(b.n + '|' + N(b.v)) + '"><circle r="' + b.r.toFixed(1) + '" fill="' + col + '" fill-opacity="' + (.35 + .65 * b.v / mx).toFixed(2) + '"/>' + (b.r > 30 ? '<text y="-2">' + E(b.n.length > 12 ? b.n.slice(0, 11) + '…' : b.n) + '</text><text y="14" class="v">' + N(b.v) + '</text>' : '') + '</g></g>'; }).join('') + '</svg><small>' + T('Mujeres · 2025, cifras preliminares · Medicina Legal', 'Women · 2025, preliminary') + '</small></div>';
+  }
+  function gaugeHTML() {
+    var K = W.LV11 && W.LV11.kpi; if (!K) return '';
+    var g = ['VBG-04', 'VBG-02', 'CUI-04', 'ECO-01', 'ECO-02', 'ECO-03', 'DEM-01'].map(function (c) { var k = K(c); return k && k.n != null ? [c, k] : null; }).filter(Boolean);
+    var cols = ['#D33B78', '#8E36CF', '#E0A800', '#22A37A', '#17A58C', '#EF6B4A', '#5B5BD6'];
+    return '<div class="l30box l30gau"><div class="l30top"><div><h3>' + T('Las cifras de un vistazo', 'Figures at a glance') + '</h3><p>' + T('Cada medidor va de 0 a 100 %.', 'Each gauge goes from 0 to 100%.') + '</p></div></div><div class="gg">' + g.map(function (x, i) { var p = Math.max(0, Math.min(100, x[1].n)), a = -Math.PI / 2 + p / 100 * Math.PI; return '<div class="gc" style="--c:' + cols[i] + ';--p:' + p + ';--i:' + i + '"><svg viewBox="0 0 200 118"><path d="' + arc(100, 104, 64, 90, -Math.PI / 2, Math.PI / 2) + '" class="bg"/><path d="' + arc(100, 104, 64, 90, -Math.PI / 2, a) + '" class="fg"/><line x1="100" y1="104" x2="' + (100 + 82 * Math.sin(a)).toFixed(1) + '" y2="' + (104 - 82 * Math.cos(a)).toFixed(1) + '" class="nd"/><circle cx="100" cy="104" r="7" class="hub"/></svg><b>' + E(x[1].v) + '</b><em>' + E(x[1].t) + '</em><small>' + E(x[1].s) + '</small></div>'; }).join('') + '</div></div>';
+  }
+  function wireViz(box) {
+    var tip = D.getElementById('l30tip'); if (!tip) { tip = D.createElement('div'); tip.id = 'l30tip'; D.body.appendChild(tip); }
+    box.addEventListener('pointermove', function (e) {
+      var t = e.target.closest('[data-tip]');
+      if (t) { var p = t.dataset.tip.split('|'); tip.innerHTML = '<b>' + E(p[0]) + '</b><span>' + E(p[1]) + (p[2] ? ' · ' + E(p[2]) + (/%/.test(p[2]) ? '' : ' %') : '') + '</span>'; tip.style.left = Math.min(innerWidth - 220, e.clientX + 14) + 'px'; tip.style.top = (e.clientY + 14) + 'px'; tip.classList.add('on'); }
+      else tip.classList.remove('on');
+      var ov = e.target.closest('rect.ov');
+      var svg = box.querySelector('svg.ln'); if (!svg) return; var hv = svg.querySelector('.hv');
+      if (!ov) { hv.style.display = 'none'; return; }
+      var pts = JSON.parse(svg.dataset.pts), r = svg.getBoundingClientRect(), vb = svg.viewBox.baseVal, sx = (e.clientX - r.left) / r.width * vb.width, L = +ov.dataset.l, Wd = +ov.dataset.w, ym = +ov.dataset.ymax, tp = +ov.dataset.tp, ih = +ov.dataset.ih;
+      var x0 = pts[0][0], x1 = pts[pts.length - 1][0], yr = Math.round(x0 + (sx - L) / Wd * (x1 - x0)), p = pts.filter(function (q) { return q[0] === yr; })[0]; if (!p) return;
+      var X = L + (p[0] - x0) / (x1 - x0) * Wd, Y = tp + (1 - p[1] / ym) * ih;
+      hv.style.display = ''; hv.querySelector('line').setAttribute('x1', X); hv.querySelector('line').setAttribute('x2', X); hv.querySelector('circle').setAttribute('cx', X); hv.querySelector('circle').setAttribute('cy', Y);
+      var bx = X > vb.width - 150 ? X - 132 : X + 12; hv.querySelector('rect').setAttribute('x', bx); hv.querySelector('rect').setAttribute('y', Y - 52);
+      var t1 = hv.querySelector('.t1'), t2 = hv.querySelector('.t2'); t1.setAttribute('x', bx + 12); t1.setAttribute('y', Y - 33); t1.textContent = p[0]; t2.setAttribute('x', bx + 12); t2.setAttribute('y', Y - 15); t2.textContent = N(p[1]) + ' ' + T('casos', 'cases');
+    });
+    box.addEventListener('pointerleave', function () { tip.classList.remove('on'); });
+    box.addEventListener('pointerover', function (e) { var w = e.target.closest('[data-wi]'); box.querySelectorAll('.l30dots i').forEach(function (i) { i.classList.toggle('dim', !!w && i.dataset.wi !== w.dataset.wi); }); });
+  }
+  function mountInd() {
+    var sec = D.getElementById('indicadores'); if (!sec) return;
+    var head = sec.querySelector('.lv11head'); if (!head) return;
+    var box = D.getElementById('lv30');
+    if (box && box.previousElementSibling === head && box.dataset.lang === (en() ? 'en' : 'es')) { if (W.LV30_TAB) { st.tab = W.LV30_TAB; W.LV30_TAB = null; paint(box); } sec.classList.toggle('l30alt', st.tab !== 'cat'); return; }
+    if (box) box.remove();
+    box = D.createElement('div'); box.id = 'lv30'; box.dataset.lang = en() ? 'en' : 'es'; box.setAttribute('data-no-translate', '');
+    box.addEventListener('click', function (e) {
+      var v = e.target.closest('[data-wk],[data-wd],[data-ls],[data-bt]');
+      if (v) { if (v.dataset.wk) wst.key = v.dataset.wk; if (v.dataset.wd) wst.dim = v.dataset.wd; if (v.dataset.ls) lst = v.dataset.ls; if (v.dataset.bt) bth = v.dataset.bt; paint(box); return; }
+      var b = e.target.closest('[data-tab],[data-th],[data-z],[data-more]'); if (!b) return;
+      if (b.dataset.tab) { st.tab = b.dataset.tab; paint(box); return; }
+      if (b.dataset.th) { st.th = b.dataset.th; box.querySelectorAll('[data-th]').forEach(function (x) { x.classList.toggle('on', x === b); }); var th = THEMES.filter(function (t) { return t[0] === st.th; })[0]; box.querySelector('.l30cmp').style.setProperty('--c', th[3]); race(); return; }
+      if (b.dataset.z) { st.zona = b.dataset.z; box.querySelectorAll('[data-z]').forEach(function (x) { x.classList.toggle('on', x === b); }); race(); return; }
+      if (b.dataset.more) { st.n = st.n > 12 ? 12 : 40; race(); }
+    });
+    head.parentNode.insertBefore(box, head.nextSibling); wireViz(box);
+    if (W.LV30_TAB) { st.tab = W.LV30_TAB; W.LV30_TAB = null; }
+    paint(box);
+  }
+  function paint(box) {
+    var sec = D.getElementById('indicadores');
+    box.innerHTML = '<div class="l30tabs" role="tablist">' + [['cat', 'Todos', 'All'], ['med', 'De un vistazo', 'At a glance'], ['cmp', 'Compara territorios', 'Compare territories'], ['burb', 'Dónde se concentran', 'Where cases are'], ['sun', 'Tipos y zonas', 'Types and areas'], ['quien', 'Quiénes son', 'Who they are'], ['tiempo', 'En el tiempo', 'Over time'], ['proc', 'Cómo procesamos', 'How we process']].map(function (t) { return '<button type="button" role="tab" data-tab="' + t[0] + '" aria-selected="' + (t[0] === st.tab) + '"' + (t[0] === st.tab ? ' class="on"' : '') + '>' + T(t[1], t[2]) + '</button>'; }).join('') + '</div>' +
+      ({ cmp: compareHTML, proc: processHTML, sun: sunHTML, quien: waffleHTML, tiempo: lineHTML, burb: bubHTML, med: gaugeHTML }[st.tab] || function () { return ''; })();
+    sec.classList.toggle('l30alt', st.tab !== 'cat');
+    if (st.tab === 'cmp') race(true);
+    if (st.tab === 'proc') setTimeout(playProcess, 120);
+  }
+
+  /* ---------- Indicadores en el mapa: exploración rápida ---------- */
+  var QUICK = [
+    ['X-PAR', 'mun', 'T', 'Violencia de pareja en cada municipio', 'Partner violence in each municipality', '#D33B78'],
+    ['VBG-01', 'mun', 'R', 'Violencia sexual en zonas rurales', 'Sexual violence in rural areas', '#8E36CF'],
+    ['AMP-V01', 'dep', 'T', 'Homicidios de mujeres por departamento', 'Homicides of women by department', '#9E2C5A'],
+    ['CUI-04', 'dep', 'T', 'Quién hace el trabajo del hogar', 'Who does the housework', '#E0A800']
+  ];
+  function viewer() { var h = D.getElementById('lv20host'); return h && h.shadowRoot; }
+  function applyQuick(q) {
+    var r = viewer(); if (!r) return;
+    var lvl = r.querySelector('button[data-lvl="dep"]'); if (lvl && !lvl.classList.contains('on')) lvl.click();
+    r.querySelectorAll('#capasb input[type=checkbox]:checked').forEach(function (i) { if (i.dataset.l !== q[0]) i.click(); });
+    setTimeout(function () {
+      r = viewer(); var inp = r.querySelector('#capasb input[data-l="' + q[0] + '"]'); if (inp && !inp.checked) inp.click();
+      setTimeout(function () {
+        r = viewer(); if (q[1] === 'mun') { var b = r.querySelector('button[data-lvl="mun"]'); if (b) b.click(); }
+        setTimeout(function () { r = viewer(); var z = r.getElementById('zsel'); if (z && z.value !== q[2]) { z.value = q[2]; z.dispatchEvent(new Event('change')); } var host = D.getElementById('lv20host'); if (host) scrollTo({ top: host.getBoundingClientRect().top + scrollY - 140, behavior: 'smooth' }); }, 120);
+      }, 120);
+    }, 120);
+  }
+  function mountMap() {
+    var sec = D.getElementById('mapa'), host = D.getElementById('lv20host'); if (!sec || !host) return;
+    var q = D.getElementById('lv30q'); if (q && q.nextElementSibling === host) return;
+    if (!q) {
+      q = D.createElement('div'); q.id = 'lv30q'; q.setAttribute('data-no-translate', '');
+      q.innerHTML = '<b class="t">' + T('Empieza con una pregunta', 'Start with a question') + '</b><div class="g">' + QUICK.map(function (x, i) { return '<button type="button" data-q="' + i + '" style="--c:' + x[5] + '"><span class="ic">' + (i + 1) + '</span><span>' + T(x[3], x[4]) + '</span></button>'; }).join('') + '</div>';
+      q.addEventListener('click', function (e) { var b = e.target.closest('[data-q]'); if (!b) return; q.querySelectorAll('[data-q]').forEach(function (x) { x.classList.toggle('on', x === b); }); applyQuick(QUICK[+b.dataset.q]); });
+    }
+    host.parentNode.insertBefore(q, host);
+  }
+  function tick() { try { mountInd(); mountMap(); } catch (e) { if (W.console) console.warn('lv25', e); } }
+  function init() { tick(); var t; new MutationObserver(function () { clearTimeout(t); t = setTimeout(tick, 150); }).observe(D.querySelector('main') || D.body, { childList: true, subtree: true }); }
+  if (D.readyState === 'loading') D.addEventListener('DOMContentLoaded', function () { setTimeout(init, 600); }); else setTimeout(init, 600);
 })();
 </script></body></html>

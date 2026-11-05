@@ -2193,7 +2193,7 @@ window.LV11_DEFAULTS = (function () {
     if (summary) h += '<p class="lv11lead">' + E(summary) + '</p>';
     if (r) {
       h += '<div class="lv11kpis">' + r.kpis.map(function (k, i) { return '<div class="lv11kpi' + (i === 0 ? ' main' : '') + '"><b data-count>' + E(k[0]) + '</b><span>' + E(k[1]) + '</span></div>'; }).join('') + '</div>';
-      if (r.chart) h += '<section class="lv11card"><h3>' + icon('chart', 18) + T('Cómo se ve', 'What it looks like') + '</h3>' + r.chart + '</section>';
+      var dyc = dynFor(code, c); if (r.chart || dyc) h += '<section class="lv11card lv11viz" style="--c:' + c + '"><h3>' + icon('chart', 18) + T('Cómo se ve', 'What it looks like') + '</h3>' + (dyc || r.chart) + '</section>';
       if (r.map) h += '<section class="lv11card"><h3>' + icon('network', 18) + T('Por departamento', 'By department') + ' · ' + E(r.map.label) + '</h3>' + choropleth(r.map.values, { color: c, fmt: r.map.fmt }) + '</section>';
       h += '<section class="lv11read"><h3>' + T('Lectura', 'Reading') + '</h3><p>' + E(r.read) + '</p>' + (r.note ? '<p class="lv11note">' + E(r.note) + '</p>' : '') + '<p class="lv11src">' + T('Fuente', 'Source') + ': ' + E(r.src) + '</p>' + (r.panorama ? '<button class="lv11btn" onclick="LV11.panorama(\'' + r.panorama + '\')">' + T('Explorar en el panorama interactivo', 'Explore in the interactive overview') + ' ' + icon('arrow', 16) + '</button>' : '') + '</section>';
     } else {
@@ -2301,10 +2301,10 @@ window.LV11_DEFAULTS = (function () {
   function dshape(r) {
     if (!r || !r.rows || r.rows.length < 3) return null;
     var head = r.rows[0], body = r.rows.slice(1), num = [];
+    if (head[1] === 'Periodo') { var z0 = body[0][0]; body = body.filter(function (x) { return x[0] === z0; }).map(function (x) { return x.slice(1); }); head = head.slice(1); }
     head.forEach(function (h, i) { if (i && body.every(function (x) { return hnum(x[i]) != null; })) num.push(i); });
     if (!num.length) return null;
     var lab = head.length > 2 && !num.length ? 0 : 0, ser = /^\d{4}/.test(String(body[0][0])) && /^\d{4}/.test(String(body[body.length - 1][0]));
-    if (head[1] === 'Periodo') return null;
     return { head: head, body: body, num: num.slice(0, 2), series: ser, isTime: num.some(function (i) { return /:/.test(String(body[0][i])); }) };
   }
   function dfmt(v, sh) { if (sh && sh.isTime) { var h = Math.floor(v), m = Math.round((v - h) * 60); return h + ' h ' + m + ' min'; } return Math.abs(v) < 100 && v % 1 ? N(v, 1) : N(v); }
@@ -2342,6 +2342,11 @@ window.LV11_DEFAULTS = (function () {
       return { types: dtypes(sh), ty: ty, html: '<div class="drng">' + rows.map(function (x, i) { var v0 = hnum(x[n0]), v1 = hnum(x[n1]), lo = Math.min(v0, v1) / mx2 * 100, hi = Math.max(v0, v1) / mx2 * 100; return '<div class="rr" style="--i:' + i + '" data-tt="' + E(x[0] + '|' + sh.head[n0] + ': ' + dfmt(v0, sh) + ' · ' + sh.head[n1] + ': ' + dfmt(v1, sh)) + '"><span>' + E(x[0]) + '</span><i><em style="left:' + lo + '%;width:' + (hi - lo) + '%"></em><b style="left:' + (v0 / mx2 * 100) + '%;background:' + c + '"></b><b style="left:' + (v1 / mx2 * 100) + '%;background:#1A82B9"></b></i><small>' + T('brecha ', 'gap ') + dfmt(Math.abs(v0 - v1), sh) + '</small></div>'; }).join('') + '</div><div class="dlg">' + lg + '</div>' };
     }
     return { types: dtypes(sh), ty: ty, html: '<div class="dbar">' + rows.map(function (x, i) { return '<div class="br" style="--i:' + i + '"><span>' + E(x[0]) + '</span><i>' + sh.num.map(function (ci, k) { return '<em style="--w:' + (hnum(x[ci]) / mx2 * 100).toFixed(1) + '%;background:' + cols[k] + '" data-tt="' + E(x[0] + ' · ' + sh.head[ci] + '|' + dfmt(hnum(x[ci]), sh)) + '"></em>'; }).join('') + '</i><b>' + dfmt(hnum(x[n0]), sh) + '</b></div>'; }).join('') + '</div>' + (n1 ? '<div class="dlg">' + lg + '</div>' : '') };
+  }
+  var IND2AN = null;
+  function dynFor(code, c) {
+    if (!IND2AN) { IND2AN = {}; DEF.analyses.forEach(function (a) { var r = null; try { r = AN[a.id] && AN[a.id](); } catch (e) {} if (r && r.ind && !IND2AN[r.ind] && dshape(r)) IND2AN[r.ind] = a.id; }); }
+    var id = IND2AN[code]; return id ? dynBlock(id, c) : null;
   }
   function dynBlock(id, c) {
     var d = dynSVG(id, c); if (!d) return null;
@@ -2503,7 +2508,10 @@ window.LV11_DEFAULTS = (function () {
     ['pob', 'Población y territorio', 'Population and territory', '#A05CC8', ['poblacion-mujeres', 'obs-red']]
   ];
   var anCat = 'vio', anSort = { c: 1, d: -1 }, anAll = false, anTab = null, anView = 'tabla', anSel = null;
+  // DANE · GEIH departamental 2025 (Boletín técnico, gráfico 25): tasa de desocupación por sexo, 23 departamentos
+  var GEIHD = [['Chocó', 20.4, 9.0], ['Córdoba', 17.2, 5.9], ['Caquetá', 17.2, 6.8], ['Sucre', 16.6, 6.7], ['Bolívar', 15.1, 6.0], ['Magdalena', 14.9, 6.3], ['Cesar', 14.4, 7.1], ['Cauca', 10.5, 4.1], ['La Guajira', 15.8, 9.7], ['Tolima', 14.4, 8.4], ['Atlántico', 11.5, 6.3], ['Nariño', 8.7, 3.7], ['Norte de Santander', 14.2, 9.5], ['Cundinamarca', 12.1, 7.7], ['Huila', 9.7, 5.4], ['Valle del Cauca', 11.8, 7.6], ['Antioquia', 9.6, 6.0], ['Santander', 12.1, 8.7], ['Caldas', 11.1, 7.8], ['Risaralda', 9.6, 6.6], ['Meta', 10.2, 7.8], ['Quindío', 11.2, 9.7], ['Boyacá', 9.8, 9.0]];
   function priTable(cat) {
+    if (cat === 'eco') return { title: T('Desempleo de mujeres y hombres por departamento', 'Unemployment of women and men by department'), sub: T('Tasa de desocupación 2025 · DANE, GEIH departamental (23 departamentos)', 'Unemployment rate 2025 · DANE GEIH (23 departments)'), head: [T('Departamento', 'Department'), T('Mujeres %', 'Women %'), T('Hombres %', 'Men %'), T('Brecha (p.p.)', 'Gap (pp)')], rows: GEIHD.map(function (r) { return [r[0], r[1], r[2], Math.round((r[1] - r[2]) * 10) / 10]; }) };
     var t = null, TT = W.LV23_TERR;
     if (cat === 'vio' && TT && TT.K) {
       var K = TT.K, keys = [['PAR', T('Violencia de pareja', 'Partner violence')], ['SEX', T('Violencia sexual', 'Sexual violence')], ['NNA', T('Violencia contra niñas', 'Violence against girls')], ['HOM', T('Homicidios', 'Homicides')], ['SUI', T('Suicidios', 'Suicides')]];
@@ -2836,7 +2844,7 @@ window.LV11_DEFAULTS = (function () {
     anViewSet: function (v) { anView = v; renderAnalyses(); }, anPick: function (r) { anSel = anSel === r || !r ? null : r; renderAnalyses(); },
     anCsv: function () { if (!anTab) return; var t = [anTab.head].concat(anTab.rows).map(function (r) { return r.map(function (v) { return '"' + String(v < 0 ? '1-4' : v).replace(/"/g, '""') + '"'; }).join(','); }).join('\n'); var a = D.createElement('a'); a.href = URL.createObjectURL(new Blob(['\ufeff' + t], { type: 'text/csv;charset=utf-8' })); a.download = 'tabla_' + anCat + '.csv'; D.body.appendChild(a); a.click(); setTimeout(function () { a.remove(); }, 500); },
     kpi: function (c) { var k = IND[c] ? indKpi(c) : null; if (!k) return null; var x = catalog().find(function (i) { return i.code === c; }); var p = plain(c, x ? x.name : c, k.v); return { v: k.v, n: pnum(k.v), t: p.t, s: p.s, site: x ? indSite(x) : '' }; }, published: function () { return published().length; },
-    dynSet: function (id, ty, btn) { DYN[id] = ty; var w = btn && btn.closest('.dynw'), card = w && w.closest('.lv11viz'), c = card ? getComputedStyle(card).getPropertyValue('--c').trim() : '#8E36CF', d = dynSVG(id, c); if (!w || !d) return; w.querySelector('.dbody').innerHTML = d.html; w.querySelectorAll('.dsw button').forEach(function (b) { b.classList.toggle('on', b === btn); }); },
+    dynSet: function (id, ty, btn) { DYN[id] = ty; var w = btn && btn.closest('.dynw'), card = w && w.closest('.lv11viz'), c = (card ? getComputedStyle(card).getPropertyValue('--c').trim() : '') || '#8E36CF', d = dynSVG(id, c); if (!w || !d) return; w.querySelector('.dbody').innerHTML = d.html; w.querySelectorAll('.dsw button').forEach(function (b) { b.classList.toggle('on', b === btn); }); },
     normTog: function (d) { if (d.open) { normOpen = d.dataset.k; d.parentNode.querySelectorAll('details[open]').forEach(function (o) { if (o !== d && !(nf.q || nf.right || nf.site)) o.open = false; }); } else if (normOpen === d.dataset.k) normOpen = null; },
     an: function (id) { try { return AN[id] ? AN[id]() : null; } catch (e) { return null; } }, deptName: function (c) { return deptName(c); },
     norms: function () { return S.norms.filter(function (n) { return n.pub; }); }, normCard: function (n) { return normCard(n); },
@@ -6488,6 +6496,78 @@ main .lv15band .eyebrow{display:inline-block!important;width:auto!important}
 .lv29tbl .hml ol b{color:var(--c);float:right}
 @media (max-width:860px){.lv29tbl .hm{grid-template-columns:1fr}}
 .lv29tbl .hml ol li{display:flex;justify-content:space-between;gap:10px;padding:2px 0}.lv29tbl .hml ol b{float:none}
+
+/* ======================= v32 · responsive ======================= */
+.lv29tbl .h{flex-wrap:wrap}
+.lv11timeline{margin-left:16px!important;margin-right:16px!important}
+#red .lv11obsgrid > *{min-width:0}
+#red .lv11obsgrid .lvmapwrap,#red .lv11obsgrid .lvmapwrap svg{max-width:100%!important;width:100%!important}
+@media (max-width:900px){
+  #lv24geo .g24body{grid-template-columns:minmax(0,1fr)!important}
+  #lv24geo .g24panel{position:static}
+  #lv24geo .g24mtitle{padding-right:0}
+  #lv24geo .g24loc{position:static;width:110px;margin:6px auto 0}
+  #lv24geo .g24zm{margin:6px 0 0}
+}
+@media (max-width:560px){
+  .lv29tbl .vw{width:100%}
+  .lv29tbl .seg{flex:1}
+  .lv29tbl .seg button{flex:1;padding:7px 8px}
+  .lv29tbl .bv button{grid-template-columns:96px 1fr 60px;gap:8px}
+  .lv29tbl .sum{padding-right:44px}
+  .lv29tbl .sum span{min-width:0;flex:1 1 40%}
+  .lv29cats{grid-template-columns:1fr 1fr;gap:8px}
+  .lv29cats button{padding:14px}
+  .lv29cats b{font-size:15px}
+  .l30tabs{width:100%!important}
+  .l30race .bar{grid-template-columns:96px 1fr 50px}
+  .dsw{display:flex;width:100%}.dsw button{flex:1;padding:7px 6px}
+  .dbar .br{grid-template-columns:minmax(0,40%) 1fr auto}
+  .drng .rr{grid-template-columns:minmax(0,34%) 1fr 64px}
+  #lv23home .xkpi{grid-template-columns:1fr!important}
+  #lv23home .xkpi button{padding:16px 20px}
+  #lv23home .xhero h1{font-size:38px;letter-spacing:-1.2px}
+  #lv23home .xhero .xsub2{font-size:17px;margin-bottom:20px}
+  #lv23home .xsx{padding:5px 5px 5px 12px}#lv23home .xsx input{font-size:15px}
+  #lv23home .xroute .xn{width:54px;height:54px;font-size:22px}
+  #lv23home > section{margin-top:48px}
+  #lv23home h2{font-size:26px;margin-bottom:18px}
+  .lv25grid{grid-template-columns:1fr!important}
+  .lv25card{min-height:0!important}
+  #lv30q .g{grid-template-columns:1fr}
+  #lv30q button{min-height:0;flex-direction:row;align-items:center}
+  main .lv15band h1{font-size:28px!important}
+  main .lv15band{border-radius:22px 6px 22px 6px!important;padding:22px 18px!important}
+  #lv23crumb{margin-top:10px}
+  #lv23tabs button{padding:10px 14px;font-size:13px}
+  .lv26sbar .lv25chips{width:100%;overflow-x:auto;flex-wrap:nowrap}
+  .lv30pend ul{grid-template-columns:1fr}
+  .brandTitle small{font-size:11px!important}
+  #lv23a11y{left:10px;bottom:84px}
+  #lv23a11y .tg{width:42px;height:42px}
+}
+@media (max-width:380px){.lv29cats{grid-template-columns:1fr}#lv23home .xg4{grid-template-columns:1fr}}
+#lv23home .xg4 button:not(.on) b{color:var(--l23-ink)!important}
+#lv23home .xg4 button.on b{color:#fff!important}
+#lv23home .xg4 b{display:block!important;-webkit-line-clamp:unset!important;overflow:visible!important}
+#red .lv11obsgrid > .lv11card,#red .lv11obs{opacity:1!important;transform:none!important}
+@media (max-width:900px){
+  .v9side.lv11side{position:static!important;padding:12px!important}
+  .v9side.lv11side .lv11sidelist{display:flex!important;flex-wrap:nowrap!important;overflow-x:auto!important;max-height:none!important;gap:8px;padding-bottom:6px}
+  .v9side.lv11side .lv26grp{display:contents}
+  .v9side.lv11side .lv26grp h3{display:none}
+  .v9side.lv11side .lv11sidelist button{flex:0 0 auto;min-width:0!important;max-width:220px;white-space:nowrap!important;border:1px solid var(--l23-line)!important;background:#fff!important}
+  .v9side.lv11side .lv11sidelist button.active{background:color-mix(in srgb,var(--c) 12%,#fff)!important;border-color:var(--c)!important}
+  .v9side.lv11side .lv11sidelist button.active:after{display:none}
+  .v9side.lv11side > button{display:none}
+  .v9side.lv11side h2{margin-bottom:8px!important}
+}
+@media (max-width:560px){
+  button.help{width:52px!important;height:52px!important;padding:0!important;font-size:0!important;justify-content:center;border-radius:50%!important;right:12px!important;bottom:16px!important}
+  button.help *:not(:first-child){display:none!important}
+  button.help:before,button.help > :first-child{font-size:16px}
+}
+@media (max-width:480px){html.lv23site .lv11kpis.tiles{grid-template-columns:1fr!important}html.lv23site .lv11sitehero.pano h1{font-size:30px!important}}
 </style><script id="lv23-js">/* ==========================================================================
    LIBRES v24 · Inicio limpio, accesibilidad, ruta de navegación y fotografías
    - Barra superior: logos de cooperación + herramientas de accesibilidad

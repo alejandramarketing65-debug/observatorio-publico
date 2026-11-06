@@ -6858,7 +6858,7 @@ footer.lv12foot .lv12mun span:not(.valle):before{content:"";display:inline-block
       '<button type="button" class="xmore" data-full="1"><span>' + T('Panorama de cifras', 'Data overview') + '</span>' + ARR + '</button></div>';
     // 2. ruta por pasos: el primero lleva a elegir el tema
     var R6 = [['themes', 'Elige el tema de tu interés', 'Choose your topic']].concat(ROUTE);
-    h += '<section class="xroute" aria-labelledby="lv23rt"><h2 id="lv23rt">' + T('¿Por dónde empezar?', 'Where to start?') + '</h2><ol class="n6">' +
+    h += '<section class="xroute" aria-labelledby="lv23rt"><h2 id="lv23rt">' + T('Cómo navegar en el observatorio', 'How to navigate the observatory') + '</h2><ol class="n6">' +
       R6.map(function (r, i) { return '<li><button type="button" data-go="' + r[0] + '"><span class="xn">' + (i + 1) + '</span><b>' + T(r[1], r[2]) + '</b></button></li>'; }).join('') + '</ol></section>';
     // 3. temas divididos en cuatro grupos
     h += '<section class="xthemes" id="lv23themes" aria-labelledby="lv23th"><h2 id="lv23th">' + T('Elige el tema de tu interés', 'Choose your topic') + '</h2><div id="lv23tw">' + themesHTML() + '</div></section>';

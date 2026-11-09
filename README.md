@@ -29,13 +29,14 @@ Los archivos HTML de esa carpeta (`public.html`, `admin.html`, etc.) son prototi
 ### ¿Cuál es la diferencia entre la carpeta `codigo-fuente` y los archivos publicados?
 
 - **`codigo-fuente/`** guarda los archivos tal como los entrega el equipo de diseño, con sus nombres originales. Sirve como referencia y para seguir trabajando el diseño.
-- **`index.html` y `admin/index.html`** son lo que ve el público. Son el mismo código con estos ajustes añadidos al publicar:
-  - Consulta: logo ¡LIBRES! en la pantalla de carga, consulta limpia (cada sección del menú empieza sin filtros), menú desplegable y línea de tiempo vertical de Sentencias en celular, menú en inglés igual al español, texto del proyecto justificado, sin espacio blanco antes del pie de página y letra más grande en la línea de tiempo de Normativa.
-  - Administración: paleta morada (#672e89 con acentos #a844e2 y #35cbce) y enlaces que abren la consulta publicada.
+- **`index.html` y `admin/index.html`** son lo que ve el público. Son el mismo código de `codigo-fuente/` con estos únicos cambios al publicar:
+  - Consulta: menú desplegable y línea de tiempo vertical de Sentencias en celular (bloque `responsive-movil`). El resto de ajustes (logo en la carga, consulta limpia, menú en inglés, texto justificado, etc.) ya vienen dentro del archivo del equipo.
+  - Administración: paleta morada (#672e89 con acentos #a844e2 y #35cbce, bloque `paleta-base-672e89`), título de la pestaña y enlaces que abren la consulta publicada (`../`).
 
 ### Para publicar cambios
 
 - **Cambio pequeño en lo que ya está publicado** (un texto, un color): edítelo directamente en `index.html` o `admin/index.html`.
-- **Versión nueva completa del diseño**: guarde el archivo nuevo en `codigo-fuente/` y pida que se vuelva a publicar con los ajustes de arriba. Si solo reemplaza `index.html` con el archivo original, esos ajustes se pierden.
+- **Versión nueva completa del diseño**: guarde el archivo nuevo en `codigo-fuente/` y pida que se vuelva a publicar con los ajustes de arriba. Si solo reemplaza `index.html` con el archivo original, se pierden el menú y la línea de tiempo para celular; en `admin/index.html` se pierden los colores y los enlaces a la consulta.
+- **Versión de los archivos publicados:** v57 (consulta y administración).
 
 > Importante: el repositorio es público. No suba datos personales ni información sensible.

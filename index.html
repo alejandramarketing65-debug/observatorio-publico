@@ -9326,4 +9326,60 @@ main .f57 > .f57s.f57w .rg{flex:1 1 auto;min-width:0}
 .lv11timeline + .lvlegend i{width:14px!important;height:14px!important}
 .lv11tldot{width:16px!important;height:16px!important;margin-left:-8px!important}
 .lv11tip{font-size:15px!important}
-</style></body></html>
+</style><style id="responsive-movil">
+/* ---------- Menú en celular: botón "Menú" que despliega todas las secciones ---------- */
+.mm-toggle{display:none}
+@media (max-width:760px){
+  header .mm-toggle{display:flex;align-items:center;justify-content:space-between;gap:10px;width:calc(100% - 24px);margin:6px 12px 8px;padding:11px 16px;border:0;border-radius:14px;background:#672e89;color:#fff;font:700 15px/1.2 var(--lv-display,inherit);cursor:pointer;box-shadow:0 10px 22px -14px #672e89}
+  header .mm-toggle .mm-cur{font-weight:600;color:#eadcf5;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  header .mm-toggle svg{flex:none;transition:transform .2s}
+  header.mm-open .mm-toggle svg{transform:rotate(180deg)}
+  header #navigation.nav{display:none!important}
+  header.mm-open #navigation.nav{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));width:100%!important;max-width:100%!important;box-sizing:border-box!important;gap:6px;padding:4px 12px 14px;overflow:visible!important;height:auto!important;white-space:normal}
+  header.mm-open #navigation > button,header.mm-open #navigation .nav41more .menu > button{display:flex!important;align-items:center;justify-content:flex-start;min-height:46px;margin:0!important;padding:10px 12px!important;border-radius:12px!important;background:#f4edf9!important;color:#3d1554!important;font-weight:600;text-align:left;white-space:normal!important;line-height:1.25;width:100%}
+  header.mm-open #navigation > button.active,header.mm-open #navigation .nav41more .menu > button.active{background:#672e89!important;color:#fff!important}
+  header.mm-open #navigation > button.active::before{filter:brightness(0) invert(1)}
+  header.mm-open #navigation .nav41more{display:contents!important}
+  header.mm-open #navigation .nav41more > .mt{display:none!important}
+  header.mm-open #navigation .nav41more .menu,header.mm-open #navigation .nav41more .menu[hidden]{display:contents!important;position:static!important}
+  header.mm-open #navigation .nav46ind{display:none!important}
+  header.mm-open #navigation .nav41more .menu > button{grid-column:auto;gap:0!important}
+  header.mm-open #navigation .nav41more .menu > button::after,header.mm-open #navigation .nav41more .menu > button::before{display:none!important;content:none!important}
+  header.mm-open #navigation > button,header.mm-open #navigation .nav41more .menu > button{min-width:0!important;font-size:14px!important}
+}
+/* ---------- Línea de tiempo de Sentencias en celular: historia vertical ---------- */
+@media (max-width:600px){
+  #sentencias .s46tl:not(#_a){display:flex!important;flex-direction:column;height:auto!important;overflow:visible!important;margin:22px 4px 8px!important;padding:4px 0 4px 34px!important;gap:6px}
+  #sentencias .s46tl:not(#_a)::before{content:"";position:absolute;left:13px;top:10px;bottom:10px;width:3px;border-radius:3px;background:linear-gradient(#672e89,#a844e2 60%,#35cbce)}
+  #sentencias .s46tl:not(#_a) .dt{position:relative!important;left:auto!important;top:auto!important;transform:none!important;flex-direction:row!important;justify-content:flex-start;align-items:center;gap:10px;width:100%;height:auto!important;padding:9px 12px!important;border-radius:14px!important;background:#fff!important;border:1px solid #ebdff4!important;box-shadow:0 6px 16px -12px rgba(61,21,84,.35);opacity:1}
+  #sentencias .s46tl:not(#_a) .dt.off{opacity:.35}
+  #sentencias .s46tl:not(#_a) .dt i{display:block!important;position:absolute;left:-28px;top:50%;margin-top:-9px;width:18px;height:18px;box-shadow:0 0 0 4px #fff}
+  #sentencias .s46tl:not(#_a) .dt[data-y]::before{content:attr(data-y);order:-1;flex:none;font:800 13px/1 var(--lv-display,inherit);color:#fff;background:#672e89;border-radius:8px;padding:6px 8px}
+  #sentencias .s46tl:not(#_a) .dt.auto[data-y]::before{background:#1f8f92}
+  #sentencias .s46tl:not(#_a) .dt b{border:0!important;box-shadow:none!important;background:none!important;padding:0!important;font-size:15px!important;color:#3d1554!important}
+  #sentencias .s46tl:not(#_a) .dt[data-t]::after{content:attr(data-t);margin-left:auto;font:600 12px/1 var(--lv-display,inherit);color:#7d6e8a}
+  #sentencias .s46tl:not(#_a) .dt.sel{background:#672e89!important;border-color:#672e89!important}
+  #sentencias .s46tl:not(#_a) .dt.sel b,#sentencias .s46tl:not(#_a) .dt.sel[data-t]::after{color:#fff!important}
+  #sentencias .s46tl:not(#_a) .dt.sel[data-y]::before{background:#fff;color:#672e89}
+  #sentencias .s46tl .ax,#sentencias .s46tl .tk{display:none!important}
+  #sentencias .s46f .q,#sentencias .s46f label.q{max-width:100%!important;box-sizing:border-box;min-width:0}
+  #sentencias{overflow-x:clip}
+}
+</style>
+<script id="responsive-movil-js">(function(){
+  var D=document;
+  /* años y tipo en la línea de tiempo (para la vista vertical del celular) */
+  function years(){D.querySelectorAll('#sentencias .s46tl .dt').forEach(function(b){if(b.dataset.y)return;var l=b.getAttribute('aria-label')||'',m=l.match(/(\d{4})/);if(m)b.dataset.y=m[1];b.dataset.t=/^Auto/i.test(l)?(D.documentElement.lang==='en'?'Order':'Auto'):(D.documentElement.lang==='en'?'Ruling':'Sentencia')})}
+  /* botón Menú en celular */
+  function cur(){var a=D.querySelector('#navigation button.active');if(!a){var pg=D.querySelector('main .page.active');if(pg)a=D.querySelector('#navigation button[data-page="'+pg.id+'"]')}return a?a.textContent.replace(/\s+/g,' ').trim():''}
+  function setup(){var h=D.querySelector('header'),nv=D.getElementById('navigation');if(!h||!nv)return;var t=h.querySelector('.mm-toggle');
+    if(!t){t=D.createElement('button');t.type='button';t.className='mm-toggle';t.setAttribute('aria-expanded','false');t.setAttribute('aria-controls','navigation');
+      t.innerHTML='<span><span class="mm-lbl"></span> · <span class="mm-cur"></span></span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.6" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>';
+      nv.parentNode.insertBefore(t,nv);
+      t.addEventListener('click',function(){var o=h.classList.toggle('mm-open');t.setAttribute('aria-expanded',o)});
+      nv.addEventListener('click',function(e){if(e.target.closest('button')&&!e.target.closest('.mt')){h.classList.remove('mm-open');t.setAttribute('aria-expanded','false')}});}
+    t.querySelector('.mm-lbl').textContent=D.documentElement.lang==='en'?'Menu':'Menú';t.querySelector('.mm-cur').textContent=cur()}
+  function run(){setup();years()}
+  D.addEventListener('DOMContentLoaded',function(){run();new MutationObserver(function(){clearTimeout(run.t);run.t=setTimeout(run,60)}).observe(D.body,{childList:true,subtree:true,attributes:true,attributeFilter:['class','lang']})});
+})();</script>
+</body></html>

@@ -17,7 +17,14 @@ admin/index.html                   ← administración (versión publicada)
 codigo-fuente/
   consulta-publica/Consulta_Publica_Observatorio.html   ← original del equipo
   administracion/Administracion_Observatorio.html       ← original del equipo
+  codigo-comentado/                                     ← módulos comentados por versión (CSS, JS, datos, ilustraciones, scripts)
 ```
+
+### Código comentado (`codigo-fuente/codigo-comentado/`)
+
+Contiene los módulos de cada versión con sus comentarios (por ejemplo `rutas_atencion_v50.js`, `inicio_accesibilidad_v24.css`), los datos agregados (`libres_datos_agregados_v8.json`, `colombia.geojson`), las ilustraciones y los scripts Python de preparación. Es material de **referencia**: las páginas publicadas son archivos autónomos que ya incluyen estos módulos, así que no hace falta cargarlos aparte. Consulte `LEEME_codigo_v8.md` dentro de la carpeta.
+
+Los archivos HTML de esa carpeta (`public.html`, `admin.html`, etc.) son prototipos de versiones anteriores y **no** son los enlaces oficiales.
 
 ### ¿Cuál es la diferencia entre la carpeta `codigo-fuente` y los archivos publicados?
 

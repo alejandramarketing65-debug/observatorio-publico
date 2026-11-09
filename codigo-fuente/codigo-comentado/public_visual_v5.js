@@ -1,0 +1,62 @@
+// V5: tablero público sobre el MISMO contrato de difusión de la ficha.
+// No recibe filas de captura ni documentos y no escribe en los borradores administrativos.
+let visualId='', visualTerritory='25', visualPeriod='2025', visualGroup='TOTAL';
+
+// Ejemplos adicionales SOLO si el contenido disponible es de demostración.
+// No se guardan en IndexedDB ni se mezclan con paquetes que se declaren no ficticios.
+function visualDemoPackages(){
+  const specs=[{code:'ECO-01',unit:'Porcentaje (%)',series:{'25':[50,51.2,52.1,53.1,54.2],'05':[51,52.3,53.4,54.5,55.8],'11':[56,57.1,58.6,59.4,61]},method:'Población económicamente activa de mujeres / población de mujeres en edad de trabajar × 100 · ejemplo agregado',universe:'Universo laboral ficticio compatible en cada territorio'},
+  {code:'VBG-07',unit:'Número de activaciones',series:{'25':[80,93,105,117,128],'05':[140,153,169,182,194],'11':[195,214,232,260,286]},method:'Conteo de activaciones registradas dentro del periodo y territorio · ejemplo agregado',universe:'Activaciones ficticias de rutas; no equivale a mujeres únicas ni mide calidad de atención'}];
+  return specs.map(s=>{const x=all.find(x=>x.code===s.code);return{kind:PUB_SCHEMA,schema_version:1,id:'V5-DEMO-'+s.code,code:s.code,name:x.name,theme:x.theme,observatory:'omd',version:1,demo:true,published_at:'2026-10-27T12:00:00-05:00',status:'PUBLICACION_LOCAL_DEMO',metadata:{source:'Datos inventados para la visualización de ejemplo',cut:'2025-12-31',method:s.method,universe:s.universe,unit:s.unit,nextReview:'2027-01-31',scope:'Tres territorios de demostración; sin inferencia nacional',periodicity:'Anual · ejemplo'},analysis:{summary:'Esta serie ficticia permite probar gráficos, comparación territorial y acceso al detalle.',interpretation:s.code==='VBG-07'?'El aumento del número de activaciones no permite inferir más violencia ni mayor efectividad: requiere contexto, cobertura y definición de registro.':'El porcentaje se interpreta dentro de un universo laboral compatible. No se suman porcentajes entre departamentos.',limitations:'Cifras inventadas, sin representatividad, productor real ni aprobación institucional.',actions:'Sustituir por agregados autorizados y validar método, cobertura y corte antes de publicar.'},analysis_en:{summary:'Fictional series for testing charts and territorial comparisons.',interpretation:'Interpret results within the documented reference population and coverage.',limitations:'Invented data without population representativeness or official approval.',actions:'Replace with authorised aggregates and review methods before publication.'},values:Object.entries(s.series).flatMap(([c,vals])=>vals.map((v,i)=>({periodo:String(2021+i),territorio_codigo:c,grupo:'TOTAL',valor:v,unidad:s.unit})))}});
+}
+function visualLatestPackages(){const m=new Map();for(const p of publicPackages){const old=m.get(p.code);if(!old||p.version>old.version||p.version===old.version&&p.published_at>old.published_at)m.set(p.code,p)}return[...m.values()]}
+function visualPackage(){return visualLatestPackages().find(p=>p.id===visualId)||visualLatestPackages()[0]}
+function visualIsPercent(p){return /porcentaje|%/i.test(p.metadata.unit)}
+function visualUnit(p){return visualIsPercent(p)?'%':/hora/i.test(p.metadata.unit)?'h':''}
+function visualValue(p,row){return row?pnum(row.valor)+(visualUnit(p)?' '+visualUnit(p):''):'Sin dato'}
+function visualRow(p,period=visualPeriod,territory=visualTerritory){const rr=p.values.filter(r=>r.periodo===period&&r.territorio_codigo===territory&&r.grupo===visualGroup);return rr.length===1?rr[0]:null}
+function visualTerritoryName(c){return GEO.find(g=>g.code===c)?.name||c}
+function visualChange(p){const periods=[...new Set(p.values.map(r=>r.periodo))].sort();const previous=periods[periods.indexOf(visualPeriod)-1];const a=visualRow(p),b=previous&&visualRow(p,previous);if(!a||!b)return 'Sin comparación disponible';const delta=a.valor-b.valor;return(delta>0?'+':'')+pnum(delta)+(visualIsPercent(p)?' pp':/hora/i.test(p.metadata.unit)?' h':'')+' frente a '+previous}
+function visualSelect(id){visualId=id;publicDashboard()}
+function visualTerritoryChange(c){visualTerritory=c;publicDashboard()}
+function visualPeriodChange(p){visualPeriod=p;publicDashboard()}
+function visualGroupChange(g){visualGroup=g;publicDashboard()}
+
+// Una selección única gobierna métricas, serie, mapa, barras, tabla y descarga.
+publicDashboard=function(){
+ if(!$('visualIndicator'))return;
+ if(publicPackages.length&&publicPackages.every(p=>p.demo)){for(const p of visualDemoPackages())if(!publicPackages.some(x=>x.code===p.code))publicPackages.push(p)}
+ const latest=visualLatestPackages(),p=visualPackage();if(!p){$('visualDisclosure').textContent='No hay una publicación disponible.';return}visualId=p.id;
+ $('publicationSelect').innerHTML=publicPackages.map(x=>`<option value="${esc(x.id)}">${esc(x.code+' · '+x.name+' · v'+x.version)}</option>`).join('');if(pubCurrent)$('publicationSelect').value=pubCurrent.id;
+ const periods=[...new Set(p.values.map(r=>r.periodo))].sort(),territories=[...new Set(p.values.map(r=>r.territorio_codigo))],groups=[...new Set(p.values.map(r=>r.grupo))];
+ if(!periods.includes(visualPeriod))visualPeriod=periods.at(-1)||'';if(!territories.includes(visualTerritory))visualTerritory=territories[0]||'';if(!groups.includes(visualGroup))visualGroup=groups[0]||'';
+ $('visualIndicator').innerHTML=latest.map(x=>`<option value="${esc(x.id)}" ${x.id===visualId?'selected':''}>${esc(x.code+' · '+x.name)}</option>`).join('');
+ $('visualTerritory').innerHTML=territories.map(c=>`<option value="${esc(c)}" ${c===visualTerritory?'selected':''}>${esc(visualTerritoryName(c))}</option>`).join('');
+ $('visualPeriod').innerHTML=periods.map(y=>`<option ${y===visualPeriod?'selected':''}>${esc(y)}</option>`).join('');
+ $('visualGroup').innerHTML=groups.map(g=>`<option ${g===visualGroup?'selected':''}>${esc(g)}</option>`).join('');
+ $('visualContext').textContent=visualTerritoryName(visualTerritory)+' · '+visualPeriod;
+ $('visualSourceStamp').textContent='Corte '+p.metadata.cut+' · versión '+p.version;
+ const fict=latest.every(p=>p.demo);document.querySelector('.banner').textContent=fict?'CONSULTA PÚBLICA · DEMOSTRACIÓN VISUAL · CIFRAS FICTICIAS':'CONSULTA PÚBLICA · VERSIONES LOCALES · SIN APROBACIÓN OFICIAL';
+ $('visualDisclosure').textContent=fict?'Cifras inventadas para mostrar la experiencia. No describen la situación real de las mujeres.':'Paquetes locales revisados por quien los preparó. No constituyen publicación o aprobación institucional. Los ejemplos ficticios se identifican por versión.';
+ $('visualMetricCards').innerHTML=latest.slice(0,3).map(x=>`<button class="visualMetric ${x.id===visualId?'selected':''}" onclick="visualSelect('${esc(x.id)}')"><span class="metricCode">${esc(x.code)} · ${x.demo?'EJEMPLO FICTICIO':'VERSIÓN LOCAL'}</span><span class="metricName">${esc(x.name)}</span><strong class="metricNumber">${esc(visualValue(x,visualRow(x)))}</strong><span class="metricChange"><b>${esc(visualChange(x))}</b><span>Explorar →</span></span></button>`).join('');
+ $('visualTrendSubtitle').textContent=p.name+' · '+visualTerritoryName(visualTerritory);
+ const series=p.values.filter(r=>r.territorio_codigo===visualTerritory&&r.grupo===visualGroup).sort((a,b)=>a.periodo.localeCompare(b.periodo));
+ const vmin=Math.min(0,...series.map(r=>r.valor))*1.16,vmax=Math.max(...series.map(r=>r.valor),1)*1.16,span=vmax-vmin;let grid='';for(let i=0;i<=4;i++){const y=217-i*44;grid+=`<line x1="58" x2="605" y1="${y}" y2="${y}" stroke="#e8eef5"/><text x="46" y="${y+4}" text-anchor="end" font-size="11" fill="#607184">${pnum(vmin+span*i/4)}</text>`}
+ const pts=series.map((r,i)=>({r,x:series.length>1?66+i*525/(series.length-1):325,y:217-(r.valor-vmin)/span*176}));const line=pts.map(a=>a.x+','+a.y).join(' ');
+ $('visualTrend').innerHTML=grid+(pts.length?`<defs><linearGradient id="trendFill" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#013a97" stop-opacity=".14"/><stop offset="100%" stop-color="#013a97" stop-opacity="0"/></linearGradient></defs><polygon points="${pts[0].x},217 ${line} ${pts.at(-1).x},217" fill="url(#trendFill)"/><polyline points="${line}" fill="none" stroke="#013a97" stroke-width="3"/>`:'')+pts.map(a=>`<circle cx="${a.x}" cy="${a.y}" r="${a.r.periodo===visualPeriod?7:4}" fill="${a.r.periodo===visualPeriod?'#5eab2f':'#013a97'}" stroke="white" stroke-width="2"/><text x="${a.x}" y="${Math.max(20,a.y-14)}" text-anchor="middle" font-size="12" fill="#013a97" font-weight="bold">${pnum(a.r.valor)}</text><text x="${a.x}" y="244" text-anchor="middle" font-size="11" fill="#607184">${esc(a.r.periodo)}</text>`).join('');
+ $('visualTrendFoot').textContent='Unidad: '+p.metadata.unit+' · '+visualGroup+'. La variación es descriptiva y no demuestra causalidad.';
+ const periodRows=p.values.filter(r=>r.periodo===visualPeriod&&r.grupo===visualGroup),max=Math.max(...periodRows.map(r=>r.valor),1),min=Math.min(...periodRows.map(r=>r.valor),0),colors=['#dce8f6','#abc9e8','#6fa3d1','#347bb9','#013a97'];
+ $('visualMap').innerHTML=GEO.map(g=>{const rs=periodRows.filter(r=>r.territorio_codigo===g.code);const r=rs.length===1?rs[0]:null;return`<path d="${g.path}" fill="${r?colors[Math.min(4,Math.floor((r.valor-min)/(max-min||1)*4))]:'#eceff2'}" stroke="${g.code===visualTerritory?'#F9B81B':'white'}" stroke-width="${g.code===visualTerritory?3:1}" ${r?`style="cursor:pointer" onclick="visualTerritoryChange('${g.code}')"`:''}><title>${esc(g.name)} · ${r?esc(visualValue(p,r)):'Sin dato'}</title></path>`}).join('');
+ $('visualMapPlace').textContent=visualTerritoryName(visualTerritory).toUpperCase();$('visualMapValue').textContent=visualValue(p,visualRow(p));$('visualMapUnit').textContent=p.metadata.unit;
+ $('visualMapSubtitle').textContent=visualPeriod+' · '+visualGroup+' · '+periodRows.length+' resultados territoriales';
+ $('visualBarsSubtitle').textContent=visualPeriod+' · '+p.metadata.unit+' · '+visualGroup;
+ const comparison=periodRows.slice(0,8);$('visualBars').setAttribute('viewBox','0 0 620 '+Math.max(160,comparison.length*40+20));
+ $('visualBars').innerHTML=comparison.map((r,i)=>{const y=14+i*40,w=Math.max(0,r.valor)/max*325;return`<text x="0" y="${y+16}" font-size="12" fill="#607184">${esc(visualTerritoryName(r.territorio_codigo).slice(0,23))}</text><rect x="175" y="${y}" width="${w}" height="23" rx="4" fill="${r.territorio_codigo===visualTerritory?'#5EAB2F':'#013A97'}"/><text x="${184+w}" y="${y+16}" font-size="12" fill="#183047">${pnum(r.valor)}</text>`}).join('');
+ $('visualTable').innerHTML='<table><thead><tr><th>Territorio</th><th>Periodo</th><th>Valor</th></tr></thead><tbody>'+periodRows.map(r=>`<tr><td>${esc(visualTerritoryName(r.territorio_codigo))}</td><td>${esc(r.periodo)}</td><td>${esc(visualValue(p,r))}</td></tr>`).join('')+'</tbody></table>';
+ $('visualIndicatorName').textContent=p.code+' · '+p.name;$('visualInterpretation').textContent=p.analysis.interpretation||'Interpretación pendiente de completar.';
+ $('visualMetadata').innerHTML=[['Fuente',p.metadata.source],['Fecha de corte',p.metadata.cut],['Universo',p.metadata.universe],['Actualización',p.metadata.nextReview||'Por programar']].map(([a,b])=>`<div><dt>${esc(a)}</dt><dd>${esc(b)}</dd></div>`).join('');
+};
+// El detalle se abre con la misma publicación, periodo y territorio del tablero.
+function visualOpenDetail(){const p=visualPackage();if(!p)return;pubCurrent=p;$('publicationSelect').value=p.id;$('publicSheetTitle').textContent=p.name;$('publicCode').textContent=p.code;renderPublicSheet(p.code);go('publicaciones');if($('publicPeriod'))$('publicPeriod').value=visualPeriod;if($('publicTerritory'))$('publicTerritory').value=visualTerritory;drawPublished();}
+// La descarga representa exactamente la selección territorial del tablero, sin filas administrativas.
+function visualDownload(){const p=visualPackage(),r=p&&visualRow(p);if(!p||!r)return;const safe=v=>'"'+String(v??'').replace(/^[=+@-]/,"'$&").replace(/"/g,'""')+'"';const cols=['indicador','version','periodo','territorio','grupo','valor','unidad','fuente','corte','ficticio'];const vals=[p.code,p.version,r.periodo,r.territorio_codigo,r.grupo,r.valor,r.unidad,p.metadata.source,p.metadata.cut,p.demo];const url=URL.createObjectURL(new Blob(['\ufeff'+cols.join(';')+'\r\n'+vals.map(safe).join(';')],{type:'text/csv;charset=utf-8'}));const a=document.createElement('a');a.href=url;a.download='Seleccion_'+p.code+'_'+visualTerritory+'_'+visualPeriod+'.csv';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);}

@@ -1,0 +1,20 @@
+/* LIBRES v19 · retratos en acuarela */
+.lvLine em.lv19em{width:64px!important;height:64px!important;border-radius:50%!important;background:#fff!important;padding:0!important;overflow:hidden;box-shadow:0 0 0 3px #ffffff80,0 10px 20px -10px #3b0f5c;transition:transform .3s cubic-bezier(.3,1.5,.5,1)}
+.lvLine:hover em.lv19em{transform:scale(1.12) rotate(-3deg)}
+.lv19p{width:100%;height:100%;object-fit:cover;display:block;border-radius:50%}
+.lv11sidelist button span.lv19em{width:30px!important;height:30px!important;border-radius:50%!important;background:#fff!important;overflow:hidden;padding:0!important;flex:0 0 30px}
+.lv11site .lv19em{width:58px!important;height:58px!important;border-radius:50%!important;background:#fff!important;overflow:hidden;padding:0!important;box-shadow:0 0 0 3px color-mix(in srgb,var(--c) 40%,#fff)}
+.lv11sitehero{position:relative;overflow:hidden}
+.lv11sitehero>*:not(.lv19hero){position:relative;z-index:1}
+.lv11sitehero:has(.lv19hero)>div:not(.lv19hero){max-width:calc(100% - 270px)}
+.lv19hide{display:none!important}
+.lv19hero{position:absolute;right:3%;top:calc(50% - clamp(85px,9vw,120px));width:clamp(170px,18vw,240px);aspect-ratio:1;z-index:0}
+.lv19hero .lv19big{animation:lv17in .8s cubic-bezier(.2,.8,.2,1) both}
+.lv19hero .halo{position:absolute;inset:-12%;border-radius:50%;background:radial-gradient(circle,#ffffffcc 0 55%,#ffffff40 68%,transparent 74%);filter:url(#lv17blot)}
+.lv19big{position:relative;width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;transition:transform .5s cubic-bezier(.2,.7,.2,1)}
+.lv19hero:hover .lv19big,.lv19side:hover .lv19big{transform:scale(1.05) rotate(-2deg)}
+.lv14rhead,.lv14fhead{position:relative}
+.lv19side{flex:0 0 auto;width:150px;aspect-ratio:1;border-radius:50%;background:#fff;box-shadow:0 0 0 6px #ffffff40,0 18px 34px -16px #3b0f5c;overflow:hidden}
+.lv14fhead .lv19side{position:absolute;right:420px;top:50%;transform:translateY(-50%);width:120px}
+@media(max-width:1180px){.lv14fhead .lv19side{display:none}}
+@media(max-width:820px){.lv19hero{position:relative;right:auto;top:auto;width:150px;margin:14px auto 0}.lv11sitehero:has(.lv19hero)>div:not(.lv19hero){max-width:100%}.lv19side{width:110px}.lv14rhead .lv19side{display:none}}

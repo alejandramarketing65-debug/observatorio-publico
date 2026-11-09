@@ -102,7 +102,7 @@ body{background:#f3f1f6}main{max-width:1600px!important;padding-top:20px!importa
 
 <section id="publicaciones" class="page"><div class="eyebrow">Ficha pública · datos, contexto y seguimiento</div><h1 id="publicSheetTitle">Resultados y análisis por indicador</h1><p class="muted">Consulta una versión publicada para este portal. Cada resultado conserva su fuente, método, fecha de corte y explicación.</p><div class="filterbar"><label>PUBLICACIÓN DISPONIBLE<select id="publicationSelect" onchange="selectPublicPublication(this.value)"></select></label></div><p id="publicLoadState" class="subtle"></p><p><span id="publicCode" class="pill">DEM-01</span></p><div id="publicSheetBody"></div></section>
 <section id="asistente" class="page"><div class="eyebrow">Consulta metodológica · referencia y trazabilidad</div><h1>Preguntar y encontrar la fuente.</h1><p class="muted">Busca por código o concepto para recuperar la fórmula y las referencias documentadas. Esta demostración hace búsqueda local en fichas; no ejecuta un modelo conversacional ni el RAG vectorial avanzado exigido en producción.</p><div class="filterbar"><label>Pregunta o indicador<input id="methodQuery" placeholder="Ej. DEM-01 o tasa de desempleo"></label><button class="btn primary" onclick="searchMethods()">Consultar</button></div><div id="methodAnswer" class="panel">La respuesta mostrará el código y las fuentes de las fichas recuperadas. No se incorporan documentos restringidos al buscador público.</div></section>
-<section id="libres" class="page"><div id="libresRoot" class="libres" data-no-translate></div></section><dialog id="v8Dialog" class="l8dialog libres" data-no-translate></dialog></main><div id="v6Tooltip" class="v6tooltip"></div><div id="v6Toast" class="v6toast" role="status" aria-live="polite"></div><dialog id="v6MethodDrawer" class="v6drawer"><button class="close" onclick="this.closest('dialog').close()" aria-label="Cerrar explicación">×</button><div class="eyebrow">COMPRENDER LA EVIDENCIA</div><h2 id="v6MethodTitle"></h2><div id="v6MethodBody"></div><button class="btn primary" onclick="this.closest('dialog').close();visualOpenDetail()">Ir a la ficha completa →</button></dialog><footer><div>Observatorio de Mujeres en todas sus Diversidades<br>Libres · versión v49 · actualización: 6 de noviembre de 2026</div><div>Identidad adaptada del logo Libres suministrado · sujeta al manual de visibilidad y validación.<br>Borrador v9 · perfiles separados y almacenamiento local de trabajo. Integración productiva pendiente.</div></footer><button class="help" onclick="help()">Orientación y rutas de atención</button><dialog id="detail"><button class="btn close" onclick="document.getElementById('detail').close()" aria-label="Cerrar ficha">Cerrar ✕</button><div id="detailBody"></div></dialog>
+<section id="libres" class="page"><div id="libresRoot" class="libres" data-no-translate></div></section><dialog id="v8Dialog" class="l8dialog libres" data-no-translate></dialog></main><div id="v6Tooltip" class="v6tooltip"></div><div id="v6Toast" class="v6toast" role="status" aria-live="polite"></div><dialog id="v6MethodDrawer" class="v6drawer"><button class="close" onclick="this.closest('dialog').close()" aria-label="Cerrar explicación">×</button><div class="eyebrow">COMPRENDER LA EVIDENCIA</div><h2 id="v6MethodTitle"></h2><div id="v6MethodBody"></div><button class="btn primary" onclick="this.closest('dialog').close();visualOpenDetail()">Ir a la ficha completa →</button></dialog><footer><div>Observatorio de Mujeres en todas sus Diversidades<br>Libres · versión v54 · actualización: 9 de noviembre de 2026</div><div>Identidad adaptada del logo Libres suministrado · sujeta al manual de visibilidad y validación.<br>Borrador v9 · perfiles separados y almacenamiento local de trabajo. Integración productiva pendiente.</div></footer><button class="help" onclick="help()">Orientación y rutas de atención</button><dialog id="detail"><button class="btn close" onclick="document.getElementById('detail').close()" aria-label="Cerrar ficha">Cerrar ✕</button><div id="detailBody"></div></dialog>
 <!-- Lógica local: catálogo, filtros, fichas y almacenamiento según perfil. -->
 <script>
 // OBSERVATORIO v4 · prototipo local comentado · 27/10/2026
@@ -1888,6 +1888,13 @@ window.LV11_DEFAULTS = (function () {
   function readStore() { try { var s = localStorage.getItem(KEY); return s ? JSON.parse(s) : null; } catch (e) { return null; } }
   function writeStore(s) { s.updated = new Date().toISOString(); try { localStorage.setItem(KEY, JSON.stringify(s)); return true; } catch (e) { return false; } }
   var S;
+  // v54 · acervo documental inicial (editable en administración)
+  var DOCS0 = [
+    { id: 'mec1710', t: 'Mecanismo articulador para el abordaje integral de las violencias por razones de sexo y género', tipo: 'Documento técnico', y: 2020, sites: ['violencias', 'rutas'], url: 'https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=154947', d: 'Decreto 1710 de 2020: instancia nacional y territorial que articula a los sectores.', pub: true },
+    { id: 'res459', t: 'Protocolo y modelo de atención integral en salud para víctimas de violencia sexual', tipo: 'Protocolo', y: 2012, sites: ['salud-dsr', 'violencias', 'rutas'], url: '', d: 'Resolución 459 de 2012 del Ministerio de Salud: urgencia médica, profilaxis y salud mental.', pub: true },
+    { id: 'forensis', t: 'Forensis · Datos para la vida', tipo: 'Informe', y: 2024, sites: ['violencias'], url: 'https://www.medicinalegal.gov.co/cifras-estadisticas/forensis', d: 'Publicación anual de Medicina Legal sobre lesiones fatales y no fatales.', pub: true },
+    { id: 'enut', t: 'Encuesta Nacional de Uso del Tiempo (ENUT)', tipo: 'Base de datos', y: 2021, sites: ['cuidados'], url: 'https://www.dane.gov.co/index.php/estadisticas-por-tema/pobreza-y-condiciones-de-vida/encuesta-nacional-del-uso-del-tiempo-enut', d: 'DANE · trabajo no remunerado y uso del tiempo por sexo.', pub: true }
+  ];
   function load() {
     var st = readStore() || {};
     S = {
@@ -1897,12 +1904,13 @@ window.LV11_DEFAULTS = (function () {
       routes: st.routes || clone(DEF.routes),
       ind: st.ind || { published: DEF.publishedIndicators.slice(), site: {}, summary: {} },
       analyses: st.analyses || { hidden: [], text: {} },
+      ovr: st.ovr || {}, docs: st.docs || clone(DOCS0), txt: st.txt || {},
       updated: st.updated || null
     };
-    [S.sites, S.norms, S.obs, S.routes].forEach(function (arr) { arr.forEach(function (x) { if (x.pub == null) x.pub = true; }); });
+    [S.sites, S.norms, S.obs, S.routes, S.docs].forEach(function (arr) { arr.forEach(function (x) { if (x.pub == null) x.pub = true; }); });
   }
   load();
-  function persist() { return writeStore(S); }
+  function persist() { var r = writeStore(S); if (typeof applyOvr === 'function') applyOvr(); return r; }
   function sites(all) { return S.sites.filter(function (s) { return all || s.pub; }); }
   function site(id) { return S.sites.find(function (s) { return s.id === id; }); }
   function sName(s) { return s ? T(s.es, s.en) : ''; }
@@ -2385,6 +2393,7 @@ window.LV11_DEFAULTS = (function () {
   }
   var IND2AN = null;
   function dynFor(code, c) {
+    if (S.ovr && S.ovr[code] && S.ovr[code].serie) return null;
     if (!IND2AN) { IND2AN = {}; DEF.analyses.forEach(function (a) { var r = null; try { r = AN[a.id] && AN[a.id](); } catch (e) {} if (r && r.ind && !IND2AN[r.ind] && dshape(r)) IND2AN[r.ind] = a.id; }); }
     var id = IND2AN[code]; return id ? dynBlock(id, c) : null;
   }
@@ -2500,6 +2509,33 @@ window.LV11_DEFAULTS = (function () {
   function plain(code, name, v) { var p = PLAIN()[code]; return p ? { t: p[0], s: p[1](v) } : { t: name, s: '' }; }
   /* v25: catálogo dinámico de indicadores en tarjetas agrupadas por línea temática */
   var indVal = {};
+  /* v54 · valores y gráficas editables: la administración puede corregir la cifra principal, el texto
+     y la serie de cualquier indicador, o cargar datos para uno que aún no tiene. */
+  var IND0 = null;
+  function parseSerie(txt) { return String(txt || '').split(/\n/).map(function (l) { var m = l.split(/[;\t|]/); if (m.length < 2) return null; var v = parseFloat(String(m[1]).replace(/\./g, '').replace(',', '.')); return isNaN(v) ? null : [m[0].trim(), v]; }).filter(Boolean); }
+  function ovrChart(o) {
+    var sr = parseSerie(o.serie); if (!sr.length) return '';
+    if (o.tipo === 'linea') return lineChart({ labels: sr.map(function (r) { return r[0]; }), series: [{ name: o.label || '', color: WOMEN, values: sr.map(function (r) { return r[1]; }) }], title: o.code });
+    return barsH(sr.map(function (r) { return { l: r[0], v: r[1], c: WOMEN }; }));
+  }
+  function applyOvr() {
+    if (!IND0) { IND0 = {}; Object.keys(IND).forEach(function (k) { IND0[k] = IND[k]; }); }
+    Object.keys(IND).forEach(function (k) { if (!IND0[k]) delete IND[k]; else IND[k] = IND0[k]; });
+    Object.keys(S.ovr || {}).forEach(function (code) {
+      var o = S.ovr[code]; if (!o || (!o.v && !o.serie)) return; o.code = code;
+      var base = IND0[code];
+      IND[code] = function () {
+        var r = null; try { r = base ? base() : null; } catch (e) { r = null; }
+        r = r ? JSON.parse(JSON.stringify(r)) : { kpis: [['—', '']], read: '', src: '' };
+        if (o.v) r.kpis[0] = [o.v, o.label || (r.kpis[0] && r.kpis[0][1]) || ''];
+        if (o.read) r.read = o.read;
+        if (o.src) r.src = o.src;
+        var ch = ovrChart(o); if (ch) { r.chart = ch; r.ovrChart = true; }
+        r.edited = true; return r;
+      };
+    });
+    indVal = {}; IND2AN = null;
+  }
   function indKpi(code) {
     if (code in indVal) return indVal[code];
     var r = null; try { r = IND[code] ? IND[code]() : null; } catch (e) { r = null; }
@@ -2789,18 +2825,21 @@ window.LV11_DEFAULTS = (function () {
   /* ---------------- administración: gestor de contenidos ---------------- */
   var adm = { tab: 'sites', q: '' };
   var SCHEMA = {
-    sites: { title: T('Micrositios', 'Microsites'), cols: ['es', 'c', 'pub'], fields: [['id', 'Identificador (sin espacios)', 'text'], ['es', 'Nombre', 'text'], ['en', 'Nombre en inglés', 'text'], ['c', 'Color', 'color'], ['ico', 'Ícono', 'icon'], ['d', 'Descripción', 'area'], ['de', 'Descripción en inglés', 'area'], ['pub', 'Publicado', 'check']] },
+    sites: { title: T('Micrositios', 'Microsites'), cols: ['es', 'c', 'pub'], fields: [['id', 'Identificador (sin espacios)', 'text'], ['es', 'Nombre', 'text'], ['en', 'Nombre en inglés', 'text'], ['c', 'Color', 'color'], ['ico', 'Ícono', 'icon'], ['d', 'Descripción', 'area'], ['de', 'Descripción en inglés', 'area'], ['info', 'Contexto de la historia (una línea por paso: Título | Texto)', 'pairs'], ['pub', 'Publicado', 'check']] },
     norms: { title: T('Normativa', 'Laws'), cols: ['n', 'tipo', 'y', 'pub'], fields: [['id', 'Identificador', 'text'], ['tipo', 'Tipo', 'select:Constitución,Tratado internacional,Ley,Decreto,Sentencia,Auto,Resolución,Política pública'], ['n', 'Nombre', 'text'], ['y', 'Año', 'number'], ['d', 'Qué establece', 'area'], ['de', 'Qué establece (inglés)', 'area'], ['rights', 'Derechos', 'multi:rights'], ['sites', 'Micrositios', 'multi:sites'], ['url', 'Enlace oficial', 'text'], ['pub', 'Publicada', 'check']] },
     obs: { title: T('Observatorios', 'Observatories'), cols: ['n', 'amb', 'pub'], fields: [['id', 'Identificador', 'text'], ['n', 'Nombre', 'text'], ['e', 'Entidad', 'text'], ['amb', 'Ámbito', 'select:Nacional,Territorial,Académico,Sociedad civil,Internacional'], ['dept', 'Departamento (código DIVIPOLA, opcional)', 'dept'], ['foc', 'Enfoques (micrositios)', 'multi:sites'], ['url', 'Enlace', 'text'], ['d', 'Descripción', 'area'], ['pub', 'Publicado', 'check']] },
+    docs: { title: T('Acervo documental', 'Document collection'), cols: ['t', 'tipo', 'y', 'pub'], fields: [['id', 'Identificador', 'text'], ['t', 'Título', 'text'], ['tipo', 'Tipo', 'select:Documento técnico,Guía,Protocolo,Informe,Boletín,Infografía,Base de datos,Herramienta'], ['y', 'Año', 'number'], ['sites', 'Temas relacionados', 'multi:sites'], ['url', 'Enlace al documento', 'text'], ['d', 'Descripción', 'area'], ['pub', 'Publicado', 'check']] },
     routes: { title: T('Rutas de atención', 'Support'), cols: ['n', 'num', 'pub'], fields: [['id', 'Identificador', 'text'], ['n', 'Nombre', 'text'], ['num', 'Número o contacto', 'text'], ['for', 'Para qué sirve', 'area'], ['cov', 'Cobertura y entidad', 'text'], ['urgent', 'Destacar como urgente', 'check'], ['pub', 'Publicada', 'check']] }
   };
   function admSection() {
     var sec = sectionEl('portal11');
-    var tabs = [['sites', T('Micrositios', 'Microsites')], ['ind', T('Indicadores públicos', 'Public indicators')], ['an', T('Análisis', 'Analyses')], ['norms', T('Normativa', 'Laws')], ['obs', T('Observatorios', 'Observatories')], ['routes', T('Rutas de atención', 'Support')]];
-    var h = '<div class="lv11adhero"><div class="eyebrow">' + T('Administración · contenidos del portal', 'Administration · portal content') + '</div><h1>' + T('Alimenta lo que ve la ciudadanía.', 'Feed what citizens see.') + '</h1><p>' + T('Micrositios, indicadores publicados, análisis, normativa, observatorios y rutas. Los cambios se guardan en este navegador y la consulta pública del mismo equipo los muestra al recargar.', 'Changes are saved in this browser and shown in the public site on reload.') + '</p><div class="lv11row"><a class="lv11btn light" href="./#micrositios" target="_blank">' + T('Ver consulta pública', 'View public site') + ' ' + icon('ext', 16) + '</a><button class="lv11btn ghost light" onclick="LV11.adm.export()">' + icon('download', 16) + ' ' + T('Exportar JSON', 'Export JSON') + '</button><label class="lv11btn ghost light">' + T('Importar JSON', 'Import JSON') + '<input type="file" accept=".json" hidden onchange="LV11.adm.import(this.files[0])"></label><button class="lv11btn ghost light" onclick="LV11.adm.reset()">' + T('Restablecer valores iniciales', 'Reset defaults') + '</button></div><p class="lv11saved">' + (S.updated ? T('Último guardado: ', 'Last saved: ') + new Date(S.updated).toLocaleString(en() ? 'en-US' : 'es-CO') : T('Sin cambios guardados: se muestran los valores iniciales.', 'No saved changes: showing defaults.')) + '</p></div>' +
+    var tabs = [['sites', T('Temas y comités', 'Topics')], ['ind', T('Indicadores públicos', 'Public indicators')], ['vals', T('Valores y gráficas', 'Values and charts')], ['an', T('Análisis', 'Analyses')], ['docs', T('Acervo documental', 'Documents')], ['norms', T('Normativa y sentencias', 'Laws and rulings')], ['obs', T('Red de observatorios', 'Observatories')], ['routes', T('Líneas de atención', 'Helplines')], ['txt', T('Textos de páginas', 'Page texts')]];
+    var h = '<div class="lv11adhero"><div class="eyebrow">' + T('Administración · contenidos del portal', 'Administration · portal content') + '</div><h1>' + T('Alimenta lo que ve la ciudadanía.', 'Feed what citizens see.') + '</h1><p>' + T('Temas, indicadores, valores y gráficas, análisis, acervo documental, normativa y sentencias, red de observatorios, líneas de atención y textos de cada página. Los cambios se guardan en este navegador y la consulta pública del mismo equipo los muestra al recargar; usa «Exportar JSON» para llevarlos al servidor.', 'Changes are saved in this browser and shown in the public site on reload.') + '</p><div class="lv11row"><a class="lv11btn light" href="./#micrositios" target="_blank">' + T('Ver consulta pública', 'View public site') + ' ' + icon('ext', 16) + '</a><button class="lv11btn ghost light" onclick="LV11.adm.export()">' + icon('download', 16) + ' ' + T('Exportar JSON', 'Export JSON') + '</button><label class="lv11btn ghost light">' + T('Importar JSON', 'Import JSON') + '<input type="file" accept=".json" hidden onchange="LV11.adm.import(this.files[0])"></label><button class="lv11btn ghost light" onclick="LV11.adm.reset()">' + T('Restablecer valores iniciales', 'Reset defaults') + '</button></div><p class="lv11saved">' + (S.updated ? T('Último guardado: ', 'Last saved: ') + new Date(S.updated).toLocaleString(en() ? 'en-US' : 'es-CO') : T('Sin cambios guardados: se muestran los valores iniciales.', 'No saved changes: showing defaults.')) + '</p></div>' +
       '<div class="lv11tabs">' + tabs.map(function (t) { return '<button class="' + (adm.tab === t[0] ? 'on' : '') + '" onclick="LV11.adm.tab(\'' + t[0] + '\')">' + t[1] + '</button>'; }).join('') + '</div>';
     if (SCHEMA[adm.tab]) h += admTable(adm.tab);
     else if (adm.tab === 'ind') h += admInd();
+    else if (adm.tab === 'vals') h += admVals();
+    else if (adm.tab === 'txt') h += admTxt();
     else h += admAn();
     sec.innerHTML = h;
   }
@@ -2815,6 +2854,33 @@ window.LV11_DEFAULTS = (function () {
     return '<p class="lv11note">' + T('Marca qué entradas del catálogo (194) ve el público, a qué micrositio pertenecen y un resumen opcional. Las que tienen información procesada muestran métricas en su ventana.', 'Choose which catalogue entries the public sees.') + '</p><div class="lv11tools"><label class="lv11search">' + icon('search', 18) + '<input value="' + E(adm.q) + '" placeholder="' + T('Buscar código, nombre u origen…', 'Search…') + '" oninput="LV11.adm.q(this.value)"></label><span class="lv11count">' + S.ind.published.length + ' ' + T('publicados', 'published') + '</span></div><div class="lv11table"><table><thead><tr><th>' + T('Publicar', 'Publish') + '</th><th>' + T('Código', 'Code') + '</th><th>' + T('Indicador', 'Indicator') + '</th><th>' + T('Origen', 'Origin') + '</th><th>' + T('Micrositio', 'Microsite') + '</th><th>' + T('Datos', 'Data') + '</th><th>' + T('Resumen público', 'Public summary') + '</th></tr></thead><tbody>' +
       list.map(function (x) { return '<tr><td><input type="checkbox" aria-label="' + T('Publicar', 'Publish') + ' ' + E(x.code) + '"' + (set[x.code] ? ' checked' : '') + ' onchange="LV11.adm.pubInd(\'' + x.code + '\',this.checked)"></td><td><b>' + E(x.code) + '</b></td><td>' + E(x.name) + '</td><td><small>' + E(x.origin) + '</small></td><td><select onchange="LV11.adm.indSite(\'' + x.code + '\',this.value)">' + sites(true).map(function (s) { return '<option value="' + s.id + '"' + (indSite(x) === s.id ? ' selected' : '') + '>' + E(s.es) + '</option>'; }).join('') + '</select></td><td>' + (IND[x.code] ? '<em class="lv11has">' + T('Procesados', 'Processed') + '</em>' : '—') + '</td><td><input value="' + E(S.ind.summary[x.code] || '') + '" placeholder="' + T('Opcional', 'Optional') + '" onchange="LV11.adm.indSum(\'' + x.code + '\',this.value)"></td></tr>'; }).join('') + '</tbody></table></div>';
   }
+  function admVals() {
+    var list = published().filter(function (x) { var q = adm.q.toLowerCase(); return !q || (x.code + ' ' + x.name).toLowerCase().indexOf(q) > -1; });
+    return '<p class="lv11note">' + T('Corrige la cifra principal, el texto de lectura, la fuente o la serie de la gráfica de cada indicador publicado. También puedes cargar datos para un indicador que aún no los tiene. Lo editado se marca y prevalece sobre el cálculo automático.', 'Edit headline value, reading, source or chart series of any published indicator.') + '</p><div class="lv11tools"><label class="lv11search">' + icon('search', 18) + '<input value="' + E(adm.q) + '" placeholder="' + T('Buscar indicador…', 'Search…') + '" oninput="LV11.adm.q(this.value)"></label><span class="lv11count">' + Object.keys(S.ovr).length + ' ' + T('editados', 'edited') + '</span></div><div class="lv11table"><table><thead><tr><th>' + T('Código', 'Code') + '</th><th>' + T('Indicador', 'Indicator') + '</th><th>' + T('Cifra actual', 'Current value') + '</th><th>' + T('Estado', 'Status') + '</th><th></th></tr></thead><tbody>' +
+      list.map(function (x) { var k = indKpi(x.code), o = S.ovr[x.code]; return '<tr><td><b>' + E(x.code) + '</b></td><td>' + E(x.name) + '</td><td><b class="lv54v">' + E(k ? k.v : '—') + '</b>' + (k && k.l ? '<br><small>' + E(k.l) + '</small>' : '') + '</td><td>' + (o ? '<em class="lv54ed">' + T('Editado', 'Edited') + '</em>' : (IND0 && IND0[x.code] ? '<em class="lv11has">' + T('Calculado', 'Computed') + '</em>' : '<em class="lv54pend">' + T('Sin datos', 'No data') + '</em>')) + '</td><td class="lv11acts"><button onclick="LV11.adm.vedit(\'' + x.code + '\')" aria-label="' + T('Editar valores', 'Edit values') + '">' + icon('edit', 16) + '</button></td></tr>'; }).join('') + '</tbody></table></div>';
+  }
+  function vEdit(code) {
+    var x = catalog().find(function (i) { return i.code === code; }) || { name: code }, o = S.ovr[code] || {}, k = (function () { var b = IND0 && IND0[code], r = null; try { r = b ? b() : null; } catch (e) {} return r; })();
+    var cur = k && k.kpis && k.kpis[0] ? k.kpis[0] : ['', ''];
+    dialog('<div class="lv11dbody"><div class="lv11dh"><span class="lv11chip">' + E(code) + '</span><h2>' + E(x.name) + '</h2><p class="lv11status">' + (k ? T('Valor calculado: ', 'Computed value: ') + E(cur[0]) + ' · ' + E(cur[1]) : T('Este indicador aún no tiene datos: puedes cargarlos aquí.', 'No data yet: you can load it here.')) + '</p></div>' +
+      '<form class="lv11form lv54f" onsubmit="event.preventDefault();LV11.adm.vsave(\'' + code + '\',this)">' +
+      '<div class="lv54g"><label>' + T('Cifra principal', 'Headline value') + '<input name="v" value="' + E(o.v || '') + '" placeholder="' + E(cur[0] || 'ej. 45,2 %') + '"></label><label>' + T('Qué mide la cifra', 'Label') + '<input name="label" value="' + E(o.label || '') + '" placeholder="' + E(cur[1] || '') + '"></label></div>' +
+      '<label>' + T('Lectura en lenguaje sencillo', 'Plain-language reading') + '<textarea name="read" rows="2" placeholder="' + E((k && k.read) || '') + '">' + E(o.read || '') + '</textarea></label>' +
+      '<label>' + T('Fuente y fecha de corte', 'Source and cut-off') + '<input name="src" value="' + E(o.src || '') + '" placeholder="' + E((k && k.src) || '') + '"></label>' +
+      '<div class="lv54g"><label>' + T('Serie de la gráfica (una línea por dato: Etiqueta ; Valor)', 'Chart series (Label ; Value per line)') + '<textarea name="serie" rows="7" placeholder="2021 ; 32,4&#10;2022 ; 35,1&#10;2023 ; 33,8" oninput="LV11.adm.vprev(this.form)">' + E(o.serie || '') + '</textarea></label><label>' + T('Tipo de gráfica', 'Chart type') + '<select name="tipo" onchange="LV11.adm.vprev(this.form)"><option value="barras"' + (o.tipo !== 'linea' ? ' selected' : '') + '>' + T('Barras', 'Bars') + '</option><option value="linea"' + (o.tipo === 'linea' ? ' selected' : '') + '>' + T('Línea en el tiempo', 'Line') + '</option></select><div class="lv54prev" id="lv54prev">' + ovrChart({ serie: o.serie, tipo: o.tipo, code: code }) + '</div></label></div>' +
+      '<p class="lv11note">' + T('Deja un campo vacío para usar el valor calculado. Usa coma decimal (32,4).', 'Leave empty to use the computed value.') + '</p>' +
+      '<div class="lv11row"><button class="lv11btn" type="submit">' + T('Guardar', 'Save') + '</button>' + (S.ovr[code] ? '<button class="lv11btn ghost" type="button" onclick="LV11.adm.vclear(\'' + code + '\')">' + T('Volver al valor calculado', 'Restore computed value') + '</button>' : '') + '<button class="lv11btn ghost" type="button" onclick="LV11.openIndicator(\'' + code + '\')">' + T('Vista previa', 'Preview') + '</button></div></form></div>', '#672e89');
+  }
+  // textos de páginas editables: [clave, etiqueta, texto por defecto]
+  var TXT = [
+    [T('Inicio', 'Home'), [['inicio.sub', 'Subtítulo de la portada', 'Mujeres, territorios y realidades'], ['inicio.k1', 'Cifra 1 · valor (vacío = automático)', ''], ['inicio.k1l', 'Cifra 1 · texto', 'indicadores en el observatorio'], ['inicio.k2', 'Cifra 2 · valor', '6'], ['inicio.k2l', 'Cifra 2 · texto', 'datos interseccionales: edad, etnia, discapacidad, orientación sexual, agresor y zona'], ['inicio.k3', 'Cifra 3 · valor', '1.122'], ['inicio.k3l', 'Cifra 3 · texto', 'datos territorializados: municipios con zona urbana y rural']]],
+    [T('Sentencias', 'Rulings'), [['sent.h1', 'Título', 'Lo que han decidido los jueces'], ['sent.p', 'Introducción', 'Decisiones de la Corte Constitucional que protegen los derechos de las mujeres en todas sus diversidades.']]],
+    [T('Rutas de atención', 'Support pathways'), [['rutas.alerta', 'Alerta de peligro inminente', 'Llama al 123 o busca un lugar seguro. Tu vida es lo primero.'], ['rutas.vsx', 'Alerta de violencia sexual', 'Es una urgencia médica. Ve a urgencias en las primeras 72 horas, aunque no hayas denunciado: hay anticoncepción de emergencia y profilaxis gratuitas.'], ['rutas.enc1', 'Encuadre 1', 'Ninguna violencia se justifica. Tienes derecho a una vida libre de violencias (Ley 1257 de 2008).'], ['rutas.enc2', 'Encuadre 2', 'Si estás en peligro, busca un lugar seguro y llama al 123.'], ['rutas.enc3', 'Encuadre 3', 'Salud, justicia o protección: la entidad a la que llegues debe atenderte y remitirte a las demás.'], ['rutas.enc4', 'Encuadre 4', 'A recibir información clara, a ir acompañada, a no ser confrontada con el agresor y a que se respete tu privacidad.'], ['rutas.salud', 'Sector salud', 'Urgencias, atención médica y psicológica, registro de lesiones. No necesitas denuncia para que te atiendan.'], ['rutas.justicia', 'Sector justicia', 'Denuncia, investigación y sanción. Fiscalía, Medicina Legal y Ministerio Público te acompañan.'], ['rutas.proteccion', 'Sector protección', 'Medidas para que el agresor no se acerque, desalojo, acogida en casa refugio y protección de niñas y niños.']]],
+    [T('Red Nacional de Casas Refugio', 'Shelter network'), [['casas.p', 'Introducción', 'Lugares de acogida temporales, gratuitos y seguros para mujeres víctimas de violencia, sus hijas e hijos y personas a su cargo.'], ['casas.e1', 'Etapa 1 · Ingreso', 'La mujer pide una medida de protección o atención ante una Comisaría de Familia o un juzgado. La autoridad estudia el caso y decide si otorga la casa refugio. En casos de grave necesidad, la casa puede recibirla de forma temporal mientras se presenta ante la autoridad.'], ['casas.e2', 'Etapa 2 · Permanencia', 'Durante su estancia recibe alojamiento, alimentación y vestuario, junto con asesoría jurídica, acompañamiento psicosocial y orientación educativa u ocupacional, para ella, sus hijas e hijos y personas a cargo.'], ['casas.e3', 'Etapa 3 · Egreso', 'La salida se prepara con un plan para retomar su vida con autonomía: empleo o emprendimiento, estudio y redes de apoyo.'], ['casas.e4', 'Etapa 4 · Seguimiento', 'Después de salir, el equipo hace seguimiento para confirmar que ella y su familia siguen seguras y con acceso a sus derechos.']]]
+  ];
+  function admTxt() {
+    return '<p class="lv11note">' + T('Edita los textos fijos de cada página. Deja un campo vacío para usar el texto original. Se aplica en español; la versión en inglés conserva su traducción.', 'Edit fixed page texts (Spanish). Empty = original.') + '</p>' + TXT.map(function (g) { return '<details class="lv54tx" open><summary>' + E(g[0]) + '</summary><div>' + g[1].map(function (f) { var v = S.txt[f[0]] || ''; return '<label>' + E(f[1]) + (f[2].length > 70 ? '<textarea rows="2" placeholder="' + E(f[2]) + '" onchange="LV11.adm.txt(\'' + f[0] + '\',this.value)">' + E(v) + '</textarea>' : '<input value="' + E(v) + '" placeholder="' + E(f[2]) + '" onchange="LV11.adm.txt(\'' + f[0] + '\',this.value)">') + '</label>'; }).join('') + '</div></details>'; }).join('');
+  }
   function admAn() {
     return '<p class="lv11note">' + T('Los análisis se calculan con los datos cargados. Puedes ocultarlos o cambiar su título y agregar una nota de lectura.', 'Analyses are computed from loaded data; you can hide them or edit the title and note.') + '</p><div class="lv11table"><table><thead><tr><th>' + T('Visible', 'Visible') + '</th><th>' + T('Análisis', 'Analysis') + '</th><th>' + T('Micrositio', 'Microsite') + '</th><th>' + T('Título público', 'Public title') + '</th><th>' + T('Nota adicional', 'Extra note') + '</th><th></th></tr></thead><tbody>' +
       DEF.analyses.map(function (a) { var t = S.analyses.text[a.id] || {}; return '<tr><td><input type="checkbox"' + (S.analyses.hidden.indexOf(a.id) < 0 ? ' checked' : '') + ' onchange="LV11.adm.anVis(\'' + a.id + '\',this.checked)"></td><td><b>' + E(a.es) + '</b></td><td>' + E(sName(site(a.site))) + '</td><td><input value="' + E(t.title || '') + '" placeholder="' + E(a.es) + '" onchange="LV11.adm.anText(\'' + a.id + '\',\'title\',this.value)"></td><td><input value="' + E(t.note || '') + '" onchange="LV11.adm.anText(\'' + a.id + '\',\'note\',this.value)"></td><td><button class="lv11btn ghost" onclick="LV11.openAnalysis(\'' + a.id + '\')">' + T('Vista previa', 'Preview') + '</button></td></tr>'; }).join('') + '</tbody></table></div>';
@@ -2825,6 +2891,7 @@ window.LV11_DEFAULTS = (function () {
       var key = fd[0], lab = fd[1], type = fd[2], v = x[key];
       if (type === 'check') return '<label class="lv11switch"><input type="checkbox" name="' + key + '"' + (v ? ' checked' : '') + '> ' + E(lab) + '</label>';
       if (type === 'area') return '<label>' + E(lab) + '<textarea name="' + key + '" rows="3">' + E(v || '') + '</textarea></label>';
+      if (type === 'pairs') return '<label>' + E(lab) + '<textarea name="' + key + '" rows="5">' + E((v || []).map(function (q) { return q[0] + ' | ' + q[1]; }).join('\n')) + '</textarea></label>';
       if (type === 'color') return '<label>' + E(lab) + '<input type="color" name="' + key + '" value="' + E(v || '#672e89') + '"></label>';
       if (type === 'icon') return '<label>' + E(lab) + '<select name="' + key + '">' + Object.keys(ICO).slice(0, 18).map(function (o) { return '<option' + (v === o ? ' selected' : '') + '>' + o + '</option>'; }).join('') + '</select></label>';
       if (type === 'dept') return '<label>' + E(lab) + '<select name="' + key + '"><option value="">' + T('Ninguno', 'None') + '</option>' + GEOx().map(function (g) { return '<option value="' + g.code + '"' + (v === g.code ? ' selected' : '') + '>' + E(g.name) + '</option>'; }).join('') + '</select></label>';
@@ -2839,17 +2906,19 @@ window.LV11_DEFAULTS = (function () {
     sc.fields.forEach(function (fd) {
       var key = fd[0], type = fd[2];
       if (type === 'check') x[key] = form.querySelector('[name="' + key + '"]').checked;
+      else if (type === 'pairs') x[key] = form.querySelector('[name="' + key + '"]').value.split('\n').map(function (l) { var i2 = l.indexOf('|'); return i2 < 0 ? null : [l.slice(0, i2).trim(), l.slice(i2 + 1).trim()]; }).filter(function (q) { return q && q[0]; });
       else if (type.indexOf('multi:') === 0) x[key] = Array.from(form.querySelectorAll('[name="' + key + '"]:checked')).map(function (c) { return c.value; });
       else { var v = form.querySelector('[name="' + key + '"]').value.trim(); x[key] = type === 'number' ? Number(v) : v; }
     });
-    if (!x.id) x.id = (x.es || x.n || 'item').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '-').slice(0, 30);
+    if (!x.id) x.id = (x.es || x.n || x.t || 'item').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '-').slice(0, 30);
     if (k === 'sites') { x.themes = x.themes || []; x.analyses = x.analyses || []; x.ico = x.ico || 'spark'; }
     if (k === 'norms') { x.rights = x.rights || []; x.sites = x.sites || []; }
+    if (k === 'docs') { x.sites = x.sites || []; if (!x.t) x.t = 'Documento'; if (!x.id || x.id === 'item') x.id = 'doc-' + uid().slice(1, 6); }
     if (k === 'obs') { x.foc = x.foc || []; if (!x.dept) delete x.dept; if (!x.url) x.url = null; }
     if (i < 0) { if (S[k].some(function (z) { return z.id === x.id; })) x.id += '-' + uid().slice(1, 4); S[k].push(x); }
     persist(); D.getElementById('lv11Dialog').close(); toast(T('Guardado. La consulta pública lo mostrará al recargar.', 'Saved. The public site will show it on reload.')); admSection();
   }
-  function toast(t) { var el = D.createElement('div'); el.className = 'lv11toast'; el.textContent = t; D.body.appendChild(el); setTimeout(function () { el.classList.add('on'); }, 10); setTimeout(function () { el.classList.remove('on'); setTimeout(function () { el.remove(); }, 400); }, 3200); }
+  function toast(t) { D.querySelectorAll('.lv11toast').forEach(function (o) { o.remove(); }); var el = D.createElement('div'); el.className = 'lv11toast'; el.textContent = t; D.body.appendChild(el); setTimeout(function () { el.classList.add('on'); }, 10); setTimeout(function () { el.classList.remove('on'); setTimeout(function () { el.remove(); }, 400); }, 3200); }
   var ADM = {
     tab: function (t) { adm.tab = t; adm.q = ''; admSection(); },
     q: function (v) { adm.q = v; clearTimeout(ADM._t); ADM._t = setTimeout(function () { var a = D.activeElement, pos = a && a.selectionStart; admSection(); var inp = D.querySelector('#portal11 .lv11search input'); if (inp) { inp.focus(); try { inp.setSelectionRange(pos, pos); } catch (e) {} } }, 250); },
@@ -2859,10 +2928,15 @@ window.LV11_DEFAULTS = (function () {
     pubInd: function (c, v) { var p = S.ind.published, at = p.indexOf(c); if (v && at < 0) p.push(c); if (!v && at > -1) p.splice(at, 1); persist(); toast(T('Indicador ', 'Indicator ') + c + (v ? T(' publicado', ' published') : T(' retirado del portal', ' unpublished'))); },
     indSite: function (c, v) { S.ind.site[c] = v; persist(); },
     indSum: function (c, v) { if (v) S.ind.summary[c] = v; else delete S.ind.summary[c]; persist(); },
+    vedit: vEdit,
+    vprev: function (f) { var b = D.getElementById('lv54prev'); if (b) b.innerHTML = ovrChart({ serie: f.serie.value, tipo: f.tipo.value, code: 'prev' }); },
+    vsave: function (code, f) { var o = {}; ['v', 'label', 'read', 'src', 'serie', 'tipo'].forEach(function (k) { var v = (f[k].value || '').trim(); if (v && !(k === 'tipo' && !f.serie.value.trim())) o[k] = v; }); if (Object.keys(o).length) S.ovr[code] = o; else delete S.ovr[code]; persist(); D.getElementById('lv11Dialog').close(); toast(T('Valores guardados. La consulta pública los mostrará al recargar.', 'Values saved.')); admSection(); },
+    vclear: function (code) { delete S.ovr[code]; persist(); D.getElementById('lv11Dialog').close(); toast(T('Se restableció el valor calculado.', 'Computed value restored.')); admSection(); },
+    txt: function (k, v) { v = (v || '').trim(); if (v) S.txt[k] = v; else delete S.txt[k]; persist(); toast(T('Texto guardado.', 'Text saved.')); },
     anVis: function (id, v) { var h = S.analyses.hidden, at = h.indexOf(id); if (!v && at < 0) h.push(id); if (v && at > -1) h.splice(at, 1); persist(); },
     anText: function (id, f, v) { S.analyses.text[id] = S.analyses.text[id] || {}; S.analyses.text[id][f] = v; persist(); },
     export: function () { var a = D.createElement('a'); a.href = URL.createObjectURL(new Blob([JSON.stringify(S, null, 2)], { type: 'application/json' })); a.download = 'contenidos_portal_observatorio.json'; D.body.appendChild(a); a.click(); a.remove(); },
-    import: function (file) { if (!file) return; var r = new FileReader(); r.onload = function () { try { var j = JSON.parse(r.result); ['sites', 'norms', 'obs', 'routes', 'ind', 'analyses'].forEach(function (k) { if (j[k]) S[k] = j[k]; }); persist(); toast(T('Contenidos importados.', 'Content imported.')); admSection(); } catch (e) { toast(T('El archivo no es un JSON válido.', 'Invalid JSON file.')); } }; r.readAsText(file); },
+    import: function (file) { if (!file) return; var r = new FileReader(); r.onload = function () { try { var j = JSON.parse(r.result); ['sites', 'norms', 'obs', 'routes', 'ind', 'analyses', 'ovr', 'docs', 'txt'].forEach(function (k) { if (j[k]) S[k] = j[k]; }); applyOvr(); persist(); toast(T('Contenidos importados.', 'Content imported.')); admSection(); } catch (e) { toast(T('El archivo no es un JSON válido.', 'Invalid JSON file.')); } }; r.readAsText(file); },
     reset: function () { if (!confirm(T('¿Volver a los valores iniciales? Se perderán los cambios guardados en este navegador.', 'Reset to defaults?'))) return; try { localStorage.removeItem(KEY); } catch (e) {} load(); admSection(); toast(T('Valores iniciales restablecidos.', 'Defaults restored.')); }
   };
 
@@ -2870,6 +2944,10 @@ window.LV11_DEFAULTS = (function () {
   var API = {
     openSite: function (id) { return openSiteInline(id); },
     siteInds: function (id) { return published().filter(function (x) { return indSite(x) === id; }).map(function (x) { return { code: x.code, name: x.name, formula: x.formula, unit: x.unit, frequency: x.frequency, variables: x.variables, source: x.source || (x.sources || []).join(', '), status: x.status, note: x.note, data: !!IND[x.code] }; }); },
+    docs: function (id) { return S.docs.filter(function (d) { return d.pub && (!id || (d.sites || []).indexOf(id) > -1); }).sort(function (a, b) { return (b.y || 0) - (a.y || 0); }); },
+    routes: function () { return S.routes.filter(function (r) { return r.pub; }); },
+    txt: function (k, def) { return (!en() && S.txt && S.txt[k]) || def; },
+    edited: function (code) { return !!(S.ovr && S.ovr[code]); },
     counts: function (id) { var x = site(id); return x ? siteCounts(x) : null; },
     obsFor: function (id) { var x = site(id); if (!x) return []; return S.obs.filter(function (o) { return o.pub && (x.link === 'red' || (o.foc || []).indexOf(x.id) > -1); }); },
     goWith: function (page, id) { applySite(page, id); skipAuto = true; W.go(page); skipAuto = false; scrollTo({ top: 0, behavior: 'smooth' }); },
@@ -2920,6 +2998,7 @@ window.LV11_DEFAULTS = (function () {
   }
 
   function init() {
+    try { applyOvr(); } catch (e) {}
     // Corrección: el procesamiento v8 de PPED sumó también la fila «Total» del área (cabecera + rural + total),
     // lo que duplicaba la población de mujeres. Se divide entre dos solo si todos los valores son pares.
     var pr = V8D() && V8D().population && V8D().population.rows;
@@ -4304,7 +4383,7 @@ body>header.hero .lv14wrap{top:132px;right:4%;width:clamp(320px,34vw,540px)}
         else if (b.dataset.print) { D.body.classList.add('lv14printing'); setTimeout(function () { print(); D.body.classList.remove('lv14printing'); }, 50); }
       });
     }
-    if (host.parentNode !== box) box.insertBefore(host, box.querySelector('.lv14lineh') || lines);
+    if (host.parentNode !== box && !host.closest('#t50dir')) box.insertBefore(host, box.querySelector('.lv14lineh') || lines);
     if (!box.querySelector('.lv14lineh')) { var t = D.createElement('h2'); t.className = 'lv11h2 lv14lineh'; t.textContent = T('Líneas de atención verificadas', 'Verified helplines'); box.insertBefore(t, lines); var n = D.createElement('p'); n.className = 'lv11note lv14lineh2'; n.textContent = T('Verificadas en fuentes oficiales el 29 de octubre de 2026. Toca un número para llamar.', 'Checked against official sources on 29 October 2026. Tap a number to call.'); box.insertBefore(n, lines); }
   }
   function paintRuta() { var h = D.getElementById('lv14ruta'); if (h) h.innerHTML = rutaHTML(); }
@@ -6723,7 +6802,7 @@ footer.lv12foot .lv12mun span:not(.valle):before{content:"";display:inline-block
   function E(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
   function N(v) { return Number(v).toLocaleString(en() ? 'en-US' : 'es-CO'); }
   function ls(k, v) { try { if (v === undefined) return localStorage.getItem(k); if (v === null) localStorage.removeItem(k); else localStorage.setItem(k, v); } catch (e) { return null; } }
-  var CONSULTA = !!D.getElementById('libres') && !!D.getElementById('navigation');
+  var CONSULTA = !!D.getElementById('libres') && !!D.getElementById('navigation') && !/Administracion/i.test(location.pathname) && !D.getElementById('roleGate');
 
   /* ---------------- Fotografías ---------------- */
   // clave interna (igual a Administración › Fotografías) → archivo en la carpeta fotos/
@@ -6856,6 +6935,7 @@ footer.lv12foot .lv12mun span:not(.valle):before{content:"";display:inline-block
     ['rutas', 'Encuentra atención', 'Find support', 'Líneas, entidades y pasos a seguir', 'Hotlines, agencies and next steps']
   ];
   var LIBRES = [['19573', 'Puerto Tejada', 'Cauca'], ['19780', 'Suárez', 'Cauca'], ['19212', 'Corinto', 'Cauca'], ['19110', 'Buenos Aires', 'Cauca'], ['76275', 'Florida', 'Valle del Cauca'], ['76563', 'Pradera', 'Valle del Cauca'], ['76364', 'Jamundí', 'Valle del Cauca']];
+  function X(k, d) { return W.LV11 && W.LV11.txt ? W.LV11.txt(k, d) : d; }
   var ARR = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
   function kpis() {
     var t = (W.LV23_TERR || {}).tot || {}, nS = W.LV11 ? W.LV11.sites().length : 16;
@@ -6925,11 +7005,11 @@ footer.lv12foot .lv12mun span:not(.valle):before{content:"";display:inline-block
     // 1. portada morada: nombre del observatorio, buscador, accesos y cifras
     var h = '<div class="x41hero"><span class="glow" aria-hidden="true"></span><div class="in">' +
       '<h1>' + T('Observatorio<br>de Mujeres <em>en todas sus diversidades</em>', 'Observatory<br>of Women <em>in all their diversity</em>') + '</h1>' +
-      '<p class="xsub2">' + T('Mujeres, territorios y realidades', 'Women, territories and realities') + '</p>' +
+      '<p class="xsub2">' + X('inicio.sub', T('Mujeres, territorios y realidades', 'Women, territories and realities')) + '</p>' +
       '<form class="xsx" role="search"><label class="sr" for="lv23q">' + T('Buscar en el observatorio', 'Search the observatory') + '</label><input id="lv23q" type="search" autocomplete="off" placeholder="' + T('Buscar en el observatorio', 'Search the observatory') + '"><button type="submit">' + T('Buscar', 'Search') + '</button></form>' +
       '<div class="xcta"><button type="button" data-go="mapa">' + T('Explorar el mapa', 'Explore the map') + '</button><button type="button" data-go="indicadores">' + T('Ver indicadores', 'See indicators') + '</button></div>' +
       '<div class="x41k" role="group" aria-label="' + T('El observatorio en cifras', 'The observatory in figures') + '">' +
-      [[String(np), T('indicadores en el observatorio', 'indicators in the observatory'), 'indicadores', ''], ['6', T('datos interseccionales: edad, etnia, discapacidad, orientación sexual, agresor y zona', 'intersectional data: age, ethnicity, disability, sexual orientation, aggressor and area'), 'indicadores', 'quien'], ['1.122', T('datos territorializados: municipios con zona urbana y rural', 'territorial data: municipalities with urban and rural areas'), 'mapa', '']].map(function (x) { return '<button type="button" data-go="' + x[2] + '"' + (x[3] ? ' data-vt="' + x[3] + '"' : '') + '><b>' + x[0] + '</b><span>' + x[1] + '</span></button>'; }).join('') + '</div></div>' +
+      [[X('inicio.k1', String(np)), X('inicio.k1l', T('indicadores en el observatorio', 'indicators in the observatory')), 'indicadores', ''], [X('inicio.k2', '6'), X('inicio.k2l', T('datos interseccionales: edad, etnia, discapacidad, orientación sexual, agresor y zona', 'intersectional data: age, ethnicity, disability, sexual orientation, aggressor and area')), 'indicadores', 'quien'], [X('inicio.k3', '1.122'), X('inicio.k3l', T('datos territorializados: municipios con zona urbana y rural', 'territorial data: municipalities with urban and rural areas')), 'mapa', '']].map(function (x) { return '<button type="button" data-go="' + x[2] + '"' + (x[3] ? ' data-vt="' + x[3] + '"' : '') + '><b>' + x[0] + '</b><span>' + x[1] + '</span></button>'; }).join('') + '</div></div>' +
       '<svg class="wave" viewBox="0 0 1440 160" preserveAspectRatio="none" aria-hidden="true"><path d="M0 92C180 40 330 40 520 84s360 70 560 26 300-60 360-48" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="2"/><path d="M0 128c200-40 380-46 600-12s420 40 600 0 200-34 240-30" fill="none" stroke="rgba(193,123,237,.45)" stroke-width="2"/></svg></div>';
     // 2. proyecto de cooperación
     var coopH = '<section class="x41coop" aria-labelledby="x41cp"><div class="lg">' + (L.libres ? '<img src="' + L.libres + '" alt="¡LIBRES!">' : '') + '</div><div class="tx"><span class="chip">' + T('Proyecto de cooperación', 'Cooperation project') + '</span>' +
@@ -7085,7 +7165,7 @@ footer.lv12foot .lv12mun span:not(.valle):before{content:"";display:inline-block
     var ticks = ''; for (var y = Math.ceil(y0 / 4) * 4; y <= y1; y += 4) ticks += '<span class="tk" style="left:' + pos(y) + '">' + y + '</span>';
     var stack = {}, dots = all.map(function (n) { var k = stack[n.y] = (stack[n.y] || 0) + 1, on = match(n); return '<button type="button" class="dt' + (n.id === senSel ? ' sel' : '') + (on ? '' : ' off') + (n.tipo === 'Auto' ? ' auto' : '') + '" data-sen="' + n.id + '" style="left:' + pos(n.y) + ';--k:' + (k - 1) + '" aria-pressed="' + (n.id === senSel) + '" aria-label="' + E(n.n) + '"><i></i><b>' + E(code(n)) + '</b></button>'; }).join('');
     var h = '<div class="s46">' +
-      '<div class="s46hd"><span class="glow" aria-hidden="true"></span><span class="chip">' + T('Sentencias', 'Court rulings') + '</span><h1>' + T('Lo que han decidido los jueces', 'What the courts have decided') + '</h1><p>' + T('Decisiones de la Corte Constitucional que protegen los derechos de las mujeres en todas sus diversidades.', 'Constitutional Court decisions protecting the rights of women in all their diversity.') + '</p>' +
+      '<div class="s46hd"><span class="glow" aria-hidden="true"></span><span class="chip">' + T('Sentencias', 'Court rulings') + '</span><h1>' + X('sent.h1', T('Lo que han decidido los jueces', 'What the courts have decided')) + '</h1><p>' + X('sent.p', T('Decisiones de la Corte Constitucional que protegen los derechos de las mujeres en todas sus diversidades.', 'Constitutional Court decisions protecting the rights of women in all their diversity.')) + '</p>' +
       '<div class="kp"><span><b>' + nS + '</b> ' + T('sentencias', 'rulings') + '</span><span><b>' + nA + '</b> ' + (nA === 1 ? T('auto de seguimiento', 'follow-up order') : T('autos de seguimiento', 'follow-up orders')) + '</span><span><b>' + (y0 + 1) + '–' + (y1 - 1) + '</b> ' + T('años de decisiones', 'years of decisions') + '</span></div></div>' +
       '<div class="s46tl" role="group" aria-label="' + T('Línea de tiempo de las decisiones', 'Timeline of decisions') + '"><div class="ax"></div>' + ticks + dots + '</div>' +
       '<div class="s46f"><div class="seg">' + [['todas', 'Todas', 'All'], ['Sentencia', 'Sentencias', 'Rulings'], ['Auto', 'Autos', 'Orders']].map(function (x) { return '<button type="button" data-sf="' + x[0] + '"' + (senF === x[0] ? ' class="on"' : '') + '>' + T(x[1], x[2]) + '</button>'; }).join('') + '</div>' +
@@ -7110,12 +7190,12 @@ footer.lv12foot .lv12mun span:not(.valle):before{content:"";display:inline-block
   var CAS_SV = [['home', 'Alojamiento seguro y gratuito', 'Safe, free housing'], ['food', 'Alimentación y vestuario', 'Food and clothing'], ['law', 'Asesoría jurídica', 'Legal advice'], ['mind', 'Acompañamiento psicosocial', 'Psychosocial support'], ['book', 'Orientación educativa', 'Educational guidance'], ['work', 'Empleabilidad y emprendimiento', 'Employment and business']];
   var CAS_IC = { home: '<path d="M4 11l8-7 8 7v9h-5v-6H9v6H4z"/>', food: '<path d="M7 3v8a2 2 0 0 0 4 0V3M9 11v10M16 3c-2 2-2 6 0 8v10"/>', law: '<path d="M12 4v16M7 20h10M5 8h14M5 8l-2.5 6a2.5 2.5 0 0 0 5 0zM19 8l-2.5 6a2.5 2.5 0 0 0 5 0z"/>', mind: '<path d="M12 20s-7.5-4.6-7.5-10A4.3 4.3 0 0 1 12 7.4 4.3 4.3 0 0 1 19.5 10c0 5.4-7.5 10-7.5 10z"/>', book: '<path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2zM4 5v16"/>', work: '<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>' };
   function cic(k) { return '<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + CAS_IC[k] + '</svg>'; }
-  function casStepHTML() { return '<ol class="c47st" role="tablist">' + CAS_ST.map(function (x, i) { return '<li><button type="button" role="tab" data-cst="' + i + '" aria-selected="' + (i === casStep) + '"' + (i === casStep ? ' class="on"' : '') + '><i>' + (i + 1) + '</i><b>' + T(x[0], x[1]) + '</b></button></li>'; }).join('') + '</ol><div class="c47sp" role="tabpanel"><b>' + (casStep + 1) + '. ' + T(CAS_ST[casStep][0], CAS_ST[casStep][1]) + '</b><p>' + T(CAS_ST[casStep][2], CAS_ST[casStep][3]) + '</p></div>'; }
+  function casStepHTML() { return '<ol class="c47st" role="tablist">' + CAS_ST.map(function (x, i) { return '<li><button type="button" role="tab" data-cst="' + i + '" aria-selected="' + (i === casStep) + '"' + (i === casStep ? ' class="on"' : '') + '><i>' + (i + 1) + '</i><b>' + T(x[0], x[1]) + '</b></button></li>'; }).join('') + '</ol><div class="c47sp" role="tabpanel"><b>' + (casStep + 1) + '. ' + T(CAS_ST[casStep][0], CAS_ST[casStep][1]) + '</b><p>' + X('casas.e' + (casStep + 1), T(CAS_ST[casStep][2], CAS_ST[casStep][3])) + '</p></div>'; }
   function renderCasas() {
     var sec = D.getElementById('casas'); if (!sec || !W.LV11) return;
     var norms = (W.LV11.norms() || []).filter(function (n) { return n.pub !== false && (n.sites || []).indexOf('casas-refugio') > -1; }).sort(function (a, b) { return b.y - a.y; });
     sec.innerHTML = '<div class="c47">' +
-      '<div class="c47hd"><span class="glow" aria-hidden="true"></span><span class="chip">' + T('Red Nacional', 'National Network') + '</span><h1>' + T('Red Nacional de Casas Refugio', 'National Shelter Network') + '</h1><p>' + T('Lugares de acogida temporales, gratuitos y seguros para mujeres víctimas de violencia, sus hijas e hijos y personas a su cargo.', 'Temporary, free and safe shelters for women victims of violence, their children and dependants.') + '</p>' +
+      '<div class="c47hd"><span class="glow" aria-hidden="true"></span><span class="chip">' + T('Red Nacional', 'National Network') + '</span><h1>' + T('Red Nacional de Casas Refugio', 'National Shelter Network') + '</h1><p>' + X('casas.p', T('Lugares de acogida temporales, gratuitos y seguros para mujeres víctimas de violencia, sus hijas e hijos y personas a su cargo.', 'Temporary, free and safe shelters for women victims of violence, their children and dependants.')) + '</p>' +
       '<div class="kp"><span>' + T('Ley 2215 de 2022', 'Law 2215 of 2022') + '</span><span>' + T('Ley 1257 de 2008 · medidas de atención', 'Law 1257 of 2008 · support measures') + '</span><span class="pv">' + T('Por seguridad no se publican direcciones ni ubicaciones', 'For safety, addresses and locations are never published') + '</span></div></div>' +
       '<section class="c47b"><h2>' + T('¿Quiénes pueden llegar a una casa refugio?', 'Who can stay in a shelter?') + '</h2><div class="who">' +
       [['Mujeres víctimas de violencia', 'Women victims of violence', 'en todas sus formas, sin importar su condición personal, social o económica', 'in all its forms, regardless of personal, social or economic status'], ['Sus hijas e hijos', 'Their children', 'que la acompañan durante la medida', 'who stay with her during the measure'], ['Personas a su cargo', 'Her dependants', 'que dependen de ella y también están en riesgo', 'who depend on her and are also at risk'], ['Rutas especiales', 'Special pathways', 'para defensoras de derechos humanos, mujeres en reintegración y mujeres de comunidades étnicas', 'for human rights defenders, women in reintegration and women from ethnic communities']].map(function (x) { return '<div><b>' + T(x[0], x[1]) + '</b><small>' + T(x[2], x[3]) + '</small></div>'; }).join('') + '</div></section>' +
@@ -7258,12 +7338,12 @@ footer.lv12foot .lv12mun span:not(.valle):before{content:"";display:inline-block
     var LIBRES = ['19573', '19780', '19212', '19110', '76275', '76563', '76364'];
   // tipos de entidad · ícono (trazo SVG) · color
   var ENT = {
-    pol: { n: T('Policía · estación municipal', 'Police station'), s: 'Policía', ico: 'M12 3l7 3v5c0 5-3 8-7 10-4-2-7-5-7-10V6z', c: '#a844e2', tel: '123' },
-    sal: { n: T('Hospital o ESE municipal', 'Local hospital'), s: 'Salud', ico: 'M10 4h4v6h6v4h-6v6h-4v-6H4v-4h6z', c: '#a844e2', tel: '' },
-    com: { n: T('Comisaría de Familia', 'Family commissioner'), s: 'Comisaría', ico: 'M4 11l8-7 8 7v9H4zM10 20v-5h4v5', c: '#35cbce', tel: '' },
-    fis: { n: T('Fiscalía · denuncia', 'Prosecutor · report'), s: 'Fiscalía', ico: 'M12 3v18M5 8h14M7 8l-3 7h6zM17 8l-3 7h6z', c: '#672e89', tel: '122' },
-    per: { n: T('Personería Municipal', 'Municipal ombudsperson'), s: 'Personería', ico: 'M5 4h10l4 4v12H5zM9 12h6M9 16h6', c: '#a844e2', tel: '' },
-    icb: { n: T('ICBF · centro zonal', 'Child welfare (ICBF)'), s: 'ICBF', ico: 'M8 7a2.5 2.5 0 1 0 0-.1M16 9a2 2 0 1 0 0-.1M4 20c0-4 2-7 4-7s4 3 4 7M12 20c0-3 2-5 4-5s4 2 4 5', c: '#35cbce', tel: '141' }
+    pol: { sec: 'proteccion', n: T('Policía · estación municipal', 'Police station'), s: 'Policía', ico: 'M12 3l7 3v5c0 5-3 8-7 10-4-2-7-5-7-10V6z', c: '#a844e2', tel: '123' },
+    sal: { sec: 'salud', n: T('Hospital o ESE municipal', 'Local hospital'), s: 'Salud', ico: 'M10 4h4v6h6v4h-6v6h-4v-6H4v-4h6z', c: '#a844e2', tel: '' },
+    com: { sec: 'proteccion', n: T('Comisaría de Familia', 'Family commissioner'), s: 'Comisaría', ico: 'M4 11l8-7 8 7v9H4zM10 20v-5h4v5', c: '#35cbce', tel: '' },
+    fis: { sec: 'justicia', n: T('Fiscalía · denuncia', 'Prosecutor · report'), s: 'Fiscalía', ico: 'M12 3v18M5 8h14M7 8l-3 7h6zM17 8l-3 7h6z', c: '#672e89', tel: '122' },
+    per: { sec: 'justicia', n: T('Personería Municipal', 'Municipal ombudsperson'), s: 'Personería', ico: 'M5 4h10l4 4v12H5zM9 12h6M9 16h6', c: '#a844e2', tel: '' },
+    icb: { sec: 'proteccion', n: T('ICBF · centro zonal', 'Child welfare (ICBF)'), s: 'ICBF', ico: 'M8 7a2.5 2.5 0 1 0 0-.1M16 9a2 2 0 1 0 0-.1M4 20c0-4 2-7 4-7s4 3 4 7M12 20c0-3 2-5 4-5s4 2 4 5', c: '#35cbce', tel: '141' }
   };
   var SIT = [
     ['pareja', T('Violencia de pareja o familiar', 'Partner or family violence'), [['pol', T('Si hay peligro, llama al 123: la Policía puede intervenir de inmediato y trasladarte.', 'If in danger, call 123: police can act immediately.')], ['sal', T('Atención en urgencias y registro de lesiones. No necesitas denuncia previa.', 'Emergency care; no prior report needed.')], ['com', T('Medidas de protección: desalojo del agresor, prohibición de acercarse, acompañamiento.', 'Protection orders.')], ['fis', T('Denuncia penal. También en línea o en la estación de Policía, que la remite.', 'Criminal report, also online.')], ['per', T('Si una entidad no te atiende o te revictimiza, la Personería vigila y te acompaña.', 'If an agency fails you, the ombudsperson steps in.')]]],
@@ -7271,10 +7351,25 @@ footer.lv12foot .lv12mun span:not(.valle):before{content:"";display:inline-block
     ['nna', T('Niñas y adolescentes', 'Girls and adolescents'), [['icb', T('Línea 141 o centro zonal: restablecimiento de derechos.', 'Line 141: restoration of rights.')], ['com', T('La Comisaría actúa cuando la violencia ocurre en la familia.', 'Commissioner acts on family violence.')], ['sal', T('Atención en salud prioritaria y gratuita.', 'Priority free health care.')], ['fis', T('Denuncia: es obligatoria para quien conozca el caso.', 'Reporting is mandatory.')]]],
     ['conflicto', T('Conflicto armado', 'Armed conflict'), [['per', T('Declaración ante la Personería para ingresar al Registro Único de Víctimas.', 'Statement to enter the Victims Registry.')], ['sal', T('Atención en salud y apoyo psicosocial.', 'Health and psychosocial care.')], ['fis', T('Denuncia de los hechos.', 'Report the facts.')], ['pol', T('Protección si hay amenazas.', 'Protection if threatened.')]]]
   ];
+  // v50 · sectores, entidades especializadas y enfoques diferenciales (bocetos de Rutas de atención)
+  var SEC = [['todos', T('Todos', 'All')], ['salud', T('Salud', 'Health')], ['justicia', T('Justicia', 'Justice')], ['proteccion', T('Protección', 'Protection')]];
+  var ESP = {
+    pareja: [[T('Casa refugio', 'Shelter'), T('Si necesitas alojamiento seguro, la autoridad que da tus medidas de atención te remite (Ley 2215 de 2022).', 'If you need safe housing, the authority granting your measures refers you (Law 2215/2022).'), 'proteccion'], [T('CAVIF · Fiscalía', 'CAVIF · Prosecutor'), T('Centro de atención a víctimas de violencia intrafamiliar, donde existe.', 'Domestic violence victims centre, where available.'), 'justicia'], [T('Defensoría del Pueblo', 'Ombudsman'), T('Orientación jurídica y quejas si no te atienden. 01 8000 914 814.', 'Legal guidance and complaints. 01 8000 914 814.'), 'justicia']],
+    sexual: [[T('CAIVAS · Fiscalía', 'CAIVAS · Prosecutor'), T('Centro de atención integral a víctimas de violencia sexual, donde existe.', 'Integrated sexual violence centre, where available.'), 'justicia'], [T('Medicina Legal', 'Forensic institute'), T('Examen médico-legal y toma de pruebas con tu consentimiento.', 'Forensic exam and evidence with your consent.'), 'justicia'], [T('IPS con protocolo de violencia sexual', 'Clinic with sexual violence protocol'), T('Atención integral en salud y salud mental, sin costo.', 'Comprehensive free health and mental health care.'), 'salud']],
+    nna: [[T('Defensoría de Familia · ICBF', 'Family Defender · ICBF'), T('Restablecimiento de derechos de niñas y adolescentes. Línea 141.', 'Restoration of rights of girls. Line 141.'), 'proteccion'], [T('CAIVAS · Fiscalía', 'CAIVAS · Prosecutor'), T('Si hay violencia sexual contra una niña o adolescente.', 'If there is sexual violence against a girl.'), 'justicia']],
+    conflicto: [[T('Unidad para las Víctimas', 'Victims Unit'), T('Registro, atención y reparación. 01 8000 911 119.', 'Registry, assistance and reparation. 01 8000 911 119.'), 'proteccion'], [T('Defensoría del Pueblo', 'Ombudsman'), T('Acompañamiento a víctimas del conflicto, incluida la violencia sexual.', 'Support for conflict victims, including sexual violence.'), 'justicia'], [T('Unidad Nacional de Protección', 'National Protection Unit'), T('Si eres lideresa o defensora y estás amenazada.', 'If you are a threatened leader or defender.'), 'proteccion']]
+  };
+  var ENF = [['', T('Sin enfoque específico', 'No specific approach'), ''],
+    ['etnico', T('Mujer indígena, afro, raizal, palenquera o Rrom', 'Indigenous, Afro, Raizal, Palenquera or Rrom woman'), T('Puedes acudir también a tu autoridad propia (cabildo, consejo comunitario o kumpania). La ruta ordinaria debe atenderte con respeto a tu cultura y, si lo pides, con intérprete.', 'You may also go to your own authority (cabildo, community council or kumpania). The ordinary pathway must respect your culture and provide an interpreter if requested.')],
+    ['lbt', T('Mujer lesbiana, bisexual o trans', 'Lesbian, bisexual or trans woman'), T('Tienes derecho a ser atendida sin discriminación y a que se respete tu nombre identitario. Si te revictimizan, informa a la Personería o la Defensoría.', 'You have the right to non-discriminatory care and to be called by your chosen name. Report revictimisation to the Personería or Ombudsman.')],
+    ['disc', T('Mujer con discapacidad', 'Woman with disability'), T('Las entidades deben hacer ajustes razonables: acompañante de tu confianza, lengua de señas, información accesible y apoyos para decidir.', 'Agencies must make reasonable adjustments: trusted companion, sign language, accessible information and decision support.')],
+    ['mig', T('Mujer migrante', 'Migrant woman'), T('Te deben atender en urgencias y en protección sin importar tu situación migratoria.', 'You must be attended in emergencies and protection regardless of your migration status.')],
+    ['rural', T('Mujer rural o campesina', 'Rural woman'), T('Si no hay Comisaría cerca, el juez municipal o la inspección de policía pueden recibir tu caso. Pide que te informen el transporte para llegar.', 'If there is no commissioner nearby, the municipal judge or police inspection can take your case.')],
+    ['mayor', T('Mujer mayor', 'Older woman'), T('Tienes atención prioritaria. Si la violencia viene de quien te cuida, la Comisaría puede ordenar medidas de protección.', 'You have priority care. If violence comes from a caregiver, the commissioner can issue protection orders.')]];
   var LINES = [['155', T('Orientación a mujeres', 'Women\'s helpline')], ['123', T('Emergencias', 'Emergencies')], ['122', T('Fiscalía', 'Prosecutor')], ['141', 'ICBF']];
 
   var DN = { '05': 'Antioquia', '08': 'Atlántico', '11': 'Bogotá D.C.', '13': 'Bolívar', '15': 'Boyacá', '17': 'Caldas', '18': 'Caquetá', '19': 'Cauca', '20': 'Cesar', '23': 'Córdoba', '25': 'Cundinamarca', '27': 'Chocó', '41': 'Huila', '44': 'La Guajira', '47': 'Magdalena', '50': 'Meta', '52': 'Nariño', '54': 'Norte de Santander', '63': 'Quindío', '66': 'Risaralda', '68': 'Santander', '70': 'Sucre', '73': 'Tolima', '76': 'Valle del Cauca', '81': 'Arauca', '85': 'Casanare', '86': 'Putumayo', '88': 'San Andrés y Providencia', '91': 'Amazonas', '94': 'Guainía', '95': 'Guaviare', '97': 'Vaupés', '99': 'Vichada' };
-  var st = { dep: '19', mun: '19573', sit: 0, zoom: 'mun' };
+  var st = { dep: '11', mun: '11001', sit: 0, zoom: 'mun', sec: 'todos', enf: '' };
   var G = null, CEN = {}, BY = {};
   function geo() {
     if (G) return G; var TG = W.LV22_GEO; if (!TG) return null;
@@ -7301,45 +7396,64 @@ footer.lv12foot .lv12mun span:not(.valle):before{content:"";display:inline-block
     var c = CEN[st.mun]; if (!c) return '';
     var steps = SIT[st.sit][2], r = Math.max(c[2] * .5, v[2] * .045), pts = steps.map(function (s, i) { var a = -Math.PI / 2 + i * 2 * Math.PI / steps.length; return [c[0] + Math.cos(a) * r, c[1] + Math.sin(a) * r]; });
     var sz = v[2] * .02, path = 'M' + pts.map(function (p) { return p[0].toFixed(3) + ' ' + p[1].toFixed(3); }).join(' L');
-    return '<path class="rt" style="stroke-width:' + (v[2] * .004).toFixed(3) + ';stroke-dasharray:' + (v[2] * .012).toFixed(3) + ' ' + (v[2] * .008).toFixed(3) + '" d="' + path + '"/>' + pts.map(function (p, i) { var k = steps[i][0]; return '<g class="pin" transform="translate(' + p[0].toFixed(3) + ' ' + p[1].toFixed(3) + ')" style="--c:' + ENT[k].c + ';animation-delay:' + (i * 120) + 'ms"><circle r="' + sz.toFixed(3) + '" style="stroke-width:' + (sz * .18).toFixed(3) + '"/><text y="' + (sz * .38).toFixed(3) + '" font-size="' + (sz * 1.05).toFixed(3) + '">' + (i + 1) + '</text></g>'; }).join('');
+    return '<path class="rt" style="stroke-width:' + (v[2] * .004).toFixed(3) + ';stroke-dasharray:' + (v[2] * .012).toFixed(3) + ' ' + (v[2] * .008).toFixed(3) + '" d="' + path + '"/>' + pts.map(function (p, i) { var k = steps[i][0]; return '<g class="pin' + (st.sec !== 'todos' && ENT[k].sec !== st.sec ? ' dim' : '') + '" transform="translate(' + p[0].toFixed(3) + ' ' + p[1].toFixed(3) + ')" style="--c:' + ENT[k].c + ';animation-delay:' + (i * 120) + 'ms"><circle r="' + sz.toFixed(3) + '" style="stroke-width:' + (sz * .18).toFixed(3) + '"/><text y="' + (sz * .38).toFixed(3) + '" font-size="' + (sz * 1.05).toFixed(3) + '">' + (i + 1) + '</text></g>'; }).join('');
   }
   function render(root) {
     if (!geo()) { root.innerHTML = ''; return; }
     var v = vb(), s = SIT[st.sit], m = G.filter(function (x) { return x.c === st.mun; })[0], sw = (v[2] * .0016).toFixed(3);
     var ms = (BY[st.dep] || []).slice().sort(function (a, b) { return a.n.localeCompare(b.n); });
     var mapSvg = '<svg class="mp" viewBox="' + v.map(function (n) { return n.toFixed(3); }).join(' ') + '" role="img" aria-label="' + T('Municipios de ', 'Municipalities of ') + E(DN[st.dep]) + '" style="--sw:' + sw + '">' +
-      (st.zoom !== 'dep' ? G.filter(function (x) { var c = CEN[x.c]; return c[5] > v[0] && c[3] < v[0] + v[2] && c[6] > v[1] && c[4] < v[1] + v[3]; }) : ms).map(function (x) { var lb = LIBRES.indexOf(x.c) > -1; return '<path d="' + x.p + '" data-m="' + x.c + '" class="' + (x.c === st.mun ? 'on ' : '') + (lb ? 'lb ' : '') + (x.d !== st.dep ? 'out' : '') + '"><title>' + E(x.n) + (x.d !== st.dep ? ' · ' + E(DN[x.d] || '') : '') + '</title></path>'; }).join('') + routeSVG(v) + '</svg>';
+      (st.zoom !== 'dep' ? G.filter(function (x) { var c = CEN[x.c]; return c[5] > v[0] && c[3] < v[0] + v[2] && c[6] > v[1] && c[4] < v[1] + v[3]; }) : ms).map(function (x) { var lb = false; return '<path d="' + x.p + '" data-m="' + x.c + '" class="' + (x.c === st.mun ? 'on ' : '') + (lb ? 'lb ' : '') + (x.d !== st.dep ? 'out' : '') + '"><title>' + E(x.n) + (x.d !== st.dep ? ' · ' + E(DN[x.d] || '') : '') + '</title></path>'; }).join('') + routeSVG(v) + '</svg>';
     var TG = W.LV22_GEO, loc = '<svg class="loc" viewBox="20 10 380 470" role="group" aria-label="' + T('Elegir departamento', 'Choose department') + '">' + Object.keys(TG.dep).map(function (d) { return '<path d="' + TG.dep[d] + '" data-dep="' + d + '"' + (d === st.dep ? ' class="on"' : '') + '><title>' + E(DN[d] || d) + '</title></path>'; }).join('') + '</svg>';
-    root.innerHTML = '<div class="g24hd"><div><span class="g24eye">' + T('Geovisor · todo el país', 'Map viewer · whole country') + '</span><h2>' + T('La ruta en tu territorio', 'The pathway in your territory') + '</h2></div>' +
+    var SRCH = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>';
+    var enfN = st.enf ? ENF.filter(function (x) { return x[0] === st.enf; })[0] : null;
+    root.innerHTML = '<div class="g51hd"><span class="g24eye">' + T('Geovisor · todo el país', 'Map viewer · whole country') + '</span><h2>' + T('¿A dónde puedo acudir?', 'Where can I go?') + '</h2></div>' +
+      '<div class="g51ctl"><div class="g51row r1"><span class="g51n">1</span><div class="g51c"><b>' + T('¿Dónde estás?', 'Where are you?') + '</b>' +
+      '<form class="g50q" role="search"><div>' + SRCH + '<input id="g50qi" list="g50ml" autocomplete="off" aria-label="' + T('Busca tu municipio en todo el país', 'Search your municipality') + '" placeholder="' + T('Busca tu municipio… ej. Pasto, Leticia, Riohacha', 'Search your municipality… e.g. Pasto, Leticia') + '"><button type="submit">' + T('Buscar', 'Search') + '</button></div><datalist id="g50ml">' + G.map(function (x) { return '<option value="' + E(x.n + ', ' + (DN[x.d] || '')) + '">'; }).join('') + '</datalist><p class="g50qm" aria-live="polite"></p></form>' +
       '<div class="g24sel"><label><span>' + T('Departamento', 'Department') + '</span><select data-k="dep">' + Object.keys(DN).sort(function (a, b) { return DN[a].localeCompare(DN[b]); }).map(function (d) { return '<option value="' + d + '"' + (d === st.dep ? ' selected' : '') + '>' + E(DN[d]) + '</option>'; }).join('') + '</select></label>' +
-      '<label><span>' + T('Municipio', 'Municipality') + '</span><select data-k="mun">' + ms.map(function (x) { return '<option value="' + x.c + '"' + (x.c === st.mun ? ' selected' : '') + '>' + E(x.n) + (LIBRES.indexOf(x.c) > -1 ? ' ★' : '') + '</option>'; }).join('') + '</select></label></div></div>' +
-      '<div class="g24sit" role="group" aria-label="' + T('Situación', 'Situation') + '">' + SIT.map(function (x, i) { return '<button type="button" data-sit="' + i + '"' + (i === st.sit ? ' class="on" aria-pressed="true"' : ' aria-pressed="false"') + '>' + E(x[1]) + '</button>'; }).join('') + '</div>' +
+      '<label><span>' + T('Municipio', 'Municipality') + '</span><select data-k="mun">' + ms.map(function (x) { return '<option value="' + x.c + '"' + (x.c === st.mun ? ' selected' : '') + '>' + E(x.n) + '</option>'; }).join('') + '</select></label></div></div></div>' +
+      '<div class="g51row"><span class="g51n">2</span><div class="g51c"><b>' + T('¿Qué pasó?', 'What happened?') + '</b><div class="g24sit" role="group" aria-label="' + T('Situación', 'Situation') + '">' + SIT.map(function (x, i) { return '<button type="button" data-sit="' + i + '"' + (i === st.sit ? ' class="on" aria-pressed="true"' : ' aria-pressed="false"') + '>' + E(x[1]) + '</button>'; }).join('') + '</div></div></div>' +
+      '<div class="g51row two"><div class="g51half"><span class="g51n">3</span><div class="g51c"><b>' + T('¿Quién eres? (opcional)', 'Who are you? (optional)') + '</b><label class="g50enf"><span class="sr">' + T('Enfoque diferencial', 'Differential approach') + '</span><select data-k="enf">' + ENF.map(function (x) { return '<option value="' + x[0] + '"' + (st.enf === x[0] ? ' selected' : '') + '>' + E(x[1]) + '</option>'; }).join('') + '</select></label></div></div>' +
+      '<div class="g51half"><span class="g51n">4</span><div class="g51c"><b>' + T('¿Qué sector buscas?', 'Which sector?') + '</b><div class="g50sec" role="group" aria-label="' + T('Sector', 'Sector') + '">' + SEC.map(function (x) { return '<button type="button" data-sec="' + x[0] + '"' + (st.sec === x[0] ? ' class="on" aria-pressed="true"' : ' aria-pressed="false"') + '>' + E(x[1]) + '</button>'; }).join('') + '</div></div></div></div></div>' +
       '<div class="g24body"><div class="g24map"><div class="g24mtitle"><b>' + E(DN[st.dep]) + '</b><span>' + ms.length + ' ' + T('municipios', 'municipalities') + '</span><span class="g24zm" role="group"><button type="button" data-zoom="mun"' + (st.zoom !== 'dep' ? ' class="on"' : '') + '>' + T('Municipio', 'Municipality') + '</button><button type="button" data-zoom="dep"' + (st.zoom === 'dep' ? ' class="on"' : '') + '>' + T('Departamento', 'Department') + '</button></span></div>' + mapSvg + '<div class="g24loc">' + loc + '<small>' + T('Toca otro departamento', 'Tap another department') + '</small></div>' +
-      '<div class="g24chips"><span>¡LIBRES!</span>' + LIBRES.map(function (c) { return '<button type="button" data-mun="' + c + '"' + (c === st.mun ? ' class="on"' : '') + '>' + E(mname(c)) + '</button>'; }).join('') + '</div></div>' +
-      '<div class="g24panel"><a class="g24sos" href="tel:123"><b>123</b><span>' + T('¿Estás en peligro ahora? Llama a la línea de emergencias', 'In danger now? Call the emergency line') + '</span></a><p class="g24m"><b>' + E(m ? m.n : '') + '</b><span>' + E(DN[st.dep]) + (LIBRES.indexOf(st.mun) > -1 ? ' · ¡LIBRES!' : '') + ' · ' + E(s[1]) + '</span></p><ol class="g24steps">' +
-      s[2].map(function (p, i) { var e = ENT[p[0]]; return '<li style="--c:' + e.c + ';animation-delay:' + (i * 90) + 'ms"><span class="n">' + (i + 1) + '</span><span class="ic">' + icon(p[0], 20) + '</span><div><b>' + E(e.n) + (e.tel ? ' <a href="tel:' + e.tel + '">' + e.tel + '</a>' : '') + '</b><small>' + E(p[1]) + '</small></div></li>'; }).join('') + '</ol>' +
-      '<div class="g24lines">' + LINES.map(function (l) { return '<a href="tel:' + l[0] + '"><b>' + l[0] + '</b>' + E(l[1]) + '</a>'; }).join('') + '</div>' +
+      '</div>' +
+      '<div class="g24panel"><div class="g51res"><span>' + T('Tu ruta', 'Your pathway') + '</span><b>' + E(m ? m.n : '') + '</b><small>' + E(DN[st.dep]) + ' · ' + E(s[1]) + (enfN ? ' · ' + E(enfN[1]) : '') + '</small></div>' +
+      (s[0] === 'sexual' ? '<div class="g50vsx" role="alert"><b>' + T('Alerta · violencia sexual', 'Alert · sexual violence') + '</b><span>' + ((W.LV11 && W.LV11.txt) ? W.LV11.txt('rutas.vsx', T('Es una urgencia médica. Ve a urgencias en las primeras 72 horas, aunque no hayas denunciado: hay anticoncepción de emergencia y profilaxis gratuitas.', 'It is a medical emergency. Go to the ER within 72 hours, even without reporting: free emergency contraception and prophylaxis.')) : T('Es una urgencia médica. Ve a urgencias en las primeras 72 horas, aunque no hayas denunciado: hay anticoncepción de emergencia y profilaxis gratuitas.', 'It is a medical emergency. Go to the ER within 72 hours, even without reporting: free emergency contraception and prophylaxis.')) + '</span></div>' : '') +
+      (enfN ? '<p class="g50enfn"><b>' + T('Para ti', 'For you') + ':</b> ' + E(enfN[2]) + '</p>' : '') +
+      '<ol class="g24steps">' +
+      s[2].map(function (p, i) { var e = ENT[p[0]]; return '<li class="' + (st.sec !== 'todos' && e.sec !== st.sec ? 'dim' : '') + '" style="--c:' + e.c + ';animation-delay:' + (i * 90) + 'ms"><span class="n">' + (i + 1) + '</span><span class="ic">' + icon(p[0], 20) + '</span><div><b>' + E(e.n) + (e.tel ? ' <a href="tel:' + e.tel + '">' + e.tel + '</a>' : '') + '</b><small>' + E(p[1]) + '</small></div></li>'; }).join('') + '</ol>' +
+      '<details class="g50esp"><summary>' + T('Entidades especializadas', 'Specialised agencies') + ' <small>' + (ESP[s[0]] || []).length + '</small></summary>' + (ESP[s[0]] || []).map(function (x) { return '<div class="' + (st.sec !== 'todos' && x[2] !== st.sec ? 'dim' : '') + '"><b>' + E(x[0]) + '</b><small>' + E(x[1]) + '</small></div>'; }).join('') + '</details>' +
+      '<div class="g51act"><button type="button" class="g50say" data-say="1"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16 9a4 4 0 0 1 0 6"/></svg>' + T('Escuchar esta ruta', 'Listen to this pathway') + '</button></div>' +
       '<p class="g24note">' + T('Ubicaciones ilustrativas. Sedes y horarios se validan con cada alcaldía.', 'Illustrative locations. Offices and hours are validated with each municipality.') + '</p></div></div>';
   }
-  function setDep(d) { st.dep = d; var ms = (BY[d] || []).slice().sort(function (a, b) { return (LIBRES.indexOf(b.c) > -1) - (LIBRES.indexOf(a.c) > -1) || (b.c.slice(2) === '001') - (a.c.slice(2) === '001'); }); if (ms[0]) st.mun = ms[0].c; }
+  function setDep(d) { st.dep = d; var ms = (BY[d] || []).slice().sort(function (a, b) { return (b.c.slice(2) === '001') - (a.c.slice(2) === '001'); }); if (ms[0]) st.mun = ms[0].c; }
   function mount() {
     var sec = D.getElementById('rutas'); if (!sec || !W.LV22_GEO) return;
     var box = sec.querySelector('.lv11content') || sec, head = box.querySelector('.lv11rhero, .lv11head'); if (!head) return;
     var g = D.getElementById('lv24geo');
-    if (g && g.dataset.lang === (en() ? 'en' : 'es') && g.previousElementSibling === head) return;
+    var host = D.getElementById('lv50geo');
+    if (g && g.dataset.lang === (en() ? 'en' : 'es') && (host ? g.parentNode === host : g.previousElementSibling === head)) return;
     if (!g) {
       g = D.createElement('section'); g.id = 'lv24geo'; g.setAttribute('data-no-translate', '');
       g.addEventListener('click', function (e) {
         var z = e.target.closest('[data-zoom]'); if (z) { st.zoom = z.dataset.zoom; render(g); return; }
+        var sc = e.target.closest('[data-sec]'); if (sc) { st.sec = sc.dataset.sec; render(g); return; }
+        if (e.target.closest('[data-say]')) { say(); return; }
         var b = e.target.closest('[data-sit],[data-mun],path[data-m],path[data-dep]'); if (!b) return;
         if (b.dataset.sit != null) st.sit = +b.dataset.sit; else if (b.dataset.dep) setDep(b.dataset.dep); else { st.mun = b.dataset.mun || b.dataset.m; st.dep = st.mun.slice(0, 2); }
         render(g);
       });
-      g.addEventListener('change', function (e) { var k = e.target.dataset.k; if (k === 'mun') st.mun = e.target.value; else if (k === 'dep') setDep(e.target.value); else return; render(g); });
+      function find(q) { q = (q || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim(); if (!q) return null; var nm = function (x) { return (x.n + ', ' + (DN[x.d] || '')).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''); }; return G.filter(function (x) { return nm(x) === q; })[0] || G.filter(function (x) { return nm(x).indexOf(q) === 0; })[0] || G.filter(function (x) { return nm(x).indexOf(q) > -1; })[0] || null; }
+      function pick(v) { var m = find(v); if (!m) { var msg = g.querySelector('.g50qm'); if (msg) msg.textContent = T('No encontramos ese municipio. Revisa la escritura.', 'Municipality not found.'); return; } st.mun = m.c; st.dep = m.d; st.zoom = 'mun'; render(g); var i = g.querySelector('#g50qi'); if (i) { i.value = ''; } var pn = g.querySelector('.g24panel'); if (pn && innerWidth < 900) pn.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+      g.addEventListener('submit', function (e) { e.preventDefault(); var i = g.querySelector('#g50qi'); pick(i && i.value); });
+      g.addEventListener('input', function (e) { if (e.target.id === 'g50qi' && e.inputType === 'insertReplacementText' || (e.target.id === 'g50qi' && /, /.test(e.target.value) && find(e.target.value) && G.some(function (x) { return (x.n + ', ' + (DN[x.d] || '')) === e.target.value; }))) pick(e.target.value); });
+      g.addEventListener('change', function (e) { var k = e.target.dataset.k; if (k === 'enf') st.enf = e.target.value; else if (k === 'mun') st.mun = e.target.value; else if (k === 'dep') setDep(e.target.value); else return; render(g); });
     }
-    head.parentNode.insertBefore(g, head.nextSibling); g.dataset.lang = en() ? 'en' : 'es';
+    if (host) host.appendChild(g); else head.parentNode.insertBefore(g, head.nextSibling); g.dataset.lang = en() ? 'en' : 'es';
     render(g);
   }
+  function say() { if (!W.speechSynthesis) return; var s0 = SIT[st.sit], txt = s0[1] + '. ' + s0[2].map(function (p, i) { return (i + 1) + '. ' + ENT[p[0]].n + ': ' + p[1]; }).join(' '); speechSynthesis.cancel(); var u = new SpeechSynthesisUtterance(txt); u.lang = en() ? 'en-US' : 'es-CO'; speechSynthesis.speak(u); }
+  W.LV24 = { st: st, SIT: SIT, ENT: ENT, ESP: ESP, ENF: ENF, LINES: LINES, say: say, set: function (o) { for (var k in o) st[k] = o[k]; var g = D.getElementById('lv24geo'); if (g) render(g); }, mount: function () { mount(); } };
   function init() { mount(); var t; new MutationObserver(function () { clearTimeout(t); t = setTimeout(mount, 200); }).observe(D.querySelector('main') || D.body, { childList: true, subtree: true }); }
   if (D.readyState === 'loading') D.addEventListener('DOMContentLoaded', function () { setTimeout(init, 500); }); else setTimeout(init, 500);
 })();
@@ -7696,7 +7810,7 @@ footer.lv12foot .lv12mun span:not(.valle):before{content:"";display:inline-block
   }
   /* ---------- hojas ---------- */
   function sheetsHTML(k) {
-    var SH = [['his', T('Historia', 'Story')], ['exp', T('Más cifras', 'More figures')], ['fue', T('De dónde salen los datos', 'Where data comes from')], ['nor', T('Normas', 'Laws') + ' (' + k.norms + ')'], ['obs', T('Observatorios', 'Observatories') + ' (' + k.obs + ')']];
+    var SH = [['his', T('Historia', 'Story')], ['exp', T('Más cifras', 'More figures')], ['fue', T('De dónde salen los datos', 'Where data comes from')], ['nor', T('Normas', 'Laws') + ' (' + k.norms + ')'], ['obs', T('Observatorios', 'Observatories') + ' (' + k.obs + ')'], ['doc', T('Documentos', 'Documents') + ' (' + (W.LV11.docs ? W.LV11.docs(st.sid).length : 0) + ')']];
     return '<div class="ksheets" role="tablist" aria-label="' + T('Hojas del tema', 'Topic sheets') + '"><button type="button" class="kall" data-all="1">' + (st.speaking ? STOP + T('Detener', 'Stop') : SPK + T('Escuchar toda la historia', 'Listen to the whole story')) + '</button>' +
       SH.map(function (x) { return '<button type="button" role="tab" data-sh="' + x[0] + '" aria-selected="' + (st.sheet === x[0]) + '"' + (st.sheet === x[0] ? ' class="on"' : '') + '>' + E(x[1]) + '</button>'; }).join('') + '</div>';
   }
@@ -7741,11 +7855,12 @@ footer.lv12foot .lv12mun span:not(.valle):before{content:"";display:inline-block
     var host = D.getElementById('lv42'), pane = D.getElementById('lv42pane'); if (!host || !pane) return;
     var sh = st.sheet, k = W.LV11.counts(st.sid);
     var sb = host.querySelector('.ksbar'), nh = sheetsHTML(k); if (sb.dataset.sig !== nh) { sb.dataset.sig = nh; sb.innerHTML = nh; }
-    R.classList.toggle('lv42his', sh === 'his'); R.classList.toggle('lv42own', sh === 'his' || sh === 'nor' || sh === 'obs');
+    R.classList.toggle('lv42his', sh === 'his'); R.classList.toggle('lv42own', sh === 'his' || sh === 'nor' || sh === 'obs' || sh === 'doc');
     if (pane.dataset.sh !== sh || fresh) {
       pane.dataset.sh = sh;
       if (sh === 'his') { pane.innerHTML = storyHTML(); fillMini(); observe(); setStep(st.step, true); }
       else if (sh === 'nor') pane.innerHTML = '<div class="kown"><h2>' + T('Normas que protegen estos derechos', 'Laws that protect these rights') + '</h2>' + normsHTML(st.sid) + '</div>';
+      else if (sh === 'doc') { var dl = W.LV11.docs ? W.LV11.docs(st.sid) : []; pane.innerHTML = '<div class="kown"><h2>' + T('Acervo documental del tema', 'Topic documents') + '</h2>' + (dl.length ? '<div class="kol">' + dl.map(function (d) { return '<a ' + (d.url ? 'href="' + E(d.url) + '" target="_blank" rel="noopener"' : '') + '><em>' + E(d.tipo || '') + (d.y ? ' · ' + d.y : '') + '</em><b>' + E(d.t) + '</b>' + (d.d ? '<p>' + E(d.d) + '</p>' : '') + (d.url ? '<i>' + T('Abrir documento', 'Open document') + ' ' + ARR + '</i>' : '') + '</a>'; }).join('') + '</div>' : '<p class="kempty">' + T('Aún no hay documentos asociados a este tema.', 'No documents yet.') + '</p>') + '</div>'; }
       else if (sh === 'obs') pane.innerHTML = '<div class="kown"><h2>' + T('Observatorios y fuentes que siguen este tema', 'Observatories and sources following this topic') + '</h2>' + obsHTML(st.sid) + '</div>';
       else pane.innerHTML = '';
     }
@@ -7793,6 +7908,157 @@ footer.lv12foot .lv12mun span:not(.valle):before{content:"";display:inline-block
     if (DEEP) (function open(n) { if (siteOpen() === DEEP) return; if (W.LV11.sites().some(function (x) { return x.id === DEEP; })) { try { W.LV11.openSite(DEEP); } catch (e) {} } if (n < 20) setTimeout(function () { open(n + 1); }, 150); })(0);
   }
   if (D.readyState === 'loading') D.addEventListener('DOMContentLoaded', function () { setTimeout(init, 500); }); else setTimeout(init, 500);
+})();
+</script><script id="lv50-js">/* v50 · Rutas de atención según los bocetos del equipo ¡LIBRES!
+   Estructura:
+     Alerta · peligro inminente (siempre visible)
+     1. ¿Qué hacer ante una violencia?  → encuadre + tres sectores (salud, justicia, protección)
+     2. ¿A dónde puedo acudir?          → geovisor por territorio (lv24) con sector, entidades especializadas
+                                          y enfoque diferencial; «Te acompaño» guía paso a paso
+     3. Herramientas de consulta y apoyo → flujograma, líneas de atención, guías y documentos técnicos
+                                          (mecanismo articulador), infografía descargable y cómo citar */
+(function () {
+  var D = document, W = window, R = D.documentElement;
+  if (/Administracion/i.test(location.pathname)) return;
+  function en() { return (R.lang || 'es').indexOf('en') === 0; }
+  function T(es, e) { return en() ? e : es; }
+  function E(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function svg(p, s) { return '<svg viewBox="0 0 24 24" width="' + (s || 22) + '" height="' + (s || 22) + '" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + p + '</svg>'; }
+  function X(k, d) { return W.LV11 && W.LV11.txt ? W.LV11.txt(k, d) : d; }
+  var ARR = svg('<path d="M5 12h14M13 6l6 6-6 6"/>', 16);
+  var IC = {
+    salud: '<path d="M10 4h4v6h6v4h-6v6h-4v-6H4v-4h6z"/>',
+    justicia: '<path d="M12 4v16M7 20h10M5 8h14M5 8l-2.5 6a2.5 2.5 0 0 0 5 0zM19 8l-2.5 6a2.5 2.5 0 0 0 5 0z"/>',
+    proteccion: '<path d="M12 3l7 3v5c0 5-3 8-7 10-4-2-7-5-7-10V6z"/>',
+    alert: '<path d="M12 3l9 16H3z"/><path d="M12 10v4M12 17v.5"/>',
+    chat: '<path d="M4 5h16v11H9l-5 4z"/><path d="M8 10h8M8 13h5"/>',
+    flow: '<rect x="9" y="3" width="6" height="4" rx="1"/><rect x="3" y="17" width="6" height="4" rx="1"/><rect x="15" y="17" width="6" height="4" rx="1"/><path d="M12 7v5M6 17v-3h12v3"/>',
+    phone: '<path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/>',
+    doc: '<path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4M9 12h6M9 16h6"/>',
+    img: '<rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5-5-8 9"/>',
+    quote: '<path d="M7 7h4v4c0 3-2 5-4 6M15 7h4v4c0 3-2 5-4 6"/>'
+  };
+  var SECT = [
+    ['salud', ['Salud', 'Health'], ['Urgencias, atención médica y psicológica, registro de lesiones. No necesitas denuncia para que te atiendan.', 'Emergency, medical and psychological care. No report needed to be attended.'], ['Hospital o ESE', 'IPS con protocolo de violencia sexual', 'Salud mental']],
+    ['justicia', ['Justicia', 'Justice'], ['Denuncia, investigación y sanción. Fiscalía, Medicina Legal y Ministerio Público te acompañan.', 'Reporting, investigation and sanctions. Prosecutor, forensic institute and public ministry.'], ['Fiscalía (CAIVAS, CAVIF, URI)', 'Medicina Legal', 'Personería y Defensoría']],
+    ['proteccion', ['Protección', 'Protection'], ['Medidas para que el agresor no se acerque, desalojo, acogida en casa refugio y protección de niñas y niños.', 'Orders to keep the aggressor away, eviction, shelter and child protection.'], ['Comisaría de Familia', 'Policía', 'ICBF y casas refugio']]
+  ];
+  var ENC = [
+    ['No es tu culpa', 'It is not your fault', 'Ninguna violencia se justifica. Tienes derecho a una vida libre de violencias (Ley 1257 de 2008).', 'No violence is justified. You have the right to a life free from violence.'],
+    ['Primero, tu seguridad', 'Safety first', 'Si estás en peligro, busca un lugar seguro y llama al 123.', 'If you are in danger, find a safe place and call 123.'],
+    ['Puedes empezar por cualquier puerta', 'Any door is the right door', 'Salud, justicia o protección: la entidad a la que llegues debe atenderte y remitirte a las demás.', 'Health, justice or protection: whichever agency you reach must attend you and refer you.'],
+    ['Tienes derecho a decidir', 'You decide', 'A recibir información clara, a ir acompañada, a no ser confrontada con el agresor y a que se respete tu privacidad.', 'To clear information, a companion, not to face the aggressor and to privacy.']
+  ];
+  var DOCS = [
+    ['d1710', 'Mecanismo articulador · Decreto 1710 de 2020', 'Articulating mechanism · Decree 1710/2020', 'Instancia nacional y territorial que coordina a los sectores para el abordaje integral de las violencias por razones de sexo y género.', 'National and local body coordinating sectors for comprehensive response.'],
+    ['', 'Protocolo y modelo de atención integral en salud para víctimas de violencia sexual (Res. 459 de 2012)', 'Health care protocol for sexual violence victims (Res. 459/2012)', 'Manual de referencia para la atención en salud de la violencia sexual: urgencia médica, profilaxis y salud mental.', 'Reference manual for health care in sexual violence cases.'],
+    ['ley1257', 'Ley 1257 de 2008', 'Law 1257/2008', 'Derecho a una vida libre de violencias; medidas de protección y de atención.', 'Right to a life free from violence; protection and support measures.'],
+    ['ley294', 'Ley 294 de 1996', 'Law 294/1996', 'Prevenir, remediar y sancionar la violencia intrafamiliar; medidas de protección.', 'Domestic violence; protection orders.'],
+    ['ley2126', 'Ley 2126 de 2021', 'Law 2126/2021', 'Funcionamiento de las comisarías de familia.', 'Family commissioners.'],
+    ['d1630', 'Decreto 1630 de 2019', 'Decree 1630/2019', 'Medidas de atención a mujeres víctimas de violencia.', 'Support measures for women victims.'],
+    ['ley2215', 'Ley 2215 de 2022 · Casas refugio', 'Law 2215/2022 · Shelters', 'Casas refugio y Red Nacional.', 'Shelters and national network.']
+  ];
+  var LN = [
+    ['123', ['Emergencias', 'Emergencies'], ['Si estás en peligro inmediato · 24 horas', 'Immediate danger · 24 hours']],
+    ['155', ['Orientación a mujeres', 'Women\'s helpline'], ['Derechos, Ley 1257 y a dónde acudir · gratuita', 'Rights and where to go · free']],
+    ['122', ['Fiscalía', 'Prosecutor'], ['Denuncia de violencia intrafamiliar, sexual y de género', 'Report domestic, sexual and gender violence']],
+    ['141', ['ICBF', 'ICBF'], ['Niñas, niños y adolescentes · 24 horas', 'Children and adolescents · 24 hours']],
+    ['018000522020', ['Trata de personas', 'Human trafficking'], ['Ministerio del Interior y OIM · 24 horas', 'Ministry of Interior and IOM · 24 hours'], '01 8000 52 2020'],
+    ['018000911119', ['Unidad para las Víctimas', 'Victims Unit'], ['Víctimas del conflicto armado', 'Armed conflict victims'], '01 8000 911 119'],
+    ['018000914814', ['Defensoría del Pueblo', 'Ombudsman'], ['Orientación jurídica y quejas', 'Legal guidance and complaints'], '01 8000 914 814']
+  ];
+  var st = { tool: 'flujo', chat: 0, ans: {}, view: 'r50b' };
+
+  function flowHTML() {
+    var G = W.LV24; if (!G) return '';
+    var s = G.SIT[G.st.sit], cols = { salud: [], justicia: [], proteccion: [] };
+    s[2].forEach(function (p, i) { var e = G.ENT[p[0]]; (cols[e.sec] || cols.proteccion).push('<li><i>' + (i + 1) + '</i><b>' + E(e.n) + '</b><small>' + E(p[1]) + '</small></li>'); });
+    (G.ESP[s[0]] || []).forEach(function (x) { cols[x[2]].push('<li class="esp"><i>★</i><b>' + E(x[0]) + '</b><small>' + E(x[1]) + '</small></li>'); });
+    return '<div class="f50sit">' + G.SIT.map(function (x, i) { return '<button type="button" data-fsit="' + i + '"' + (i === G.st.sit ? ' class="on"' : '') + '>' + E(x[1]) + '</button>'; }).join('') + '</div>' +
+      '<div class="f50"><div class="nd start"><b>' + T('Ocurre una violencia', 'Violence happens') + '</b><small>' + E(s[1]) + '</small></div><span class="ar"></span>' +
+      '<div class="nd q"><b>' + T('¿Hay peligro inminente?', 'Is there imminent danger?') + '</b><div class="yn"><span class="y">' + T('Sí → llama al 123', 'Yes → call 123') + '</span><span class="n">' + T('No → elige por dónde empezar', 'No → choose where to start') + '</span></div></div><span class="ar"></span>' +
+      (s[0] === 'sexual' ? '<div class="nd vsx"><b>' + T('Urgencia médica · primeras 72 horas', 'Medical emergency · first 72 hours') + '</b></div><span class="ar"></span>' : '') +
+      '<div class="cols">' + SECT.map(function (x) { return '<div class="col"><h4>' + svg(IC[x[0]], 18) + T(x[1][0], x[1][1]) + '</h4><ol>' + (cols[x[0]].join('') || '<li class="na"><small>' + T('Sin paso en esta ruta', 'No step in this pathway') + '</small></li>') + '</ol></div>'; }).join('') + '</div>' +
+      '<span class="ar"></span><div class="nd end"><b>' + T('Seguimiento y acompañamiento', 'Follow-up and support') + '</b><small>' + T('Las entidades se remiten entre sí: no tienes que contar tu historia una y otra vez.', 'Agencies refer to each other: you should not have to retell your story.') + '</small></div></div>';
+  }
+  function toolHTML() {
+    var t = st.tool, h = '';
+    if (t === 'flujo') h = flowHTML();
+    else if (t === 'lineas') h = '<div class="l50">' + ((W.LV11 && W.LV11.routes && W.LV11.routes().length) ? W.LV11.routes().map(function (r) { var n = String(r.num || '').replace(/[^\d+]/g, ''); return [n, [r.n, r.n], [r.for || r.cov || '', r.for || r.cov || ''], r.num]; }) : LN).map(function (l) { return '<a href="tel:' + l[0] + '"><b>' + (l[3] || l[0]) + '</b><span>' + T(l[1][0], l[1][1]) + '</span><small>' + T(l[2][0], l[2][1]) + '</small></a>'; }).join('') + '</div><p class="n50">' + T('Líneas nacionales verificadas en fuentes oficiales el 29 de octubre de 2026.', 'National lines verified on official sources on 29 October 2026.') + '</p>';
+    else if (t === 'guias') h = '<div class="d50">' + ((W.LV11 && W.LV11.docs ? W.LV11.docs() : []).map(function (d) { return '<a class="dd" ' + (d.url ? 'href="' + E(d.url) + '" target="_blank" rel="noopener"' : '') + '><span class="ic">' + svg(IC.doc, 20) + '</span><span class="tx"><b>' + E(d.t) + '</b><small>' + E(d.d || '') + '</small></span><em>' + E(d.tipo || '') + (d.y ? ' · ' + d.y : '') + '</em></a>'; }).join('')) + DOCS.filter(function (d) { return d[0]; }).map(function (d) { return '<button type="button"' + (d[0] ? ' data-norm="' + d[0] + '"' : ' disabled') + '><span class="ic">' + svg(IC.doc, 20) + '</span><span class="tx"><b>' + T(d[1], d[2]) + '</b><small>' + T(d[3], d[4]) + '</small></span>' + (d[0] ? '<i>' + ARR + '</i>' : '<em>' + T('Documento técnico', 'Technical document') + '</em>') + '</button>'; }).join('') + '</div>';
+    else if (t === 'info') { var G = W.LV24, s = G ? G.SIT[G.st.sit] : null; h = '<div class="i50"><div class="prev">' + (s ? infoSVG() : '') + '</div><div class="ac"><p>' + T('Infografía de la ruta elegida en el geovisor, lista para compartir o imprimir. Cambia la situación en el paso 2 para generar otra.', 'Infographic of the pathway chosen in the map viewer, ready to share or print.') + '</p><button type="button" data-dl="1">' + svg('<path d="M12 4v11M7 10l5 5 5-5M5 20h14"/>', 18) + T('Descargar infografía', 'Download infographic') + '</button></div></div>'; }
+    else if (t === 'cita') { var c = T('Observatorio Colombiano de Mujeres en todas sus diversidades. (2026). Rutas de atención para mujeres víctimas de violencias. Proyecto ¡LIBRES! Consultado el ', 'Colombian Observatory of Women in all their diversity. (2026). Support pathways for women victims of violence. ¡LIBRES! project. Retrieved ') + new Date().toLocaleDateString(en() ? 'en-GB' : 'es-CO', { day: 'numeric', month: 'long', year: 'numeric' }) + (location.protocol.indexOf('http') === 0 ? ', ' + location.href.split('#')[0] + '#rutas' : '') + '.'; h = '<div class="c50"><p class="lab">' + T('Cómo citar esta herramienta', 'How to cite this tool') + '</p><blockquote id="c50t">' + E(c) + '</blockquote><button type="button" data-copy="1">' + T('Copiar referencia', 'Copy reference') + '</button><p class="n50">' + T('Cada cifra del observatorio indica su fuente y fecha de corte en su ficha.', 'Each figure shows its source and cut-off date in its sheet.') + '</p></div>'; }
+    return h;
+  }
+  function infoSVG() {
+    var G = W.LV24, s = G.SIT[G.st.sit], W0 = 600, y = 150, rows = '';
+    s[2].forEach(function (p, i) { var e = G.ENT[p[0]], txt = p[1], lines = [], cur = ''; txt.split(' ').forEach(function (w) { if ((cur + ' ' + w).length > 62) { lines.push(cur); cur = w; } else cur = cur ? cur + ' ' + w : w; }); lines.push(cur);
+      rows += '<circle cx="48" cy="' + (y + 10) + '" r="18" fill="#672e89"/><text x="48" y="' + (y + 16) + '" text-anchor="middle" font-size="16" font-weight="800" fill="#fff">' + (i + 1) + '</text><text x="80" y="' + (y + 6) + '" font-size="16" font-weight="800" fill="#672e89">' + E(e.n) + '</text>' + lines.map(function (l, j) { return '<text x="80" y="' + (y + 26 + j * 18) + '" font-size="13" fill="#2f2f33">' + E(l) + '</text>'; }).join('');
+      y += 44 + lines.length * 18; });
+    var hgt = y + 110;
+    return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ' + W0 + ' ' + hgt + '" font-family="Arial, sans-serif" role="img" aria-label="' + E(s[1]) + '"><rect width="' + W0 + '" height="' + hgt + '" fill="#fff"/><rect width="' + W0 + '" height="110" fill="#672e89"/><text x="30" y="44" font-size="13" font-weight="800" fill="#c17bed" letter-spacing="2">' + E(T('RUTA DE ATENCIÓN', 'SUPPORT PATHWAY')) + '</text><text x="30" y="80" font-size="26" font-weight="800" fill="#fff">' + E(s[1]) + '</text>' +
+      '<rect x="30" y="122" width="540" height="2" fill="#a844e2"/>' + rows +
+      '<rect x="0" y="' + (hgt - 70) + '" width="' + W0 + '" height="70" fill="#eedcfa"/><text x="30" y="' + (hgt - 40) + '" font-size="15" font-weight="800" fill="#672e89">123 ' + E(T('Emergencias', 'Emergencies')) + ' · 155 ' + E(T('Orientación', 'Guidance')) + ' · 122 ' + E(T('Fiscalía', 'Prosecutor')) + ' · 141 ICBF</text><text x="30" y="' + (hgt - 18) + '" font-size="11" fill="#575756">' + E(T('Observatorio de Mujeres en todas sus diversidades · Proyecto ¡LIBRES!', 'Observatory of Women in all their diversity · ¡LIBRES! project')) + '</text></svg>';
+  }
+  /* «Te acompaño»: preguntas guiadas que configuran el geovisor */
+  var CHAT = [
+    ['peligro', ['¿Estás en peligro ahora?', 'Are you in danger right now?'], [['si', ['Sí', 'Yes']], ['no', ['No', 'No']]]],
+    ['sit', ['¿Qué está pasando?', 'What is happening?'], null],
+    ['enf', ['¿Quieres que la ruta tenga en cuenta algo de ti? (opcional)', 'Should the pathway consider something about you? (optional)'], null]
+  ];
+  function chatHTML() {
+    var G = W.LV24; if (!G) return '';
+    var i = st.chat, h = '<div class="k50hd"><b>' + svg(IC.chat, 18) + T('Te acompaño', 'I\'ll guide you') + '</b><button type="button" data-chat="close" aria-label="' + T('Cerrar', 'Close') + '">×</button></div><div class="k50b">';
+    if (st.ans.peligro === 'si') return h + '<div class="msg alert"><b>' + T('Llama ya al 123', 'Call 123 now') + '</b><p>' + T('Busca un lugar seguro, con otras personas. La Policía puede intervenir de inmediato. Cuando estés a salvo, vuelve y te muestro la ruta completa.', 'Find a safe place with others. Police can act immediately. When safe, come back for the full pathway.') + '</p><a href="tel:123">' + svg(IC.phone, 18) + ' 123</a></div><button type="button" class="rs" data-chat="reset">' + T('Volver a empezar', 'Start again') + '</button></div>';
+    if (i >= CHAT.length) return h + '<div class="msg ok"><b>' + T('Listo. Te muestro tu ruta en el mapa.', 'Done. Here is your pathway on the map.') + '</b><p>' + E(G.SIT[G.st.sit][1]) + '</p></div><button type="button" class="go" data-chat="ver">' + T('Ver mi ruta', 'See my pathway') + ' ' + ARR + '</button><button type="button" class="rs" data-chat="reset">' + T('Volver a empezar', 'Start again') + '</button></div>';
+    var q = CHAT[i], opts = q[2] ? q[2].map(function (o) { return [o[0], T(o[1][0], o[1][1])]; }) : q[0] === 'sit' ? G.SIT.map(function (s, j) { return [String(j), s[1]]; }) : G.ENF.map(function (e) { return [e[0] || 'none', e[0] ? e[1] : T('Prefiero no decir / ninguno', 'Rather not say / none')]; });
+    h += CHAT.slice(0, i).map(function (c) { return '<div class="msg q"><small>' + T(c[1][0], c[1][1]) + '</small><b>' + E(st.lbl[c[0]] || '') + '</b></div>'; }).join('');
+    h += '<p class="ask">' + T(q[1][0], q[1][1]) + '</p><div class="op">' + opts.map(function (o) { return '<button type="button" data-ans="' + q[0] + '" data-v="' + o[0] + '">' + E(o[1]) + '</button>'; }).join('') + '</div><p class="pv">' + T('No guardamos tus respuestas.', 'Your answers are not stored.') + '</p></div>';
+    return h;
+  }
+  function pageHTML() {
+    return '<div class="a50" role="alert" data-v51="1"><span class="ic">' + svg(IC.alert, 22) + '</span><div><b>' + T('Alerta · ¿estás en peligro inminente?', 'Alert · are you in imminent danger?') + '</b><span>' + X('rutas.alerta', T('Llama al 123 o busca un lugar seguro. Tu vida es lo primero.', 'Call 123 or find a safe place. Your life comes first.')) + '</span></div><a href="tel:123">' + svg(IC.phone, 18) + ' 123</a><a href="tel:155" class="b">155 · ' + T('Orientación', 'Guidance') + '</a></div>' +
+      '<nav class="s50nav" role="tablist" aria-label="' + T('Secciones de la ruta', 'Pathway sections') + '">' + [['r50a', '¿Qué hacer ante una violencia?', 'What to do'], ['r50b', '¿A dónde puedo acudir?', 'Where can I go?'], ['r50c', 'Herramientas de consulta y apoyo', 'Tools and support']].map(function (x, i) { return '<button type="button" role="tab" data-jump="' + x[0] + '" aria-selected="' + (st.view === x[0]) + '"' + (st.view === x[0] ? ' class="on"' : '') + '><i>' + (i + 1) + '</i><span>' + T(x[1], x[2]) + '</span></button>'; }).join('') + '<button type="button" class="k50open" data-chat="open">' + svg(IC.chat, 18) + T('Te acompaño', 'I\'ll guide you') + '</button></nav>' +
+      '<section class="r50" id="r50a"><div class="hd"><i>1</i><div><h2>' + T('¿Qué hacer ante una violencia?', 'What to do when violence happens?') + '</h2><p>' + T('Lo esencial antes de buscar la entidad.', 'The essentials before finding an agency.') + '</p></div></div>' +
+      '<div class="enc">' + ENC.map(function (x, i) { return '<div><span>' + (i + 1) + '</span><b>' + T(x[0], x[1]) + '</b><small>' + X('rutas.enc' + (i + 1), T(x[2], x[3])) + '</small></div>'; }).join('') + '</div>' +
+      '<h3 class="sub">' + T('Tres sectores te atienden', 'Three sectors attend you') + '</h3><div class="sec">' + SECT.map(function (x) { return '<button type="button" data-gsec="' + x[0] + '"><span class="ic">' + svg(IC[x[0]], 26) + '</span><b>' + T(x[1][0], x[1][1]) + '</b><small>' + X('rutas.' + x[0], T(x[2][0], x[2][1])) + '</small><ul>' + x[3].map(function (e) { return '<li>' + E(e) + '</li>'; }).join('') + '</ul><em>' + T('Ver en el geovisor', 'See on the map') + ' ' + ARR + '</em></button>'; }).join('') + '</div></section>' +
+      '<section class="r50" id="r50b"><div class="hd"><i>2</i><div><h2>' + T('¿A dónde puedo acudir?', 'Where can I go?') + '</h2><p>' + T('Elige tu municipio, la situación y el sector. La ruta cambia con el enfoque diferencial.', 'Choose municipality, situation and sector. The pathway adapts to the differential approach.') + '</p></div></div><div id="lv50geo"></div></section>' +
+      '<section class="r50" id="r50c"><div class="hd"><i>3</i><div><h2>' + T('Herramientas de consulta y apoyo', 'Tools and support') + '</h2><p>' + T('Flujogramas, líneas de atención, guías e infografías.', 'Flowcharts, helplines, guides and infographics.') + '</p></div></div>' +
+      '<div class="t50" role="tablist">' + [['flujo', 'flow', 'Flujograma', 'Flowchart'], ['lineas', 'phone', 'Líneas de atención', 'Helplines'], ['guias', 'doc', 'Guías y documentos técnicos', 'Guides and documents'], ['info', 'img', 'Infografía', 'Infographic'], ['dir', 'phone', 'Directorio de entidades', 'Agency directory'], ['cita', 'quote', 'Cómo citar', 'How to cite']].map(function (x) { return '<button type="button" role="tab" data-tool="' + x[0] + '" aria-selected="' + (st.tool === x[0]) + '"' + (st.tool === x[0] ? ' class="on"' : '') + '>' + svg(IC[x[1]], 18) + T(x[2], x[3]) + '</button>'; }).join('') + '</div><div class="tp" id="t50p">' + toolHTML() + '</div><div id="t50dir"' + (st.tool === 'dir' ? '' : ' hidden') + '></div></section>' +
+      '<aside class="k50" id="k50" hidden aria-label="' + T('Te acompaño', 'I\'ll guide you') + '"></aside>';
+  }
+  function moveDir() { var d = D.getElementById('t50dir'), r = D.getElementById('lv14ruta'); if (d && r && r.parentNode !== d) d.appendChild(r); if (d) d.hidden = st.tool !== 'dir'; }
+  function refreshTool() { var p = D.getElementById('t50p'); if (p) { p.innerHTML = toolHTML(); p.hidden = st.tool === 'dir'; } moveDir(); D.querySelectorAll('#lv50 [data-tool]').forEach(function (b) { var on = b.dataset.tool === st.tool; b.classList.toggle('on', on); b.setAttribute('aria-selected', on); }); }
+  function openChat(on) { var k = D.getElementById('k50'); if (!k) return; k.hidden = !on; if (on) { k.innerHTML = chatHTML(); var b = k.querySelector('button[data-ans],button.go'); if (b) b.focus(); } }
+  function setView(id) { st.view = id; D.querySelectorAll('#lv50 .r50').forEach(function (x) { x.hidden = x.id !== id; }); D.querySelectorAll('#lv50 [data-jump]').forEach(function (b) { var on = b.dataset.jump === id; b.classList.toggle('on', on); b.setAttribute('aria-selected', on); }); var n = D.querySelector('#lv50 .s50nav'); if (n && n.getBoundingClientRect().top < 0) scrollToId('lv50'); }
+  function scrollToId(id) { var el = D.getElementById(id), hd = D.querySelector('body > header'); if (el) scrollTo({ top: el.getBoundingClientRect().top + scrollY - (hd ? hd.offsetHeight : 0) - 12, behavior: 'smooth' }); }
+  function mount() {
+    var sec = D.getElementById('rutas'); if (!sec) return;
+    var box = sec.querySelector('.lv11content') || sec, head = box.querySelector('.lv11rhero, .lv11head'); if (!head || !W.LV24) return;
+    var lang = en() ? 'en' : 'es', host = D.getElementById('lv50');
+    if (host && host.dataset.lang === lang) return;
+    if (host) host.remove();
+    host = D.createElement('div'); host.id = 'lv50'; host.dataset.lang = lang; host.setAttribute('data-no-translate', '');
+    host.innerHTML = pageHTML(); head.parentNode.insertBefore(host, head.nextSibling);
+    var g = D.getElementById('lv24geo'); if (g) D.getElementById('lv50geo').appendChild(g);
+    W.LV24.mount(); moveDir(); setView(st.view);
+    host.addEventListener('click', function (e) {
+      var b;
+      if ((b = e.target.closest('[data-jump]'))) { e.preventDefault(); setView(b.dataset.jump); return; }
+      if ((b = e.target.closest('[data-gsec]'))) { W.LV24.set({ sec: b.dataset.gsec }); setView('r50b'); return; }
+      if ((b = e.target.closest('[data-tool]'))) { st.tool = b.dataset.tool; refreshTool(); return; }
+      if ((b = e.target.closest('[data-fsit]'))) { W.LV24.set({ sit: +b.dataset.fsit }); refreshTool(); return; }
+      if ((b = e.target.closest('[data-norm]'))) { if (W.LV11 && W.LV11.openNorm) W.LV11.openNorm(b.dataset.norm); return; }
+      if ((b = e.target.closest('[data-dl]'))) { var blob = new Blob([infoSVG()], { type: 'image/svg+xml' }), a = D.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'ruta_atencion_' + W.LV24.SIT[W.LV24.st.sit][0] + '.svg'; D.body.appendChild(a); a.click(); a.remove(); return; }
+      if ((b = e.target.closest('[data-copy]'))) { var t = D.getElementById('c50t'); try { navigator.clipboard.writeText(t.textContent); b.textContent = T('Referencia copiada', 'Copied'); } catch (err) {} return; }
+      if ((b = e.target.closest('[data-chat]'))) { var a2 = b.dataset.chat; if (a2 === 'open') { st.chat = 0; st.ans = {}; st.lbl = {}; openChat(true); } else if (a2 === 'close') openChat(false); else if (a2 === 'reset') { st.chat = 0; st.ans = {}; st.lbl = {}; openChat(true); } else if (a2 === 'ver') { openChat(false); setView('r50b'); } return; }
+      if ((b = e.target.closest('[data-ans]'))) { var k = b.dataset.ans, v = b.dataset.v; st.ans[k] = v; st.lbl = st.lbl || {}; st.lbl[k] = b.textContent; if (k === 'sit') W.LV24.set({ sit: +v, sec: 'todos' }); if (k === 'enf') W.LV24.set({ enf: v === 'none' ? '' : v }); st.chat++; openChat(true); if (st.tool === 'flujo' || st.tool === 'info') refreshTool(); return; }
+    });
+    // la situación elegida en el geovisor se refleja en el flujograma y la infografía
+    var g2 = D.getElementById('lv24geo'); if (g2) g2.addEventListener('click', function (e) { if (e.target.closest('[data-sit]')) setTimeout(function () { if (st.tool === 'flujo' || st.tool === 'info') refreshTool(); }, 30); });
+  }
+  function init() { if (!W.LV24) return setTimeout(init, 300); mount(); var t; new MutationObserver(function () { clearTimeout(t); t = setTimeout(mount, 150); }).observe(R, { attributes: true, attributeFilter: ['lang'] }); new MutationObserver(function () { clearTimeout(t); t = setTimeout(mount, 150); }).observe(D.querySelector('main') || D.body, { childList: true }); setInterval(function () { if (D.getElementById('lv14ruta') && !D.getElementById('lv14ruta').closest('#t50dir')) moveDir(); }, 1500); if ((W.LV44_HASH || '') === '#rutas') setTimeout(function () { if (W.go) W.go('rutas'); }, 300); }
+  if (D.readyState === 'loading') D.addEventListener('DOMContentLoaded', function () { setTimeout(init, 700); }); else setTimeout(init, 700);
 })();
 </script><style id="lv34-solid">.lvHero h1 em,#lv23home .xhero h1 em,.lvsolid{background:none!important;-webkit-background-clip:border-box!important;background-clip:border-box!important;-webkit-text-fill-color:currentColor!important}#lv23home .xhero h1 em{color:#35cbce!important}.lv22aqua{}.lvHero h1 em{color:#d4a2f2!important}:root{--lb-morado:#672e89;--lb-violeta:#a844e2;--lb-turquesa:#35cbce}</style><style id="lv38-sistema">/* v38b · Sistema visual ordenado con la paleta ¡LIBRES!
    Roles fijos (se inyecta DESPUÉS de recolor.py, por eso los colores aquí son literales):
@@ -8630,6 +8896,264 @@ html.lv23calm #lv42 .kcintro .kring{animation:none}
 @media (max-width:600px){#lv42 .kficha dl{grid-template-columns:1fr}}
 
 html.lv42 #lv42{display:block!important}
+</style><style id="lv50-rutas">/* v50 · Rutas de atención (bocetos ¡LIBRES!) — colores literales de la paleta */
+#lv50{--p:#672e89;--p4:#e2d5e6;--a:#35cbce;--a4:#d7f5f5;--v:#a844e2;--v4:#eedcfa;--ink:#2f2f33;--ink2:#575756;font-family:var(--lv-display);color:var(--ink);margin-top:18px}
+#lv50 .a50{display:flex;align-items:center;gap:14px;flex-wrap:wrap;background:#672e89;color:#fff;border-radius:20px;padding:14px 18px;box-shadow:0 14px 30px rgba(103,46,137,.22)}
+#lv50 .a50 .ic{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:#35cbce;color:#672e89;flex:none;animation:a50p 2s ease-in-out infinite}
+@keyframes a50p{50%{box-shadow:0 0 0 8px rgba(53,203,206,.25)}}
+html.lv23calm #lv50 .a50 .ic{animation:none}
+#lv50 .a50 > div{flex:1;min-width:220px;display:flex;flex-direction:column;gap:2px}
+#lv50 .a50 b{font:800 17px var(--lv-display)}
+#lv50 .a50 span{font:500 14.5px var(--lv-display);color:rgba(255,255,255,.88)}
+#lv50 .a50 a{display:inline-flex;align-items:center;gap:8px;background:#fff;color:#672e89;border-radius:999px;padding:11px 20px;font:800 18px var(--lv-display);text-decoration:none}
+#lv50 .a50 a.b{background:rgba(255,255,255,.14);color:#fff;font-size:14px}
+#lv50 .s50nav{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:18px 0 6px}
+#lv50 .s50nav a{display:flex;align-items:center;gap:10px;border:1.5px solid #e2d5e6;border-radius:16px;padding:10px 14px;text-decoration:none;color:#2f2f33;font:800 14.5px var(--lv-display);background:#fff;transition:all .2s}
+#lv50 .s50nav a:hover{border-color:#35cbce;color:#672e89}
+#lv50 .s50nav i{font-style:normal;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:#672e89;color:#fff;font-size:14px;flex:none}
+#lv50 .r50{margin-top:clamp(30px,4vw,48px);scroll-margin-top:140px}
+#lv50 .r50 > .hd{display:flex;align-items:center;gap:14px;margin-bottom:18px;flex-wrap:wrap}
+#lv50 .r50 > .hd > i{font-style:normal;width:46px;height:46px;border-radius:14px;display:grid;place-items:center;background:#35cbce;color:#672e89;font:800 22px var(--lv-display);flex:none}
+#lv50 .r50 > .hd > div{flex:1;min-width:220px}
+#lv50 .r50 h2{font:800 clamp(22px,2.3vw,30px) var(--lv-display)!important;color:#672e89!important;margin:0!important}
+#lv50 .r50 h2:after{display:none!important}
+#lv50 .r50 > .hd p{margin:4px 0 0;color:#575756;font-size:15px}
+#lv50 .enc{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+#lv50 .enc div{background:#fff;border:1px solid #ece8ef;border-radius:18px;padding:16px;display:flex;flex-direction:column;gap:6px;box-shadow:0 6px 16px rgba(40,20,60,.04)}
+#lv50 .enc span{width:28px;height:28px;border-radius:50%;background:#eedcfa;color:#672e89;display:grid;place-items:center;font:800 13px var(--lv-display)}
+#lv50 .enc b{font:800 16px var(--lv-display);color:#672e89}
+#lv50 .enc small{font:400 14px/1.5 var(--lv-display);color:#575756}
+#lv50 .sub{font:800 18px var(--lv-display)!important;color:#2f2f33!important;margin:24px 0 12px!important}
+#lv50 .sec{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+#lv50 .sec button{display:flex;flex-direction:column;align-items:flex-start;gap:8px;text-align:left;background:#fff;border:1px solid #ece8ef;border-top:4px solid #35cbce;border-radius:20px;padding:20px;cursor:pointer;transition:transform .2s,box-shadow .2s}
+#lv50 .sec button:nth-child(2){border-top-color:#a844e2}#lv50 .sec button:nth-child(3){border-top-color:#672e89}
+#lv50 .sec button:hover{transform:translateY(-3px);box-shadow:0 16px 32px rgba(40,20,60,.1)}
+#lv50 .sec .ic{width:50px;height:50px;border-radius:14px;display:grid;place-items:center;background:#d7f5f5;color:#672e89}
+#lv50 .sec b{font:800 19px var(--lv-display);color:#672e89}
+#lv50 .sec small{font:400 14px/1.5 var(--lv-display);color:#575756}
+#lv50 .sec ul{margin:2px 0 0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:6px}
+#lv50 .sec li{background:#f3eff6;color:#672e89;border-radius:999px;padding:4px 10px;font:700 12.5px var(--lv-display)}
+#lv50 .sec em{margin-top:auto;padding-top:6px;font-style:normal;font:800 13.5px var(--lv-display);color:#672e89;display:inline-flex;gap:6px;align-items:center}
+#lv50 .k50open{display:inline-flex;align-items:center;gap:8px;border:0;background:#672e89;color:#fff;border-radius:999px;padding:11px 18px;font:800 14.5px var(--lv-display);cursor:pointer;box-shadow:0 8px 20px rgba(103,46,137,.22)}
+#lv50 .k50open:hover{background:#5a2778}
+#lv50 #lv50geo #lv24geo{margin:0!important}
+/* geovisor: sector, alerta VSx, especializadas, enfoque */
+#lv24geo .g50vsx{display:flex;flex-direction:column;gap:3px;background:#eedcfa;border-left:5px solid #a844e2;border-radius:12px;padding:10px 12px;margin:0 0 12px}
+#lv24geo .g50vsx b{font:800 13px var(--lv-display);color:#672e89;text-transform:uppercase;letter-spacing:.06em}
+#lv24geo .g50vsx span{font:600 13.5px/1.45 var(--lv-display);color:#2f2f33}
+#lv24geo .g50sec{display:flex;gap:4px;background:#f3eff6;border-radius:999px;padding:4px;margin:0 0 12px;flex-wrap:wrap}
+#lv24geo .g50sec button{flex:1;border:0;background:none;border-radius:999px;padding:7px 10px;font:700 13px var(--lv-display);color:#4a4450;cursor:pointer;white-space:nowrap}
+#lv24geo .g50sec button.on{background:#672e89;color:#fff}
+#lv24geo .g24steps li.dim,#lv24geo .g50esp .dim{opacity:.32;filter:grayscale(.6)}
+#lv24geo .pin.dim{opacity:.25}
+#lv24geo .g24steps li{transition:opacity .25s}
+#lv24geo .g50esp{margin:14px 0 0;display:flex;flex-direction:column;gap:6px}
+#lv24geo .g50esp h3{font:800 13px var(--lv-display)!important;color:#1f8e91!important;letter-spacing:.06em;text-transform:uppercase;margin:0 0 2px!important}
+#lv24geo .g50esp div{background:#f6fbfb;border:1px solid #e3ecec;border-radius:12px;padding:8px 10px;display:flex;flex-direction:column;gap:2px;transition:opacity .25s}
+#lv24geo .g50esp b{font:800 13.5px var(--lv-display);color:#672e89}
+#lv24geo .g50esp small{font:400 12.5px/1.4 var(--lv-display);color:#575756}
+#lv24geo .g50enf{display:flex;flex-direction:column;gap:4px;margin:14px 0 0}
+#lv24geo .g50enf span{font:800 12px var(--lv-display);color:#1f8e91;letter-spacing:.06em;text-transform:uppercase}
+#lv24geo .g50enf select{border:1.5px solid #e2d5e6;border-radius:12px;padding:9px 10px;font:600 13.5px var(--lv-display);color:#2f2f33;background:#fff}
+#lv24geo .g50enfn{margin:8px 0 0;background:#d7f5f5;border-radius:12px;padding:10px 12px;font:500 13.5px/1.5 var(--lv-display);color:#2f2f33}
+#lv24geo .g50say{margin:12px 0 0;display:inline-flex;align-items:center;gap:8px;border:2px solid #672e89;background:#fff;color:#672e89;border-radius:999px;padding:8px 14px;font:800 13.5px var(--lv-display);cursor:pointer}
+#lv24geo .g50say:hover{background:#672e89;color:#fff}
+/* herramientas */
+#lv50 .t50{display:flex;gap:6px;flex-wrap:wrap;border-bottom:1px solid #ece8ef;padding-bottom:10px}
+#lv50 .t50 button{display:inline-flex;align-items:center;gap:8px;border:1.5px solid #e2d5e6;background:#fff;border-radius:999px;padding:9px 15px;font:700 14px var(--lv-display);color:#4a4450;cursor:pointer}
+#lv50 .t50 button svg{color:#966fa9}
+#lv50 .t50 button.on{background:#672e89;border-color:#672e89;color:#fff}
+#lv50 .t50 button.on svg{color:#72dbdd}
+#lv50 .tp{padding-top:18px;animation:x41in .3s ease}
+#lv50 .f50sit{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px}
+#lv50 .f50sit button{border:1.5px solid #9fe6e7;background:#fff;border-radius:999px;padding:7px 13px;font:700 13px var(--lv-display);color:#672e89;cursor:pointer}
+#lv50 .f50sit button.on{background:#d7f5f5;border-color:#35cbce}
+#lv50 .f50{display:flex;flex-direction:column;align-items:center;gap:0}
+#lv50 .f50 .nd{background:#fff;border:2px solid #672e89;border-radius:16px;padding:12px 18px;text-align:center;max-width:560px;display:flex;flex-direction:column;gap:4px}
+#lv50 .f50 .nd b{font:800 15px var(--lv-display);color:#672e89}
+#lv50 .f50 .nd small{font:400 13px var(--lv-display);color:#575756}
+#lv50 .f50 .start{background:#672e89}#lv50 .f50 .start b,#lv50 .f50 .start small{color:#fff}
+#lv50 .f50 .q{border-style:dashed}
+#lv50 .f50 .yn{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:4px}
+#lv50 .f50 .yn span{border-radius:999px;padding:4px 10px;font:700 12.5px var(--lv-display)}
+#lv50 .f50 .yn .y{background:#672e89;color:#fff}#lv50 .f50 .yn .n{background:#d7f5f5;color:#1f6f71}
+#lv50 .f50 .vsx{border-color:#a844e2;background:#eedcfa}
+#lv50 .f50 .end{border-color:#35cbce;background:#d7f5f5}
+#lv50 .f50 .ar{width:2px;height:22px;background:#b399c5;position:relative}
+#lv50 .f50 .ar:after{content:"";position:absolute;left:-4px;bottom:-2px;border:5px solid transparent;border-top-color:#b399c5}
+#lv50 .f50 .cols{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;width:100%}
+#lv50 .f50 .col{background:#f7f6f8;border-radius:18px;padding:14px}
+#lv50 .f50 .col h4{display:flex;align-items:center;gap:8px;font:800 15px var(--lv-display)!important;color:#672e89!important;margin:0 0 10px!important}
+#lv50 .f50 .col h4 svg{color:#35cbce}
+#lv50 .f50 .col ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+#lv50 .f50 .col li{background:#fff;border:1px solid #ece8ef;border-radius:12px;padding:10px 10px 10px 40px;position:relative;display:flex;flex-direction:column;gap:2px}
+#lv50 .f50 .col li i{position:absolute;left:10px;top:10px;width:22px;height:22px;border-radius:50%;background:#672e89;color:#fff;font:800 11.5px/22px var(--lv-display);font-style:normal;text-align:center}
+#lv50 .f50 .col li.esp i{background:#35cbce;color:#672e89}
+#lv50 .f50 .col li b{font:800 13.5px var(--lv-display);color:#2f2f33}
+#lv50 .f50 .col li small{font:400 12.5px/1.4 var(--lv-display);color:#575756}
+#lv50 .f50 .col li.na{padding:10px;background:none;border-style:dashed}
+#lv50 .l50{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
+#lv50 .l50 a{display:flex;flex-direction:column;gap:3px;background:#fff;border:1px solid #ece8ef;border-top:3px solid #35cbce;border-radius:16px;padding:14px;text-decoration:none;transition:box-shadow .2s}
+#lv50 .l50 a:hover{box-shadow:0 12px 26px rgba(40,20,60,.08)}
+#lv50 .l50 b{font:800 24px var(--lv-display);color:#672e89}
+#lv50 .l50 span{font:800 14px var(--lv-display);color:#2f2f33}
+#lv50 .l50 small{font:400 12.5px var(--lv-display);color:#575756}
+#lv50 .n50{font:400 12.5px var(--lv-display);color:#8a8590;margin:12px 0 0}
+#lv50 .d50{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:10px}
+#lv50 .d50 button{display:flex;align-items:flex-start;gap:12px;text-align:left;background:#fff;border:1px solid #ece8ef;border-radius:16px;padding:14px;cursor:pointer;color:inherit}
+#lv50 .d50 button:not([disabled]):hover{border-color:#35cbce;box-shadow:0 12px 26px rgba(40,20,60,.08)}
+#lv50 .d50 button[disabled]{cursor:default;opacity:1}
+#lv50 .d50 .ic{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:#eedcfa;color:#672e89;flex:none}
+#lv50 .d50 button:first-child{border-color:#35cbce;background:#f6fbfb}
+#lv50 .d50 button:first-child .ic{background:#35cbce}
+#lv50 .d50 .tx{flex:1;display:flex;flex-direction:column;gap:3px}
+#lv50 .d50 b{font:800 14.5px/1.3 var(--lv-display);color:#672e89}
+#lv50 .d50 small{font:400 13px/1.45 var(--lv-display);color:#575756}
+#lv50 .d50 i{color:#35cbce}
+#lv50 .d50 em{font-style:normal;font:700 11px var(--lv-display);background:#f3eff6;color:#672e89;border-radius:999px;padding:3px 8px;white-space:nowrap}
+#lv50 .i50{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.8fr);gap:20px;align-items:start}
+#lv50 .i50 .prev{border:1px solid #ece8ef;border-radius:18px;overflow:hidden;box-shadow:0 12px 28px rgba(40,20,60,.08);max-width:520px}
+#lv50 .i50 .prev svg{display:block;width:100%;height:auto}
+#lv50 .i50 .ac p{color:#575756;margin:0 0 14px}
+#lv50 .i50 .ac button,#lv50 .c50 button{display:inline-flex;align-items:center;gap:8px;border:0;background:#672e89;color:#fff;border-radius:999px;padding:12px 18px;font:800 14.5px var(--lv-display);cursor:pointer}
+#lv50 .c50 .lab{font:800 12px var(--lv-display);letter-spacing:.08em;text-transform:uppercase;color:#1f8e91;margin:0 0 8px}
+#lv50 .c50 blockquote{margin:0 0 14px;background:#f7f6f8;border-left:4px solid #35cbce;border-radius:10px;padding:14px 16px;font:500 14.5px/1.6 var(--lv-display);color:#2f2f33}
+/* Te acompaño */
+#lv50 .k50{position:fixed;right:20px;bottom:90px;z-index:2147480000;width:min(380px,calc(100vw - 32px));max-height:min(560px,calc(100vh - 140px));overflow:auto;background:#fff;border-radius:22px;box-shadow:0 2px 6px rgba(40,20,60,.08),0 30px 60px rgba(40,20,60,.25);animation:x41in .25s ease}
+#lv50 .k50[hidden]{display:none}
+#lv50 .k50hd{display:flex;align-items:center;justify-content:space-between;background:#672e89;color:#fff;padding:14px 16px;position:sticky;top:0}
+#lv50 .k50hd b{display:inline-flex;gap:8px;align-items:center;font:800 15px var(--lv-display)}
+#lv50 .k50hd button{border:0;background:rgba(255,255,255,.15);color:#fff;width:30px;height:30px;border-radius:50%;font-size:18px;cursor:pointer}
+#lv50 .k50b{padding:16px;display:flex;flex-direction:column;gap:10px}
+#lv50 .k50 .msg{border-radius:14px;padding:10px 12px;background:#f3eff6;display:flex;flex-direction:column;gap:2px}
+#lv50 .k50 .msg.q small{font:500 12px var(--lv-display);color:#6f6a73}
+#lv50 .k50 .msg.q b{font:800 13.5px var(--lv-display);color:#672e89}
+#lv50 .k50 .msg.alert{background:#672e89;color:#fff}#lv50 .k50 .msg.alert p{margin:4px 0 8px;color:rgba(255,255,255,.9)}
+#lv50 .k50 .msg.alert a{align-self:flex-start;display:inline-flex;gap:8px;align-items:center;background:#fff;color:#672e89;border-radius:999px;padding:8px 16px;font:800 18px var(--lv-display);text-decoration:none}
+#lv50 .k50 .msg.ok{background:#d7f5f5}#lv50 .k50 .msg.ok b{color:#672e89}#lv50 .k50 .msg.ok p{margin:2px 0 0}
+#lv50 .k50 .ask{font:800 16px var(--lv-display);color:#2f2f33;margin:4px 0 0}
+#lv50 .k50 .op{display:flex;flex-direction:column;gap:6px}
+#lv50 .k50 .op button{text-align:left;border:1.5px solid #e2d5e6;background:#fff;border-radius:12px;padding:10px 12px;font:700 14px var(--lv-display);color:#2f2f33;cursor:pointer}
+#lv50 .k50 .op button:hover{border-color:#35cbce;background:#f6fbfb;color:#672e89}
+#lv50 .k50 .go{border:0;background:#672e89;color:#fff;border-radius:999px;padding:11px 16px;font:800 14px var(--lv-display);cursor:pointer;display:inline-flex;gap:8px;align-items:center;justify-content:center}
+#lv50 .k50 .rs{border:0;background:none;color:#672e89;font:700 13px var(--lv-display);cursor:pointer;text-decoration:underline}
+#lv50 .k50 .pv{font:500 11.5px var(--lv-display);color:#8a8590;margin:0}
+@media (max-width:1000px){#lv50 .enc{grid-template-columns:repeat(2,1fr)}#lv50 .sec,#lv50 .f50 .cols{grid-template-columns:1fr}#lv50 .i50{grid-template-columns:1fr}}
+@media (max-width:640px){#lv50 .enc{grid-template-columns:1fr}#lv50 .s50nav{grid-template-columns:1fr;position:static}#lv50 .s50nav a{padding:8px 12px}#lv50 .d50{grid-template-columns:1fr}#lv50 .t50{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}#lv50 .t50 button{flex:none}#lv50 .a50 a{flex:1;justify-content:center}}
+#rutas .lv11content > :not(.lv11rhero):not(#lv50){display:none!important}
+#lv50 #t50dir{padding-top:18px}#lv50 #t50dir[hidden]{display:none}
+#lv50 #t50dir .lv14ruta{display:block!important;margin:0!important}
+/* v51 · búsqueda nacional de municipio en el geovisor */
+#lv24geo .g24hd{flex-wrap:wrap}
+#lv24geo .g50q{flex:1 1 100%;order:3;margin:14px 0 2px;display:flex;flex-direction:column;gap:6px}
+#lv24geo .g50q label{font:800 12px var(--lv-display);letter-spacing:.06em;text-transform:uppercase;color:#1f8e91}
+#lv24geo .g50q > div{display:flex;align-items:center;gap:10px;background:#fff;border:2px solid #35cbce;border-radius:999px;padding:5px 5px 5px 16px;color:#672e89;box-shadow:0 8px 20px rgba(53,203,206,.15)}
+#lv24geo .g50q input{flex:1;min-width:0;border:0!important;outline:0;box-shadow:none!important;background:none!important;font:600 16px var(--lv-display);color:#2f2f33;padding:8px 0!important}
+#lv24geo .g50q button{border:0;background:#672e89;color:#fff;border-radius:999px;padding:11px 20px;font:800 14.5px var(--lv-display);cursor:pointer;white-space:nowrap}
+#lv24geo .g50q button:hover{background:#5a2778}
+#lv24geo .g50qm{margin:0;font:600 13px var(--lv-display);color:#a844e2;min-height:0}
+#lv24geo .g50qm:empty{display:none}
+#lv24geo .g24chips{display:none!important}
+@media (max-width:640px){#lv24geo .g50q button{padding:10px 14px}}
+/* v52 · geovisor ordenado en cuatro pasos */
+#lv24geo .g24hd{display:none!important}
+#lv24geo .g51hd{margin-bottom:14px}
+#lv24geo .g51hd h2{font:800 clamp(20px,2vw,26px) var(--lv-display)!important;color:#672e89!important;margin:4px 0 0!important}
+#lv24geo .g51ctl{display:flex;flex-direction:column;gap:10px;margin-bottom:18px}
+#lv24geo .g51row{display:flex;gap:14px;align-items:flex-start;background:#f8f6fa;border:1px solid #efeaf2;border-radius:18px;padding:14px 16px}
+#lv24geo .g51row.two{background:none;border:0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+#lv24geo .g51half{display:flex;gap:14px;align-items:flex-start;background:#f8f6fa;border:1px solid #efeaf2;border-radius:18px;padding:14px 16px}
+#lv24geo .g51n{flex:none;width:34px;height:34px;border-radius:50%;background:#672e89;color:#fff;display:grid;place-items:center;font:800 15px var(--lv-display)}
+#lv24geo .g51c{flex:1;min-width:0;display:flex;flex-direction:column;gap:10px}
+#lv24geo .g51c > b{font:800 15.5px var(--lv-display);color:#2f2f33;line-height:34px}
+#lv24geo .r1 .g51c{display:grid;grid-template-columns:auto minmax(0,1.3fr) minmax(0,1fr);align-items:center;gap:12px}
+#lv24geo .r1 .g50q{margin:0;order:0;flex:none}
+#lv24geo .r1 .g24sel{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:0}
+#lv24geo .r1 .g24sel label{display:flex;flex-direction:column;gap:2px}
+#lv24geo .r1 .g24sel span{font:800 10.5px var(--lv-display);letter-spacing:.08em;text-transform:uppercase;color:#8a8590}
+#lv24geo .r1 .g24sel select{width:100%;border:1.5px solid #e2d5e6;border-radius:12px;padding:8px 10px;font:600 14px var(--lv-display);background:#fff}
+#lv24geo .g51c .g24sit{margin:0}
+#lv24geo .g51c .g50sec{margin:0;background:#fff;border:1px solid #efeaf2}
+#lv24geo .g51c .g50enf{margin:0}
+#lv24geo .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+#lv24geo .g24sos{display:none!important}
+#lv24geo .g51res{display:flex;flex-direction:column;gap:2px;background:#672e89;color:#fff;border-radius:18px;padding:14px 16px;margin-bottom:12px}
+#lv24geo .g51res span{font:800 11px var(--lv-display);letter-spacing:.12em;text-transform:uppercase;color:#72dbdd}
+#lv24geo .g51res b{font:800 24px var(--lv-display)}
+#lv24geo .g51res small{font:600 13px var(--lv-display);color:rgba(255,255,255,.85)}
+#lv24geo .g24m{display:none!important}
+#lv24geo .g50enfn{margin:0 0 12px!important}
+#lv24geo .g51act{margin-top:12px}
+@media (max-width:1100px){#lv24geo .r1 .g51c{grid-template-columns:1fr}#lv24geo .r1 .g51c > b{line-height:1.3}}
+@media (max-width:760px){#lv24geo .g51row.two{grid-template-columns:1fr}#lv24geo .g51row,#lv24geo .g51half{padding:12px;gap:10px}#lv24geo .g51n{width:28px;height:28px;font-size:13px}#lv24geo .g51c > b{line-height:28px}#lv24geo .g24sit{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}#lv24geo .g24sit button{flex:none}}
+#lv24geo .g51half,#lv24geo .g51row{min-width:0;box-sizing:border-box}
+#lv24geo .g51c .g50enf,#lv24geo .g51c .g50enf select{width:100%;max-width:100%;box-sizing:border-box;min-width:0}
+@media (max-width:760px){#lv24geo .g50q input{font-size:15px}#lv24geo .g50q button{padding:10px 14px}}
+/* v53 · página de rutas menos cargada: una sección a la vez, como en el boceto */
+html body #rutas .lv11rhero{min-height:0!important;padding:22px 28px!important;border-radius:22px!important}
+html body #rutas .lv11rhero .lv23ph,html body #rutas .lv11rhero .lv15art,html body #rutas .lv11rhero .lv15fig{display:none!important}
+html body #rutas .lv11rhero > *{max-width:none!important}
+html body #rutas .lv11rhero h1{font-size:clamp(24px,2.6vw,34px)!important;margin:6px 0 4px!important;padding-bottom:0!important}
+html body #rutas .lv11rhero h1:after{display:none!important}
+html body #rutas .lv11rhero p{font-size:15px!important;margin:0!important}
+html.lv44ok body:has(#rutas.active) .lv14help,html body:has(#rutas.active) button.help{display:none!important}
+#lv50{margin-top:12px}
+#lv50 .a50{padding:10px 14px;border-radius:16px;box-shadow:none;gap:10px}
+#lv50 .a50 .ic{width:36px;height:36px}
+#lv50 .a50 b{font-size:15px}#lv50 .a50 span{font-size:13.5px}
+#lv50 .a50 a{padding:8px 16px;font-size:16px}
+#lv50 .s50nav{display:flex!important;gap:4px;align-items:center;flex-wrap:wrap;margin:16px 0 0;padding:4px;background:#f3eff6;border-radius:999px;position:static}
+#lv50 .s50nav button[data-jump]{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;border:0;background:none;border-radius:999px;padding:10px 14px;font:800 14px var(--lv-display);color:#4a4450;cursor:pointer;white-space:nowrap;transition:background .2s,color .2s}
+#lv50 .s50nav button[data-jump] i{font-style:normal;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:#fff;color:#672e89;font-size:12px}
+#lv50 .s50nav button[data-jump].on{background:#672e89;color:#fff;box-shadow:0 6px 14px rgba(103,46,137,.25)}
+#lv50 .s50nav button[data-jump].on i{background:#35cbce}
+#lv50 .s50nav .k50open{flex:none;background:#35cbce;color:#672e89;box-shadow:none;padding:10px 16px}
+#lv50 .s50nav .k50open:hover{background:#72dbdd}
+#lv50 .r50{margin-top:22px}
+#lv50 .r50[hidden]{display:none!important}
+#lv50 .r50 > .hd{display:none}
+#lv50 .enc{gap:10px}
+#lv50 .enc div{box-shadow:none;padding:14px;border-radius:16px}
+#lv50 .enc small{font-size:13.5px}
+#lv50 .sec button{padding:16px;border-radius:18px}
+#lv50 .sec ul{display:none}
+#lv50 .sec .ic{width:42px;height:42px}
+#lv50 .sub{margin:20px 0 10px!important;font-size:16px!important}
+/* geovisor compacto */
+#lv24geo{padding:18px!important}
+#lv24geo .g51hd{display:none}
+#lv24geo .g51ctl{gap:8px;margin-bottom:14px;background:#f8f6fa;border:1px solid #efeaf2;border-radius:20px;padding:12px}
+#lv24geo .g51row,#lv24geo .g51half{background:none!important;border:0!important;padding:4px 6px!important;gap:10px!important}
+#lv24geo .g51row + .g51row{border-top:1px solid #ebe5ef!important;padding-top:10px!important}
+#lv24geo .g51n{width:24px;height:24px;font-size:12px;margin-top:4px}
+#lv24geo .g51c{gap:8px}
+#lv24geo .g51c > b{font-size:14px;line-height:32px}
+#lv24geo .r1 .g51c{grid-template-columns:120px minmax(0,1.3fr) minmax(0,1fr)}
+#lv24geo .g50q > div{box-shadow:none;padding:3px 3px 3px 14px}
+#lv24geo .g50q input{font-size:15px;padding:6px 0!important}
+#lv24geo .g50q button{padding:8px 16px;font-size:13.5px}
+#lv24geo .r1 .g24sel span{display:none}
+#lv24geo .g51c .g24sit{display:flex;flex-wrap:wrap;gap:6px}
+#lv24geo .g51c .g24sit button{padding:7px 13px;font-size:13px}
+#lv24geo .g51c > div.g24sit,#lv24geo .g51c .g50sec,#lv24geo .g51c .g50enf{flex:1}
+#lv24geo .g51row:not(.r1):not(.two) .g51c,#lv24geo .g51half .g51c{flex-direction:row;align-items:center;flex-wrap:wrap}
+#lv24geo .g51row:not(.r1):not(.two) .g51c > b,#lv24geo .g51half .g51c > b{width:120px;flex:none}
+#lv24geo .g51half .g51c > b{width:auto}
+#lv24geo .g51c .g50enf select{padding:7px 10px;font-size:13.5px}
+#lv24geo .g51c .g50sec button{padding:6px 8px;font-size:12.5px}
+#lv24geo .g51res{border-radius:16px;padding:12px 14px}
+#lv24geo .g51res b{font-size:21px}
+#lv24geo .g24steps li{box-shadow:none!important}
+#lv24geo details.g50esp{margin:12px 0 0;border:1px solid #e3ecec;border-radius:14px;padding:4px 10px;background:#f6fbfb}
+#lv24geo details.g50esp summary{cursor:pointer;list-style:none;font:800 13.5px var(--lv-display);color:#672e89;padding:8px 0;display:flex;align-items:center;gap:8px}
+#lv24geo details.g50esp summary::-webkit-details-marker{display:none}
+#lv24geo details.g50esp summary:after{content:"+";margin-left:auto;font-size:18px;color:#35cbce}
+#lv24geo details.g50esp[open] summary:after{content:"−"}
+#lv24geo details.g50esp summary small{background:#d7f5f5;border-radius:999px;padding:1px 8px;font-size:11.5px}
+#lv24geo details.g50esp > div{background:#fff;margin-bottom:6px}
+#lv24geo .g24note{margin-top:10px}
+@media (max-width:1100px){#lv24geo .r1 .g51c{grid-template-columns:1fr}}
+@media (max-width:760px){#lv50 .s50nav{border-radius:18px}#lv50 .s50nav button[data-jump]{flex:1 1 100%;justify-content:flex-start}#lv50 .s50nav .k50open{flex:1 1 100%;justify-content:center}#lv24geo{padding:12px!important}#lv24geo .g51row:not(.r1):not(.two) .g51c > b{width:auto}}
 </style><script id="lv44-ready">(function(){var D=document,R=D.documentElement,t0=Date.now();var H0=window.LV44_HASH||location.hash;function ok(){var h=location.hash||"#libres",site=/^#libres\/[\w-]+/.test(H0)||/^#libres\/[\w-]+/.test(h),home=h==="#libres"||h==="#";if(!D.getElementById("lv23top")||!D.querySelector("#navigation .nav41more"))return false;if(site)return !!D.getElementById("lv42");if(home)return !!D.querySelector("#lv23home .x41hero");return Date.now()-t0>250}function go(){if(ok()||Date.now()-t0>6000){scrollTo(0,0);R.classList.add("lv44ok");setTimeout(function(){var l=D.getElementById("lv44load");if(l)l.remove()},500);return}setTimeout(go,40)}if(D.readyState==="loading")D.addEventListener("DOMContentLoaded",go);else go()})();</script><style id="ajustes-linea-tiempo">
 /* Línea de tiempo: letra más grande */
 .lv11timeline{height:170px!important;margin-bottom:40px!important}

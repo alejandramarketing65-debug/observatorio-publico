@@ -95,7 +95,7 @@ body{background:#f3f1f6}main{max-width:1600px!important;padding-top:20px!importa
  <article class="visualPanel v7queue"><div class="chartHeader"><div><h2>Tus fichas en preparación</h2><p>Cada fila corresponde a un borrador guardado en este navegador.</p></div><button class="btn" onclick="renderFeedingDashboard()">Actualizar</button></div><div id="v7DraftQueue" class="tablewrap"></div></article>
  <p class="v7languageNote">Las cifras ficticias están identificadas. Los archivos originales y los textos introducidos por el equipo conservan su idioma de origen.</p>
 </section>
-<section id="libres" class="page"><div id="libresRoot" class="libres" data-no-translate></div></section><section id="fuentes8" class="page"><div id="v8AdminRoot" class="libres" data-no-translate></div></section><dialog id="v8Dialog" class="l8dialog libres" data-no-translate></dialog></main><div id="v6AdminToast" class="v6toast" role="status" aria-live="polite"></div><dialog id="v6PreviewDrawer" class="v6drawer"><button class="close" onclick="this.closest('dialog').close()" aria-label="Cerrar vista previa">×</button><div class="eyebrow">VISTA PREVIA · SOLO LECTURA</div><h2 id="v6PreviewTitle"></h2><div id="v6LivePreview"></div><button class="btn" onclick="this.closest('dialog').close();v6Stage('analysis')">Completar análisis →</button></dialog><footer><div>Observatorio de Mujeres en todas sus Diversidades<br>Libres · versión v55 · actualización: 9 de noviembre de 2026</div><div>Identidad adaptada del logo Libres suministrado · sujeta al manual de visibilidad y validación.<br>Borrador v9 · perfiles separados y almacenamiento local de trabajo. Integración productiva pendiente.</div></footer><button class="help" onclick="help()">Orientación y rutas de atención</button><dialog id="detail"><button class="btn close" onclick="document.getElementById('detail').close()" aria-label="Cerrar ficha">Cerrar ✕</button><div id="detailBody"></div></dialog>
+<section id="libres" class="page"><div id="libresRoot" class="libres" data-no-translate></div></section><section id="fuentes8" class="page"><div id="v8AdminRoot" class="libres" data-no-translate></div></section><dialog id="v8Dialog" class="l8dialog libres" data-no-translate></dialog></main><div id="v6AdminToast" class="v6toast" role="status" aria-live="polite"></div><dialog id="v6PreviewDrawer" class="v6drawer"><button class="close" onclick="this.closest('dialog').close()" aria-label="Cerrar vista previa">×</button><div class="eyebrow">VISTA PREVIA · SOLO LECTURA</div><h2 id="v6PreviewTitle"></h2><div id="v6LivePreview"></div><button class="btn" onclick="this.closest('dialog').close();v6Stage('analysis')">Completar análisis →</button></dialog><footer><div>Observatorio de Mujeres en todas sus Diversidades<br>Libres · versión v57 · actualización: 9 de noviembre de 2026</div><div>Identidad adaptada del logo Libres suministrado · sujeta al manual de visibilidad y validación.<br>Borrador v9 · perfiles separados y almacenamiento local de trabajo. Integración productiva pendiente.</div></footer><button class="help" onclick="help()">Orientación y rutas de atención</button><dialog id="detail"><button class="btn close" onclick="document.getElementById('detail').close()" aria-label="Cerrar ficha">Cerrar ✕</button><div id="detailBody"></div></dialog>
 <!-- Lógica local: catálogo, filtros, fichas y almacenamiento según perfil. -->
 <script>
 // OBSERVATORIO v4 · prototipo local comentado · 27/10/2026
@@ -2996,6 +2996,7 @@ window.LV11_DEFAULTS = (function () {
     [T('Inicio', 'Home'), [['inicio.sub', 'Subtítulo de la portada', 'Mujeres, territorios y realidades'], ['inicio.k1', 'Cifra 1 · valor (vacío = automático)', ''], ['inicio.k1l', 'Cifra 1 · texto', 'indicadores en el observatorio'], ['inicio.k2', 'Cifra 2 · valor', '6'], ['inicio.k2l', 'Cifra 2 · texto', 'datos interseccionales: edad, etnia, discapacidad, orientación sexual, agresor y zona'], ['inicio.k3', 'Cifra 3 · valor', '1.122'], ['inicio.k3l', 'Cifra 3 · texto', 'datos territorializados: municipios con zona urbana y rural']]],
     [T('Sentencias', 'Rulings'), [['sent.h1', 'Título', 'Lo que han decidido los jueces'], ['sent.p', 'Introducción', 'Decisiones de la Corte Constitucional que protegen los derechos de las mujeres en todas sus diversidades.']]],
     [T('Rutas de atención', 'Support pathways'), [['rutas.alerta', 'Alerta de peligro inminente', 'Llama al 123 o busca un lugar seguro. Tu vida es lo primero.'], ['rutas.vsx', 'Alerta de violencia sexual', 'Es una urgencia médica. Ve a urgencias en las primeras 72 horas, aunque no hayas denunciado: hay anticoncepción de emergencia y profilaxis gratuitas.'], ['rutas.enc1', 'Encuadre 1', 'Ninguna violencia se justifica. Tienes derecho a una vida libre de violencias (Ley 1257 de 2008).'], ['rutas.enc2', 'Encuadre 2', 'Si estás en peligro, busca un lugar seguro y llama al 123.'], ['rutas.enc3', 'Encuadre 3', 'Salud, justicia o protección: la entidad a la que llegues debe atenderte y remitirte a las demás.'], ['rutas.enc4', 'Encuadre 4', 'A recibir información clara, a ir acompañada, a no ser confrontada con el agresor y a que se respete tu privacidad.'], ['rutas.salud', 'Sector salud', 'Urgencias, atención médica y psicológica, registro de lesiones. No necesitas denuncia para que te atiendan.'], ['rutas.justicia', 'Sector justicia', 'Denuncia, investigación y sanción. Fiscalía, Medicina Legal y Ministerio Público te acompañan.'], ['rutas.proteccion', 'Sector protección', 'Medidas para que el agresor no se acerque, desalojo, acogida en casa refugio y protección de niñas y niños.']]],
+    [T('Colibrí flotante (todas las páginas)', 'Floating hummingbird'), [['colibri.frase', 'Frase del colibrí', 'No estás sola. Denuncia'], ['colibri.sub', 'Texto del botón (lleva a Rutas de atención)', 'Encuentra tu ruta de atención'], ['colibri.on', 'Mostrar el colibrí (escribe «no» para ocultarlo)', 'sí']]],
     [T('Red Nacional de Casas Refugio', 'Shelter network'), [['casas.p', 'Introducción', 'Lugares de acogida temporales, gratuitos y seguros para mujeres víctimas de violencia, sus hijas e hijos y personas a su cargo.'], ['casas.e1', 'Etapa 1 · Ingreso', 'La mujer pide una medida de protección o atención ante una Comisaría de Familia o un juzgado. La autoridad estudia el caso y decide si otorga la casa refugio. En casos de grave necesidad, la casa puede recibirla de forma temporal mientras se presenta ante la autoridad.'], ['casas.e2', 'Etapa 2 · Permanencia', 'Durante su estancia recibe alojamiento, alimentación y vestuario, junto con asesoría jurídica, acompañamiento psicosocial y orientación educativa u ocupacional, para ella, sus hijas e hijos y personas a cargo.'], ['casas.e3', 'Etapa 3 · Egreso', 'La salida se prepara con un plan para retomar su vida con autonomía: empleo o emprendimiento, estudio y redes de apoyo.'], ['casas.e4', 'Etapa 4 · Seguimiento', 'Después de salir, el equipo hace seguimiento para confirmar que ella y su familia siguen seguras y con acceso a sus derechos.']]]
   ];
   function admTxt() {
@@ -7132,11 +7133,10 @@ footer.lv12foot .lv12mun span:not(.valle):before{content:"";display:inline-block
       [[X('inicio.k1', String(np)), X('inicio.k1l', T('indicadores en el observatorio', 'indicators in the observatory')), 'indicadores', ''], [X('inicio.k2', '6'), X('inicio.k2l', T('datos interseccionales: edad, etnia, discapacidad, orientación sexual, agresor y zona', 'intersectional data: age, ethnicity, disability, sexual orientation, aggressor and area')), 'indicadores', 'quien'], [X('inicio.k3', '1.122'), X('inicio.k3l', T('datos territorializados: municipios con zona urbana y rural', 'territorial data: municipalities with urban and rural areas')), 'mapa', '']].map(function (x) { return '<button type="button" data-go="' + x[2] + '"' + (x[3] ? ' data-vt="' + x[3] + '"' : '') + '><b>' + x[0] + '</b><span>' + x[1] + '</span></button>'; }).join('') + '</div></div>' +
       '<svg class="wave" viewBox="0 0 1440 160" preserveAspectRatio="none" aria-hidden="true"><path d="M0 92C180 40 330 40 520 84s360 70 560 26 300-60 360-48" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="2"/><path d="M0 128c200-40 380-46 600-12s420 40 600 0 200-34 240-30" fill="none" stroke="rgba(193,123,237,.45)" stroke-width="2"/></svg></div>';
     // 2. proyecto de cooperación
-    h += '<section class="x41coop" aria-labelledby="x41cp"><div class="lg">' + (L.libres ? '<img src="' + L.libres + '" alt="¡LIBRES!">' : '') + '</div><div class="tx"><span class="chip">' + T('Proyecto de cooperación', 'Cooperation project') + '</span>' +
+    var coopH = '<section class="x41coop" aria-labelledby="x41cp"><div class="lg">' + (L.libres ? '<img src="' + L.libres + '" alt="¡LIBRES!">' : '') + '</div><div class="tx"><span class="chip">' + T('Proyecto de cooperación', 'Cooperation project') + '</span>' +
       '<h2 id="x41cp">' + T('Observatorio de Mujeres<br>en todas sus diversidades', 'Observatory of Women<br>in all their diversity') + '</h2>' +
       '<p>El Observatorio Colombiano de Mujeres en todas sus diversidades hace parte del proyecto ¡LIBRES! financiado por la Delegación de La Unión Europea en Colombia y la Agencia Española de Cooperación Internacional para el Desarrollo (AECID), la ejecución del Gobierno de Colombia y Expertise France y el apoyo técnico de la Cooperación Alemana para el Desarrollo GIZ.</p>' +
-      '<p>El Proyecto ¡LIBRES! tiene el objetivo de fortalecer la prevención de violencias basadas en género, protección y atención de las niñas, mujeres y personas LGBTIQ+, en siete municipios priorizados: Buenos Aires, Corinto, Puerto Tejada y Suárez en el departamento del Cauca; y Florida, Jamundí y Pradera en el departamento de Valle del Cauca.</p>' +
-      '<div class="mun">' + LIBRES.slice().sort(function (a, b) { return a[2] === b[2] ? a[1].localeCompare(b[1]) : a[2].localeCompare(b[2]); }).map(function (m) { return '<button type="button" data-mun="' + m[0] + '" class="' + (m[2] === 'Cauca' ? 'ca' : 'va') + '">' + i41('pin', 14) + m[1] + '<small>' + m[2] + '</small></button>'; }).join('') + '</div></div></section>';
+      '<p>El Proyecto ¡LIBRES! tiene el objetivo de fortalecer la prevención de violencias basadas en género, protección y atención de las niñas, mujeres y personas LGBTIQ+, en siete municipios priorizados: Buenos Aires, Corinto, Puerto Tejada y Suárez en el departamento del Cauca; y Florida, Jamundí y Pradera en el departamento de Valle del Cauca.</p>' + '</div></section>';
     // 3. lo que encontrarás aquí
     var F = [['chart', 'indicadores', 'Indicadores', 'Indicators', 'con fuente, fórmula y periodicidad', 'with source, formula and frequency'], ['pin', 'mapa', 'Mapas', 'Maps', 'por departamento, municipio y zona', 'by department, municipality and area'], ['heat', 'publicaciones', 'Mapas de calor', 'Heat maps', 'cruces y tablas para analizar y descargar', 'cross-tabs and tables to analyse and download'], ['scale', 'normativa', 'Normas y derechos', 'Laws and rights', 'leyes y políticas vigentes', 'laws and policies in force'], ['gavel', 'sentencias', 'Sentencias', 'Court rulings', 'lo que ha decidido la Corte Constitucional', 'what the Constitutional Court has decided'], ['nav', 'rutas', 'Rutas de atención', 'Support pathways', 'con geoposicionamiento por municipio', 'geolocated by municipality']];
     h += '<section class="x41find" aria-labelledby="x41fd"><div class="hd"><h2 id="x41fd">' + T('Lo que encontrarás aquí', 'What you will find here') + '</h2><p>' + T('Cifras, análisis, normas y rutas de atención sobre las violencias y los derechos de las mujeres en todas sus diversidades, con una mirada puesta en el territorio.', 'Figures, analysis, laws and support pathways on violence and the rights of women in all their diversity, with a territorial focus.') + '</p></div>' +
@@ -7145,6 +7145,7 @@ footer.lv12foot .lv12mun span:not(.valle):before{content:"";display:inline-block
     h += '<section class="x41nav" aria-labelledby="x41nv"><h2 id="x41nv">' + T('Cómo navegar en el observatorio', 'How to browse the observatory') + '</h2><p class="lead">' + T('Seis pasos para llegar a lo que buscas. Toca un círculo.', 'Six steps to find what you need. Tap a circle.') + '</p><div id="x41st">' + stepsHTML() + '</div></section>';
     // 5. temas divididos en cuatro grupos
     h += '<section class="x43themes" id="lv23themes" aria-labelledby="lv23th"><h2 id="lv23th">' + T('Elige el tema de tu interés', 'Choose your topic') + '</h2><div id="lv23tw">' + themesHTML() + '</div></section>';
+    h += (typeof coopH === 'string' ? coopH : '');
     return h;
   }
   function mountHome() {
@@ -7350,7 +7351,7 @@ footer.lv12foot .lv12mun span:not(.valle):before{content:"";display:inline-block
   /* v41 · menú en una sola fila, como el diseño base: Inicio, Temas, Comités, Indicadores, Mapa, Datos y análisis, Normativa, Sentencias, Rutas de atención y «Más» */
   function nav41() {
     var nav = D.getElementById('navigation'); if (!nav) return;
-    var lang = en() ? 'en' : 'es'; if (nav.dataset.v41 === lang) return; nav.dataset.v41 = lang;
+    var lang = en() ? 'en' : 'es'; if (nav.dataset.v41 === lang && nav.querySelector('.nav41more')) return; nav.dataset.v41 = lang;
     var by = function (id) { return nav.querySelector('button[data-page="' + id + '"]'); };
     var LBL = { libres: ['Inicio', 'Home'], indicadores: ['Indicadores', 'Indicators'], mapa: ['Mapa', 'Map'], publicaciones: ['Datos y análisis', 'Data and analysis'], normativa: ['Normativa', 'Laws'], sentencias: ['Sentencias', 'Rulings'], rutas: ['Rutas de atención', 'Support pathways'], red: ['Red Nacional de Observatorios', 'National Observatory Network'], casas: ['Red Nacional de Casas Refugio', 'National Shelter Network'], asistente: ['Consulta metodológica', 'Methodology'], conocimiento: ['Conocimiento', 'Knowledge'] };
     Object.keys(LBL).forEach(function (k) { var b = by(k); if (b) b.textContent = T(LBL[k][0], LBL[k][1]); });
@@ -9275,6 +9276,82 @@ html.lv44ok body:has(#rutas.active) .lv14help,html body:has(#rutas.active) butto
 #lv24geo .g24note{margin-top:10px}
 @media (max-width:1100px){#lv24geo .r1 .g51c{grid-template-columns:1fr}}
 @media (max-width:760px){#lv50 .s50nav{border-radius:18px}#lv50 .s50nav button[data-jump]{flex:1 1 100%;justify-content:flex-start}#lv50 .s50nav .k50open{flex:1 1 100%;justify-content:center}#lv24geo{padding:12px!important}#lv24geo .g51row:not(.r1):not(.two) .g51c > b{width:auto}}
+/* v56 · filtro del geovisor más compacto (tamaño reducido, una sola tarjeta) */
+#lv24geo .g51ctl{gap:4px!important;padding:8px 10px!important;border-radius:18px!important;margin-bottom:12px!important;background:#fff!important;border:1.5px solid #e2d5e6!important;box-shadow:0 6px 18px rgba(103,46,137,.06)}
+#lv24geo .g51row,#lv24geo .g51half{padding:4px 4px!important;align-items:center!important}
+#lv24geo .g51row + .g51row{padding-top:6px!important;border-top:1px dashed #e2d5e6!important}
+#lv24geo .g51row.two{gap:6px 16px!important}
+#lv24geo .g51n{width:22px!important;height:22px!important;font-size:11.5px!important;margin-top:0!important;background:#966fa9!important}
+#lv24geo .g51c{gap:6px!important}
+#lv24geo .g51c > b{font-size:13px!important;line-height:1.2!important;color:#672e89!important}
+#lv24geo .r1 .g51c{grid-template-columns:104px minmax(0,1.4fr) minmax(0,1fr)!important;gap:8px!important}
+#lv24geo .g51row:not(.r1):not(.two) .g51c > b{width:104px!important}
+#lv24geo .g50q > div{padding:2px 2px 2px 12px!important;border-width:1.5px!important}
+#lv24geo .g50q input{font-size:14px!important;padding:5px 0!important}
+#lv24geo .g50q button{padding:6px 14px!important;font-size:12.5px!important}
+#lv24geo .r1 .g24sel select,#lv24geo .g51c .g50enf select{padding:6px 10px!important;font-size:13px!important;border-radius:10px!important;min-height:0!important;height:auto!important}
+#lv24geo .g51c .g24sit button{padding:5px 11px!important;font-size:12.5px!important}
+#lv24geo .g51c .g50sec{padding:2px!important}
+#lv24geo .g51c .g50sec button{padding:5px 8px!important;font-size:12px!important}
+#lv24geo .g51ctl > *:empty{display:none}
+@media (max-width:1100px){#lv24geo .r1 .g51c{grid-template-columns:1fr!important}}
+@media (max-width:760px){#lv24geo .g51row:not(.r1):not(.two) .g51c > b{width:auto!important}}
+#lv24geo .g51ctl > .g51row{margin:0!important}
+</style><style id="lv56-colibri">/* v56 · colibrí flotante "No estás sola. Denuncia" (paleta oficial) */
+html.lv56on .lv14help,html.lv56on button.help{display:none!important}
+#lv56{position:fixed;right:18px;bottom:16px;z-index:90;display:flex;align-items:flex-end;gap:4px;font-family:var(--lv-display,system-ui);pointer-events:none}
+#lv56 > *{pointer-events:auto}
+#lv56 .c56bird{width:112px;height:98px;border:0;background:none;padding:0;cursor:pointer;animation:c56fly 3.6s ease-in-out infinite;filter:drop-shadow(0 6px 10px rgba(103,46,137,.18))}
+#lv56 .c56bird:focus-visible{outline:3px solid #35cbce;outline-offset:4px;border-radius:16px}
+#lv56 .c56b{position:relative;display:block;width:100%;height:100%}
+#lv56 .c56b img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none}
+#lv56 .c56wg{transform-origin:66% 46%;animation:c56wing .9s ease-in-out infinite}
+#lv56 .c56lf{animation:c56leaf 4.5s ease-in-out infinite}
+#lv56 .c56bub{position:relative;background:#fff;border:1.5px solid #d4a2f2;border-radius:18px 18px 4px 18px;padding:10px 28px 10px 14px;margin-bottom:62px;margin-right:-14px;box-shadow:0 10px 24px rgba(103,46,137,.16);max-width:190px;display:flex;flex-direction:column;gap:6px;animation:c56in .5s ease-out both}
+#lv56 .c56bub b{cursor:pointer;font:800 15px/1.2 var(--lv-display,system-ui);color:#672e89}
+#lv56 .c56go{border:0;background:#35cbce;color:#3b1a50;border-radius:999px;padding:6px 11px;font:800 12px var(--lv-display,system-ui);cursor:pointer;text-align:left}
+#lv56 .c56go:hover{background:#72dbdd}
+#lv56 .c56x{position:absolute;top:6px;right:8px;width:22px;height:22px;border:0;border-radius:50%;background:#eedcfa;color:#672e89;font:700 15px/1 system-ui;cursor:pointer}
+#lv56.min .c56bub{display:none}
+#lv56.min .c56bird{width:86px;height:75px}
+body:has(#k50:not([hidden])) #lv56{display:none}
+@keyframes c56fly{0%,100%{transform:translate(0,0) rotate(-3deg)}25%{transform:translate(-6px,-10px) rotate(2deg)}50%{transform:translate(2px,-4px) rotate(-1deg)}75%{transform:translate(-3px,-12px) rotate(3deg)}}
+@keyframes c56wing{0%,100%{transform:rotate(0) scaleY(1)}50%{transform:rotate(-7deg) scaleY(.82)}}
+@keyframes c56leaf{0%,100%{transform:translate(0,0) rotate(0);opacity:1}50%{transform:translate(-5px,-6px) rotate(-4deg);opacity:.85}}
+@keyframes c56in{from{opacity:0;transform:translateY(8px) scale(.95)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){#lv56 .c56bird,#lv56 .c56wg,#lv56 .c56lf,#lv56 .c56bub{animation:none}}
+@media (max-width:640px){#lv56{right:8px;bottom:8px}#lv56 .c56bird,#lv56.min .c56bird{width:78px;height:68px}#lv56 .c56bub{max-width:150px;padding:8px 26px 8px 12px;margin-bottom:34px}#lv56 .c56bub b{font-size:13.5px}#lv56 .c56go{display:none}#lv56 .c56x{width:20px;height:20px;font-size:13px;top:4px;right:4px}}
+@media print{#lv56{display:none}}
+#lv56 .c56b:before{content:"";position:absolute;left:42%;top:30%;width:52%;height:58%;border-radius:50%;background:rgba(255,255,255,.75);filter:blur(10px);z-index:-1}
+/* v57 · filtros con el diseño del geovisor de Rutas */
+main .f57{display:flex!important;flex-wrap:wrap;align-items:center;gap:6px 0!important;background:#fff!important;border:1.5px solid #e2d5e6!important;border-radius:18px!important;padding:8px 10px!important;box-shadow:0 6px 18px rgba(103,46,137,.06)!important;margin:12px 0 14px!important}
+main .f57 > .f57s{display:flex;align-items:center;gap:8px;padding:4px 12px;min-width:0;flex:0 1 auto}
+main .f57 > .f57s + .f57s{border-left:1px dashed #e2d5e6}
+main .f57 > .f57s.f57q{flex:1 1 300px}
+main .f57 > .f57s.f57w{flex:1 1 100%;border-left:0;border-top:1px dashed #e2d5e6;padding-top:8px;flex-wrap:wrap}
+main .f57 .f57n{flex:none;width:22px;height:22px;border-radius:50%;background:#966fa9;color:#fff;display:grid;place-items:center;font:800 11.5px var(--lv-display)}
+main .f57 .f57s > b{flex:none;font:800 13px/1.2 var(--lv-display);color:#672e89;white-space:nowrap}
+main .f57 .lv11search,main .f57 label.q{flex:1;min-width:0;display:flex!important;align-items:center;gap:8px;margin:0!important;border:1.5px solid #35cbce!important;border-radius:999px!important;padding:2px 12px!important;background:#fff!important;box-shadow:none!important;height:auto!important}
+main .f57 .lv11search input,main .f57 label.q input{border:0!important;outline:0;box-shadow:none!important;background:none!important;font:600 14px var(--lv-display)!important;padding:6px 0!important;width:100%;min-width:0;height:auto!important}
+main .f57 .lv11search svg,main .f57 label.q svg{color:#672e89;flex:none}
+main .f57 select{border:1.5px solid #e2d5e6!important;border-radius:10px!important;padding:6px 10px!important;font:600 13px var(--lv-display)!important;background-color:#fff!important;min-height:0!important;height:auto!important;max-width:240px;margin:0!important}
+main .f57 .seg,main .f57 .rg{margin:0!important;display:flex;flex-wrap:wrap;gap:6px}
+main .f57 .seg button,main .f57 .rg button{padding:5px 11px!important;font-size:12.5px!important;border-radius:999px!important}
+main .f57 .lv25sw{margin:0!important;padding:6px 12px!important;font-size:12.5px!important}
+main .f57 > .lv11count,main .f57 > .lv25nums{margin:0 8px!important}
+main .f57 > .lv25nums{flex:1 1 100%;order:-1;display:flex;gap:8px;padding:0 4px 6px;border-bottom:1px dashed #e2d5e6}
+main .f57 > .lv25nums span{padding:4px 12px!important;font-size:12.5px!important}
+main .f57 > .lv25nums b{font-size:17px!important}
+@media (max-width:760px){main .f57 > .f57s{flex:1 1 100%;border-left:0!important;padding:6px 4px}main .f57 > .f57s + .f57s{border-top:1px dashed #e2d5e6}main .f57 select{max-width:none;flex:1}main .f57 .f57s > b{white-space:normal}}
+/* el mensaje del colibrí se recoge solo; al pasar el mouse vuelve a aparecer */
+#lv56.min:hover .c56bub,#lv56.min:focus-within .c56bub{display:flex}
+main .f57 .lv11search,main .f57 label.q{height:38px!important;min-height:0!important;max-height:38px}
+main .f57 .lv11search input,main .f57 label.q input{line-height:1.2!important}
+main .f57 .lv11search svg,main .f57 label.q svg{width:16px;height:16px}
+main .f57{height:auto!important;max-height:none!important;overflow:visible!important}
+main .f57 select{width:auto!important;min-width:180px!important;flex:none!important;display:block!important}
+main .f57 > .f57s.f57w .rg{flex:1 1 auto;min-width:0}
+@media (max-width:760px){main .f57 select{flex:1 1 auto!important;min-width:0!important;width:100%!important}}
 </style><style id="lv54-admin">/* v54 · Administración con la misma línea visual de la consulta pública (paleta ¡LIBRES!) */
 /* acceso */
 #roleGate.adminlogin{background:#672e89!important;background-image:radial-gradient(900px 600px at 85% -10%,rgba(179,153,197,.55),rgba(103,46,137,0) 60%),radial-gradient(700px 500px at 0% 110%,rgba(53,203,206,.35),rgba(103,46,137,0) 60%)!important}
